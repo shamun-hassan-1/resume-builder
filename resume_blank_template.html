@@ -147,6 +147,30 @@
     /* ── Summary ── */
     .summary p { font-size: 10.5pt; color: var(--color-text); line-height: 1.65; }
 
+    /* ── Back button ── */
+    #back-btn {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 400;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #555;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+    #back-btn:hover { background: #f0f0f0; color: #1a1a1a; }
+    @media print { #back-btn { display: none !important; } }
+
     /* ── Delete experience button ── */
     .job { position: relative; }
     .job-delete-btn {
@@ -189,6 +213,46 @@
     }
     #add-experience-btn:hover { color: #2a6b3c; border-color: #2a6b3c; background: #f4fbf6; }
     .edit-active #add-experience-btn { display: flex; }
+
+    /* ── Add row buttons (skills + certs) ── */
+    .add-row-btn {
+      display: none;
+      align-items: center;
+      gap: 7px;
+      margin-top: 8px;
+      padding: 6px 14px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 9.5pt;
+      font-weight: 500;
+      color: #6b6b6b;
+      background: transparent;
+      border: 1.5px dashed #c0c0c0;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .add-row-btn:hover { color: #2a6b3c; border-color: #2a6b3c; background: #f4fbf6; }
+    .edit-active .add-row-btn { display: flex; }
+
+    /* ── Remove row buttons (skills + certs) ── */
+    .row-delete-btn {
+      display: none;
+      font-family: 'Roboto', sans-serif;
+      font-size: 9pt;
+      font-weight: 500;
+      color: #ccc;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 0 0 8px;
+      flex-shrink: 0;
+      transition: color 0.15s;
+      line-height: 1;
+    }
+    .row-delete-btn:hover { color: #c0392b; }
+    .edit-active .skill-row:hover .row-delete-btn,
+    .edit-active .cert-list li:hover .row-delete-btn { display: inline; }
 
     /* ── Skills ── */
     .skill-row {
@@ -526,6 +590,9 @@
 </head>
 <body>
 
+<!-- Back button -->
+<a id="back-btn" href="index.html" title="Back to dashboard">&#8592;</a>
+
 <!-- Action bar -->
 <div id="action-bar">
   <button id="btn-edit"   class="ab-btn" onclick="toggleEdit()" title="Edit mode">✏</button>
@@ -554,28 +621,34 @@
     <p data-ed>Write your professional summary here. Describe your experience, key achievements, and what makes you the right candidate for this role.</p>
   </section>
 
-  <section>
+  <section id="skills-section">
     <div class="section-title">Core Skills &amp; Tools</div>
     <div class="skill-row">
       <span class="skill-label" data-ed>Marketing</span>
       <span class="skill-value" data-ed>Demand Generation, Lifecycle Marketing, PPC Ads, SEO, CRO, Content Marketing, Copywriting</span>
+      <button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button>
     </div>
     <div class="skill-row">
       <span class="skill-label" data-ed>Operations</span>
       <span class="skill-value" data-ed>Marketing Automation, Sales Operations, CRM Management, Full-Funnel Analytics</span>
+      <button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button>
     </div>
     <div class="skill-row">
       <span class="skill-label" data-ed>Platforms</span>
       <span class="skill-value" data-ed>HubSpot, Customer.io, Partnerbase, Convert.com, Airtable, Clay, ClickUp, WordPress, Zapier</span>
+      <button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button>
     </div>
     <div class="skill-row">
       <span class="skill-label" data-ed>Analytics &amp; Data</span>
       <span class="skill-value" data-ed>GA4, Looker, SQL, Segment, Hotjar, Demandbase</span>
+      <button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button>
     </div>
     <div class="skill-row">
       <span class="skill-label" data-ed>AI Tools</span>
       <span class="skill-value" data-ed>Claude Code, Higgsfield, Nano Banana, Sparksend, Lovable</span>
+      <button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button>
     </div>
+    <button class="add-row-btn" onclick="addSkillRow()">+ Add Skill Category</button>
   </section>
 
   <section>
@@ -622,14 +695,15 @@
     <div class="edu-school" data-ed>Minnesota State University</div>
   </section>
 
-  <section>
+  <section id="certs-section">
     <div class="section-title">Certifications</div>
     <ul class="cert-list">
-      <li data-ed>Advanced Google Analytics 4 (GA4)</li>
-      <li data-ed>Make Basics Certificate – Make.com</li>
-      <li data-ed>Mailchimp Foundations Certification – Intuit Mailchimp</li>
-      <li data-ed>HubSpot Sales Hub Software Certified – HubSpot</li>
+      <li data-ed>Advanced Google Analytics 4 (GA4)<button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button></li>
+      <li data-ed>Make Basics Certificate – Make.com<button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button></li>
+      <li data-ed>Mailchimp Foundations Certification – Intuit Mailchimp<button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button></li>
+      <li data-ed>HubSpot Sales Hub Software Certified – HubSpot<button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button></li>
     </ul>
+    <button class="add-row-btn" onclick="addCertRow()">+ Add Certification</button>
   </section>
 
 </div><!-- /.page -->
@@ -1215,6 +1289,49 @@
   }
 
   window.addExperience = addExperience;
+
+  /* ── Add / remove skill rows ── */
+  function addSkillRow() {
+    var btn = document.querySelector('#skills-section .add-row-btn');
+    var row = document.createElement('div');
+    row.className = 'skill-row';
+    row.innerHTML =
+      '<span class="skill-label" data-ed contenteditable="true" spellcheck="true">Category</span>' +
+      '<span class="skill-value" data-ed contenteditable="true" spellcheck="true">Skill 1, Skill 2, Skill 3</span>' +
+      '<button class="row-delete-btn" onclick="deleteRow(this)" title="Remove">✕</button>';
+    btn.parentNode.insertBefore(row, btn);
+    var label = row.querySelector('.skill-label');
+    label.focus(); selectAll(label);
+  }
+  window.addSkillRow = addSkillRow;
+
+  /* ── Add / remove cert rows ── */
+  function addCertRow() {
+    var btn = document.querySelector('#certs-section .add-row-btn');
+    var li = document.createElement('li');
+    li.setAttribute('data-ed', '');
+    li.setAttribute('contenteditable', 'true');
+    li.setAttribute('spellcheck', 'true');
+    li.textContent = 'Certification Name – Issuer';
+    var delBtn = document.createElement('button');
+    delBtn.className = 'row-delete-btn';
+    delBtn.setAttribute('onclick', 'deleteRow(this)');
+    delBtn.setAttribute('title', 'Remove');
+    delBtn.textContent = '✕';
+    li.appendChild(delBtn);
+    btn.parentNode.querySelector('.cert-list').appendChild(li);
+    li.focus(); selectAll(li);
+  }
+  window.addCertRow = addCertRow;
+
+  /* ── Generic delete row (skill row or cert li) ── */
+  function deleteRow(btn) {
+    var el = btn.parentElement;
+    el.style.transition = 'opacity 0.2s';
+    el.style.opacity = '0';
+    setTimeout(function () { el.remove(); }, 200);
+  }
+  window.deleteRow = deleteRow;
 
   function deleteExperience(btn) {
     var job = btn.closest('.job');

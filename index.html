@@ -68,6 +68,34 @@
   .ambient-shadow { box-shadow: 0 32px 64px -12px rgba(26,28,30,0.04); }
   .card-shadow { box-shadow: 0 8px 24px -8px rgba(26,28,30,0.06); }
 
+  /* iframe resume preview */
+  .iframe-wrapper { position: relative; overflow: hidden; border-radius: 0.5rem; background: #fff; }
+  .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 800px; border: none; transform-origin: top left; pointer-events: none; }
+
+  /* card overlay buttons */
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(15,15,20,0.72) 0%, rgba(15,15,20,0.18) 55%, transparent 100%);
+    opacity: 0; transition: opacity 0.25s;
+    display: flex; align-items: flex-end; justify-content: center;
+    gap: 8px; padding: 16px;
+  }
+  .group:hover .card-overlay { opacity: 1; }
+  .overlay-btn {
+    flex: 1; max-width: 130px;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 8px 10px;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+    border-radius: 6px; border: none; cursor: pointer;
+    backdrop-filter: blur(8px); transition: background 0.15s, transform 0.15s;
+    text-decoration: none; white-space: nowrap;
+  }
+  .overlay-btn:active { transform: scale(0.97); }
+  .overlay-btn.primary { background: rgba(255,255,255,0.95); color: #004bca; }
+  .overlay-btn.primary:hover { background: #fff; }
+  .overlay-btn.secondary { background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.35); }
+  .overlay-btn.secondary:hover { background: rgba(255,255,255,0.28); }
+
   /* Mini resume mockup */
   .resume-mock { background: #fff; border-radius: 4px; padding: 14px 12px; display: flex; flex-direction: column; gap: 5px; height: 100%; }
   .mock-name  { height: 8px; width: 60%; background: #1a1a1a; border-radius: 2px; }
@@ -127,9 +155,9 @@
   <!-- Content -->
   <div class="p-10 lg:p-14 max-w-[1200px] w-full mx-auto space-y-16">
 
-    <!-- Featured: Default / Master Resume -->
+    <!-- Featured: Default Resume -->
     <section class="relative">
-      <h2 class="font-headline text-2xl font-semibold text-on-surface mb-6 tracking-tight">Master Template</h2>
+      <h2 class="font-headline text-2xl font-semibold text-on-surface mb-6 tracking-tight">Kazi's CVs</h2>
       <div class="relative bg-surface/60 backdrop-blur-[32px] rounded-xl p-8 ambient-shadow ghost-border overflow-hidden flex flex-col md:flex-row gap-10 items-center justify-between border border-slate-200/40">
         <div class="absolute -top-40 -right-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -152,46 +180,19 @@
               <span class="material-symbols-outlined text-[16px]">visibility</span>
               Preview CV
             </a>
-            <a href="resume_default.html" onclick="window.print(); return false;" class="px-6 py-2.5 bg-surface-container-lowest text-on-surface rounded-DEFAULT font-body font-medium text-sm border border-slate-200 hover:bg-surface-container-low transition-colors flex items-center gap-2">
+            <button onclick="downloadCV('resume_default.html','Kazi_Hassan_Default_CV.html')" class="px-6 py-2.5 bg-surface-container-lowest text-on-surface rounded-DEFAULT font-body font-medium text-sm border border-slate-200 hover:bg-surface-container-low transition-colors flex items-center gap-2 cursor-pointer">
               <span class="material-symbols-outlined text-[16px]">download</span>
               Download CV
-            </a>
+            </button>
           </div>
         </div>
 
-        <!-- Resume mockup -->
-        <div class="relative w-full md:w-[38%] aspect-[3/4] rounded-lg overflow-hidden card-shadow group z-10 transform rotate-2 hover:rotate-0 transition-transform duration-500 ease-out origin-bottom-right border border-slate-200/60">
-          <div class="resume-mock w-full h-full">
-            <div class="mock-name"></div>
-            <div class="mock-title"></div>
-            <div class="mock-rule"></div>
-            <div class="mock-section-hd"></div>
-            <div class="mock-line full"></div>
-            <div class="mock-line med"></div>
-            <div class="mock-line short"></div>
-            <div class="mock-rule"></div>
-            <div class="mock-section-hd"></div>
-            <div class="mock-line full"></div>
-            <div class="mock-line full"></div>
-            <div class="mock-line med"></div>
-            <div class="mock-line short"></div>
-            <div class="mock-rule"></div>
-            <div class="mock-section-hd"></div>
-            <div class="mock-line full dark"></div>
-            <div class="mock-line full"></div>
-            <div class="mock-line med"></div>
-            <div class="mock-line full"></div>
-            <div class="mock-line short"></div>
-            <div class="mock-rule"></div>
-            <div class="mock-section-hd"></div>
-            <div class="mock-line full dark"></div>
-            <div class="mock-line med"></div>
-            <div class="mock-line full"></div>
-            <div class="mock-line short"></div>
-          </div>
-          <div class="absolute bottom-4 left-4 z-20 flex items-center gap-2 text-slate-700 font-body text-xs bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-DEFAULT border border-slate-200/60">
-            <span class="material-symbols-outlined text-[16px]">auto_fix_high</span>
-            Edit Mode Ready
+        <!-- Live iframe preview -->
+        <div class="relative w-full md:w-[38%] z-10 transform rotate-2 hover:rotate-0 transition-transform duration-500 ease-out origin-bottom-right" style="height:420px;">
+          <div class="iframe-wrapper card-shadow border border-slate-200/60" id="default-preview-wrapper" style="height:100%;">
+            <iframe src="resume_default.html" id="default-preview-iframe" scrolling="no" title="Default CV preview" style="filter:blur(1.2px)"></iframe>
+            <!-- vignette overlay -->
+            <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at center, transparent 40%, rgba(248,248,252,0.55) 100%); border-radius:0.5rem;"></div>
           </div>
         </div>
       </div>
@@ -228,23 +229,20 @@
               <div class="mock-line full dark"></div>
               <div class="mock-line full"></div>
             </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div class="absolute top-3 right-3">
+            <div class="absolute top-3 right-3 z-10">
               <span class="text-[10px] font-label font-bold uppercase tracking-wider px-2 py-1 bg-white/90 text-blue-700 rounded-full border border-blue-100">Tailored</span>
+            </div>
+            <div class="card-overlay">
+              <a href="resume_AltoSoftware_HeadOfDemandGeneration.html" target="_blank" class="overlay-btn primary">
+                <span class="material-symbols-outlined text-[14px]">visibility</span> Preview CV
+              </a>
+              <button onclick="downloadCV('resume_AltoSoftware_HeadOfDemandGeneration.html','Kazi_Hassan_Alto_CV.html')" class="overlay-btn secondary">
+                <span class="material-symbols-outlined text-[14px]">download</span> Download CV
+              </button>
             </div>
           </div>
           <h4 class="font-headline text-base font-semibold text-on-surface leading-snug mb-1">Alto Software Group</h4>
-          <p class="font-label text-xs text-on-surface-variant mb-3">Head of Demand Generation</p>
-          <div class="flex gap-2">
-            <a href="resume_AltoSoftware_HeadOfDemandGeneration.html" target="_blank" class="flex-1 py-2 bg-gradient-to-br from-primary to-primary-container text-white rounded-DEFAULT font-body font-medium text-xs shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
-              <span class="material-symbols-outlined text-[14px]">visibility</span>
-              Preview CV
-            </a>
-            <a href="resume_AltoSoftware_HeadOfDemandGeneration.html" onclick="window.open(this.href); setTimeout(function(){ document.querySelector('button#btn-print') && document.querySelector('button#btn-print').click(); }, 1000); return false;" class="flex-1 py-2 bg-surface-container-lowest text-on-surface rounded-DEFAULT font-body font-medium text-xs border border-slate-200 hover:bg-surface-container-low transition-colors flex items-center justify-center gap-1.5">
-              <span class="material-symbols-outlined text-[14px]">download</span>
-              Download CV
-            </a>
-          </div>
+          <p class="font-label text-xs text-on-surface-variant">Head of Demand Generation</p>
         </div>
 
         <!-- Aptitude Software -->
@@ -269,23 +267,20 @@
               <div class="mock-line full"></div>
               <div class="mock-line short"></div>
             </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div class="absolute top-3 right-3">
+            <div class="absolute top-3 right-3 z-10">
               <span class="text-[10px] font-label font-bold uppercase tracking-wider px-2 py-1 bg-white/90 text-blue-700 rounded-full border border-blue-100">Tailored</span>
+            </div>
+            <div class="card-overlay">
+              <a href="resume_AptitudeSoftware_DemandGenerationManager.html" target="_blank" class="overlay-btn primary">
+                <span class="material-symbols-outlined text-[14px]">visibility</span> Preview CV
+              </a>
+              <button onclick="downloadCV('resume_AptitudeSoftware_DemandGenerationManager.html','Kazi_Hassan_Aptitude_CV.html')" class="overlay-btn secondary">
+                <span class="material-symbols-outlined text-[14px]">download</span> Download CV
+              </button>
             </div>
           </div>
           <h4 class="font-headline text-base font-semibold text-on-surface leading-snug mb-1">Aptitude Software</h4>
-          <p class="font-label text-xs text-on-surface-variant mb-3">Demand Generation Manager</p>
-          <div class="flex gap-2">
-            <a href="resume_AptitudeSoftware_DemandGenerationManager.html" target="_blank" class="flex-1 py-2 bg-gradient-to-br from-primary to-primary-container text-white rounded-DEFAULT font-body font-medium text-xs shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
-              <span class="material-symbols-outlined text-[14px]">visibility</span>
-              Preview CV
-            </a>
-            <a href="resume_AptitudeSoftware_DemandGenerationManager.html" onclick="window.open(this.href); return false;" class="flex-1 py-2 bg-surface-container-lowest text-on-surface rounded-DEFAULT font-body font-medium text-xs border border-slate-200 hover:bg-surface-container-low transition-colors flex items-center justify-center gap-1.5">
-              <span class="material-symbols-outlined text-[14px]">download</span>
-              Download CV
-            </a>
-          </div>
+          <p class="font-label text-xs text-on-surface-variant">Demand Generation Manager</p>
         </div>
 
         <!-- New resume card -->
@@ -306,5 +301,33 @@
   </div>
 </main>
 
+<script>
+  function scaleResumePreview() {
+    var wrapper = document.getElementById('default-preview-wrapper');
+    var iframe  = document.getElementById('default-preview-iframe');
+    if (!wrapper || !iframe) return;
+    var w     = wrapper.offsetWidth;
+    var h     = wrapper.offsetHeight;
+    var scale = w / 800;
+    iframe.style.width     = '800px';
+    iframe.style.height    = Math.round(h / scale) + 'px';
+    iframe.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('load',   scaleResumePreview);
+  window.addEventListener('resize', scaleResumePreview);
+
+  function downloadCV(url, filename) {
+    fetch(url)
+      .then(function(r) { return r.blob(); })
+      .then(function(blob) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() { URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 100);
+      });
+  }
+</script>
 </body>
 </html>
