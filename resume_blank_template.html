@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kazi Shamun Hassan – Resume</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── CSS Variables ── */
+    :root {
+      --color-bg:         #ffffff;
+      --color-text:       #2c2c2c;
+      --color-heading:    #1a1a1a;
+      --color-subheading: #3d3d3d;
+      --color-muted:      #6b6b6b;
+      --color-rule:       #c0c0c0;
+      --color-accent:     #444444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-weight: 400;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: var(--color-text);
+      background: #f0f0f0;
+    }
+
+    /* ── Action bar ── */
+    #action-bar {
+      position: fixed;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      z-index: 400;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 8px 6px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.13);
+    }
+    .ab-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      color: #555;
+      line-height: 1;
+      user-select: none;
+    }
+    .ab-btn:hover { background: #f0f0f0; color: #1a1a1a; }
+    #btn-edit.active   { background: #eafaf0; color: #2a6b3c; }
+    #btn-design.active { background: #eef4ff; color: #3a6bbf; }
+    .ab-sep { width: 20px; height: 1px; background: #ebebeb; margin: 2px 0; }
+
+    /* ── Edit mode banner ── */
+    #edit-banner {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #2a6b3c;
+      background: #eafaf0;
+      border: 1px solid #a8d5b5;
+      border-radius: 4px;
+      padding: 5px 14px;
+      letter-spacing: 0.04em;
+      z-index: 400;
+      display: none;
+    }
+    #edit-banner.visible { display: block; }
+
+    /* ── Resume page ── */
+    .page {
+      background: var(--color-bg);
+      max-width: 800px;
+      margin: 32px auto;
+      padding: 52px 60px 60px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+
+    .edit-active [data-ed]:hover  { background: rgba(0,0,0,0.03); border-radius: 2px; cursor: text; }
+    .edit-active [data-ed]:focus  { background: #eef4ff; outline: 1.5px solid #a0b8d8; border-radius: 2px; }
+
+    /* ── Header ── */
+    .header-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 34pt;
+      font-weight: 700;
+      color: var(--color-heading);
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+    .header-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 11.5pt;
+      font-weight: 300;
+      color: var(--color-muted);
+      margin-top: 4px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .header-contact {
+      margin-top: 10px;
+      font-size: 9.5pt;
+      color: var(--color-muted);
+      line-height: 1.7;
+    }
+    .header-contact a  { color: var(--color-muted); text-decoration: none; }
+    .header-contact span { margin-right: 18px; }
+    .header-divider {
+      border: none;
+      border-top: 1.5px solid var(--color-rule);
+      margin: 18px 0 22px;
+    }
+
+    /* ── Section titles ── */
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 12pt;
+      font-weight: 600;
+      color: var(--color-heading);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--color-rule);
+    }
+    section { margin-bottom: 28px; }
+
+    /* ── Summary ── */
+    .summary p { font-size: 10.5pt; color: var(--color-text); line-height: 1.65; }
+
+    /* ── Delete experience button ── */
+    .job { position: relative; }
+    .job-delete-btn {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-family: 'Roboto', sans-serif;
+      font-size: 9pt;
+      font-weight: 500;
+      color: #aaa;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 3px;
+      padding: 2px 8px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      line-height: 1.6;
+    }
+    .job-delete-btn:hover { color: #c0392b; border-color: #e8b4b0; background: #fff5f5; }
+    .edit-active .job:hover .job-delete-btn { display: block; }
+
+    /* ── Add experience button ── */
+    #add-experience-btn {
+      display: none;
+      align-items: center;
+      gap: 7px;
+      margin-top: 12px;
+      padding: 8px 14px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 9.5pt;
+      font-weight: 500;
+      color: #6b6b6b;
+      background: transparent;
+      border: 1.5px dashed #c0c0c0;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    #add-experience-btn:hover { color: #2a6b3c; border-color: #2a6b3c; background: #f4fbf6; }
+    .edit-active #add-experience-btn { display: flex; }
+
+    /* ── Skills ── */
+    .skill-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 5px;
+      font-size: 10pt;
+      line-height: 1.5;
+    }
+    .skill-label  { font-weight: 500; color: var(--color-subheading); min-width: 110px; flex-shrink: 0; }
+    .skill-value  { color: var(--color-text); }
+
+    /* ── Jobs ── */
+    .job { margin-bottom: 20px; }
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .job-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 11.5pt;
+      font-weight: 600;
+      color: var(--color-heading);
+    }
+    .job-title-current {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 11.5pt;
+      font-weight: 700;
+      color: var(--color-heading);
+    }
+    .job-dates   { font-size: 9.5pt; color: var(--color-muted); white-space: nowrap; }
+    .job-company { font-size: 10pt; font-weight: 500; color: var(--color-accent); margin-bottom: 8px; }
+    .job-company span { font-weight: 300; color: var(--color-muted); }
+    .job ul { padding-left: 16px; list-style: disc; }
+    .job ul li { font-size: 10pt; color: var(--color-text); margin-bottom: 4px; line-height: 1.55; position: relative; }
+
+    /* ── Drag-to-reorder ── */
+    .drag-handle {
+      display: none;
+      contenteditable: false;
+      cursor: grab;
+      color: #ccc;
+      font-size: 11px;
+      margin-right: 5px;
+      padding: 0 2px;
+      border-radius: 2px;
+      user-select: none;
+      vertical-align: middle;
+      transition: color 0.12s;
+    }
+    .drag-handle:active { cursor: grabbing; }
+    .edit-active .job ul li .drag-handle { display: inline; }
+    .edit-active .job ul li:hover .drag-handle { color: #888; }
+    .job ul li.li-dragging { opacity: 0.3; }
+    .job ul li.drop-above  { box-shadow: 0 -2px 0 0 #2a6b3c; }
+    .job ul li.drop-below  { box-shadow: 0  2px 0 0 #2a6b3c; }
+
+    /* ── Education ── */
+    .edu-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; }
+    .edu-degree { font-family: 'Playfair Display', Georgia, serif; font-size: 11pt; font-weight: 600; color: var(--color-heading); }
+    .edu-dates  { font-size: 9.5pt; color: var(--color-muted); }
+    .edu-school { font-size: 10pt; font-weight: 500; color: var(--color-accent); }
+
+    /* ── Certifications ── */
+    .cert-list { list-style: disc; padding-left: 16px; }
+    .cert-list li { font-size: 10pt; color: var(--color-text); margin-bottom: 3px; }
+
+    /* ── Floating text toolbar ── */
+    #text-toolbar {
+      position: fixed;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      background: #1a1a1a;
+      border-radius: 6px;
+      padding: 5px 8px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      pointer-events: auto;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s, visibility 0.15s;
+    }
+    #text-toolbar.show { opacity: 1; visibility: visible; }
+    #text-toolbar::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #1a1a1a;
+    }
+    #tb-size {
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      color: #e0e0e0;
+      background: #2e2e2e;
+      border: 1px solid #444;
+      border-radius: 3px;
+      padding: 3px 4px;
+      cursor: pointer;
+      width: 62px;
+      outline: none;
+    }
+    #tb-size:focus { border-color: #777; }
+    .tb-sep { width: 1px; height: 18px; background: #444; margin: 0 2px; }
+    .tb-btn {
+      font-family: 'Roboto', sans-serif;
+      font-size: 12px;
+      color: #bbb;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      padding: 3px 8px;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+    .tb-btn:hover { background: #333; color: #fff; }
+    .tb-btn.on    { background: #3d3d3d; color: #fff; border-color: #666; }
+    .tb-color-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 26px;
+      cursor: pointer;
+    }
+    .tb-color-btn span {
+      font-size: 13px;
+      font-weight: 700;
+      color: #bbb;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      pointer-events: none;
+      transition: color 0.12s;
+    }
+    .tb-color-btn:hover span { color: #fff; }
+    .tb-color-btn input[type="color"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+    }
+
+    /* ── Design panel ── */
+    #design-panel {
+      position: fixed;
+      right: -310px;
+      left: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 288px;
+      max-height: 88vh;
+      overflow-y: auto;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: -4px 4px 24px rgba(0,0,0,0.14);
+      z-index: 399;
+      padding: 0 0 18px;
+      font-family: 'Roboto', sans-serif;
+      transition: right 0.25s ease, top 0s, transform 0s;
+    }
+    #design-panel.open    { right: 70px; }
+    #design-panel.floated { transition: none; }
+
+    .dp-body-pad { padding: 0 16px; }
+    .dp-section-label {
+      font-size: 9.5px;
+      font-weight: 500;
+      color: #999;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+    }
+    .dp-slider-row { margin-bottom: 4px; }
+    .dp-slider-row input[type="range"] { width: 100%; accent-color: #2c2c2c; cursor: pointer; }
+    .dp-font-chip {
+      flex-shrink: 0;
+      font-size: 10.5px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #444;
+      cursor: pointer;
+      white-space: nowrap;
+      line-height: 1.5;
+      transition: border-color 0.12s, background 0.12s, color 0.12s;
+    }
+    .dp-font-chip:hover  { border-color: #aaa; background: #f5f5f5; }
+    .dp-font-chip.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+    .dp-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: #f7f7f7;
+      border-bottom: 1px solid #e8e8e8;
+      border-radius: 8px 8px 0 0;
+      cursor: grab;
+      user-select: none;
+    }
+    .dp-head:active { cursor: grabbing; }
+    .dp-head-left { display: flex; align-items: center; gap: 6px; }
+    .dp-drag-dots { display: flex; flex-direction: column; gap: 2.5px; opacity: 0.35; }
+    .dp-drag-dots span { display: flex; gap: 2.5px; }
+    .dp-drag-dots span::before,
+    .dp-drag-dots span::after {
+      content: '';
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #444;
+      display: block;
+    }
+    .dp-head-title { font-size: 11px; font-weight: 500; color: #1a1a1a; letter-spacing: 0.08em; text-transform: uppercase; }
+    .dp-reset {
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px;
+      color: #888;
+      background: none;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 2px 7px;
+      cursor: pointer;
+    }
+    .dp-reset:hover { color: #333; border-color: #888; }
+    .dp-type-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+    .dp-type-header label { font-size: 11px; color: #444; display: flex; gap: 5px; align-items: center; }
+    .dp-type-header label span { color: #888; }
+    .dp-font-toggle {
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px;
+      color: #aaa;
+      background: none;
+      border: 1px solid #e0e0e0;
+      border-radius: 3px;
+      padding: 1px 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      transition: color 0.12s, border-color 0.12s;
+      white-space: nowrap;
+    }
+    .dp-font-toggle:hover { color: #444; border-color: #aaa; }
+    .dp-font-toggle.open  { color: #1a1a1a; border-color: #999; }
+    .dp-font-toggle .chev { display: inline-block; transition: transform 0.2s; font-size: 9px; }
+    .dp-font-toggle.open .chev { transform: rotate(180deg); }
+    .dp-font-chips { display: none; gap: 5px; flex-wrap: wrap; padding: 5px 0 4px; }
+    .dp-font-chips.visible { display: flex; }
+    .dp-prop-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 4px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .dp-prop-row:hover  { background: #f5f5f5; }
+    .dp-prop-row.active { background: #eef4ff; }
+    .dp-prop-label { font-size: 11px; color: #444; }
+    .dp-prop-swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.12);
+      flex-shrink: 0;
+      transition: transform 0.12s;
+    }
+    .dp-prop-row:hover .dp-prop-swatch { transform: scale(1.1); }
+    #dp-picker {
+      margin: 4px 0 6px;
+      padding: 8px 4px 6px;
+      background: #f9f9f9;
+      border-radius: 6px;
+      border: 1px solid #e8e8e8;
+    }
+    #dp-pal-grid { display: flex; gap: 5px; justify-content: center; }
+    .dp-pal-swatch {
+      width: 30px; height: 30px; border-radius: 5px;
+      border: 1.5px solid rgba(0,0,0,0.10);
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s;
+      flex-shrink: 0;
+    }
+    .dp-pal-swatch:hover { transform: scale(1.15); box-shadow: 0 2px 8px rgba(0,0,0,0.18); border-color: rgba(0,0,0,0.25); }
+    #dp-back-btn {
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px; color: #888; background: none; border: none;
+      padding: 0 2px 6px; cursor: pointer; display: block; transition: color 0.12s;
+    }
+    #dp-back-btn:hover { color: #333; }
+    #dp-tint-swatches { display: flex; gap: 5px; justify-content: center; }
+    .dp-tint-swatch {
+      width: 30px; height: 30px; border-radius: 5px;
+      border: 1.5px solid rgba(0,0,0,0.10);
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s;
+      flex-shrink: 0;
+    }
+    .dp-tint-swatch:hover { transform: scale(1.15); box-shadow: 0 2px 8px rgba(0,0,0,0.18); border-color: rgba(0,0,0,0.25); }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; font-size: 10pt; }
+      .page { box-shadow: none; margin: 0; padding: 20mm 18mm; max-width: 100%; }
+      #action-bar, #edit-banner, #text-toolbar, #design-panel { display: none !important; }
+      section { margin-bottom: 18px; }
+      .job    { margin-bottom: 14px; }
+      .header-name { font-size: 26pt; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Action bar -->
+<div id="action-bar">
+  <button id="btn-edit"   class="ab-btn" onclick="toggleEdit()" title="Edit mode">✏</button>
+  <div class="ab-sep"></div>
+  <button id="btn-design" class="ab-btn" title="Design settings">🎨</button>
+  <div class="ab-sep"></div>
+  <button id="btn-print"  class="ab-btn" onclick="window.print()" title="Save as PDF">⬇</button>
+</div>
+<div id="edit-banner">✏ Edit mode — select any text to format</div>
+
+<!-- Resume -->
+<div class="page" id="page">
+
+  <div class="header-name"    data-ed>Kazi Shamun Hassan</div>
+  <div class="header-title"   data-ed>Job Title</div>
+  <div class="header-contact">
+    <span data-ed>📍 Folkestone, Kent, CT19 5AR, UK</span>
+    <span data-ed>📞 +44 07933 877459</span>
+    <span data-ed>✉ <a href="mailto:kazi.shamun.hassan@gmail.com">kazi.shamun.hassan@gmail.com</a></span>
+    <br /><span data-ed>Right to Work in UK: W8T 57K 62R</span>
+  </div>
+  <hr class="header-divider" />
+
+  <section class="summary">
+    <div class="section-title">Professional Summary</div>
+    <p data-ed>Write your professional summary here. Describe your experience, key achievements, and what makes you the right candidate for this role.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Core Skills &amp; Tools</div>
+    <div class="skill-row">
+      <span class="skill-label" data-ed>Marketing</span>
+      <span class="skill-value" data-ed>Demand Generation, Lifecycle Marketing, PPC Ads, SEO, CRO, Content Marketing, Copywriting</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label" data-ed>Operations</span>
+      <span class="skill-value" data-ed>Marketing Automation, Sales Operations, CRM Management, Full-Funnel Analytics</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label" data-ed>Platforms</span>
+      <span class="skill-value" data-ed>HubSpot, Customer.io, Partnerbase, Convert.com, Airtable, Clay, ClickUp, WordPress, Zapier</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label" data-ed>Analytics &amp; Data</span>
+      <span class="skill-value" data-ed>GA4, Looker, SQL, Segment, Hotjar, Demandbase</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label" data-ed>AI Tools</span>
+      <span class="skill-value" data-ed>Claude Code, Higgsfield, Nano Banana, Sparksend, Lovable</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Work Experience</div>
+
+    <div class="job">
+      <button class="job-delete-btn" onclick="deleteExperience(this)">✕ Remove</button>
+      <div class="job-header">
+        <div class="job-title-current" data-ed>Job Title</div>
+        <div class="job-dates"         data-ed>Month Year – Present</div>
+      </div>
+      <div class="job-company" data-ed>Company Name, <span data-ed>Location</span></div>
+      <ul>
+        <li data-ed>Add your first achievement here.</li>
+        <li data-ed>Add your second achievement here.</li>
+        <li data-ed>Add your third achievement here.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <button class="job-delete-btn" onclick="deleteExperience(this)">✕ Remove</button>
+      <div class="job-header">
+        <div class="job-title" data-ed>Job Title</div>
+        <div class="job-dates" data-ed>Month Year – Month Year</div>
+      </div>
+      <div class="job-company" data-ed>Company Name, <span data-ed>Location</span></div>
+      <ul>
+        <li data-ed>Add your first achievement here.</li>
+        <li data-ed>Add your second achievement here.</li>
+        <li data-ed>Add your third achievement here.</li>
+      </ul>
+    </div>
+
+    <button id="add-experience-btn" onclick="addExperience()">+ Add Experience</button>
+
+  </section>
+
+  <section>
+    <div class="section-title">Education</div>
+    <div class="edu-header">
+      <div class="edu-degree" data-ed>Bachelor of Science in Economics</div>
+      <div class="edu-dates"  data-ed>Aug 2011 – May 2015</div>
+    </div>
+    <div class="edu-school" data-ed>Minnesota State University</div>
+  </section>
+
+  <section>
+    <div class="section-title">Certifications</div>
+    <ul class="cert-list">
+      <li data-ed>Advanced Google Analytics 4 (GA4)</li>
+      <li data-ed>Make Basics Certificate – Make.com</li>
+      <li data-ed>Mailchimp Foundations Certification – Intuit Mailchimp</li>
+      <li data-ed>HubSpot Sales Hub Software Certified – HubSpot</li>
+    </ul>
+  </section>
+
+</div><!-- /.page -->
+
+<!-- Floating text-format toolbar -->
+<div id="text-toolbar">
+  <select id="tb-size" title="Font size">
+    <option value="8pt">8pt</option>
+    <option value="9pt">9pt</option>
+    <option value="9.5pt">9.5pt</option>
+    <option value="10pt">10pt</option>
+    <option value="10.5pt">10.5pt</option>
+    <option value="11pt">11pt</option>
+    <option value="11.5pt">11.5pt</option>
+    <option value="12pt">12pt</option>
+    <option value="13pt">13pt</option>
+    <option value="14pt">14pt</option>
+    <option value="16pt">16pt</option>
+    <option value="20pt">20pt</option>
+    <option value="26pt">26pt</option>
+    <option value="34pt">34pt</option>
+  </select>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" id="tb-bold"   title="Bold">B</button>
+  <button class="tb-btn" id="tb-medium" title="Medium (500)">M</button>
+  <button class="tb-btn" id="tb-light"  title="Light (300)" style="font-weight:300">L</button>
+  <div class="tb-sep"></div>
+  <label class="tb-color-btn" title="Text colour">
+    <span>A</span>
+    <input type="color" id="tb-color" value="#2c2c2c" />
+  </label>
+</div>
+
+<!-- Design panel -->
+<div id="design-panel">
+  <div class="dp-head" id="dp-drag-handle">
+    <div class="dp-head-left">
+      <div class="dp-drag-dots"><span></span><span></span><span></span></div>
+      <span class="dp-head-title">Design</span>
+    </div>
+    <button class="dp-reset" id="dp-reset-btn">Reset all</button>
+  </div>
+
+  <div class="dp-body-pad">
+    <div class="dp-section-label" style="margin-top:14px">Typography</div>
+
+    <div class="dp-slider-row">
+      <div class="dp-type-header">
+        <label>Body <span id="dp-body-val">10.5pt</span></label>
+        <button class="dp-font-toggle" data-target="fc-body">Fonts <span class="chev">▾</span></button>
+      </div>
+      <input type="range" id="dp-body-size" min="8" max="14" step="0.5" value="10.5" />
+    </div>
+    <div class="dp-font-chips" id="fc-body"></div>
+
+    <div class="dp-slider-row" style="margin-top:12px">
+      <div class="dp-type-header">
+        <label>Name <span id="dp-name-val">34pt</span></label>
+        <button class="dp-font-toggle" data-target="fc-name">Fonts <span class="chev">▾</span></button>
+      </div>
+      <input type="range" id="dp-name-size" min="22" max="48" step="1" value="34" />
+    </div>
+    <div class="dp-font-chips" id="fc-name"></div>
+
+    <div class="dp-slider-row" style="margin-top:12px">
+      <div class="dp-type-header">
+        <label>Section titles <span id="dp-sec-val">12pt</span></label>
+        <button class="dp-font-toggle" data-target="fc-sec">Fonts <span class="chev">▾</span></button>
+      </div>
+      <input type="range" id="dp-sec-size" min="9" max="16" step="0.5" value="12" />
+    </div>
+    <div class="dp-font-chips" id="fc-sec"></div>
+
+    <div class="dp-slider-row" style="margin-top:12px">
+      <div class="dp-type-header">
+        <label>Job titles <span id="dp-job-val">11.5pt</span></label>
+        <button class="dp-font-toggle" data-target="fc-job">Fonts <span class="chev">▾</span></button>
+      </div>
+      <input type="range" id="dp-job-size" min="9" max="16" step="0.5" value="11.5" />
+    </div>
+    <div class="dp-font-chips" id="fc-job"></div>
+  </div>
+
+  <div class="dp-section-label" style="margin-top:14px; padding: 0 16px;">Colours</div>
+
+  <div id="dp-prop-rows">
+    <div class="dp-prop-row" data-var="--color-heading">
+      <span class="dp-prop-label">Headings</span>
+      <span class="dp-prop-swatch" style="background:#1a1a1a"></span>
+    </div>
+    <div class="dp-prop-row" data-var="--color-text">
+      <span class="dp-prop-label">Body text</span>
+      <span class="dp-prop-swatch" style="background:#2c2c2c"></span>
+    </div>
+    <div class="dp-prop-row" data-var="--color-accent">
+      <span class="dp-prop-label">Accent</span>
+      <span class="dp-prop-swatch" style="background:#444444"></span>
+    </div>
+    <div class="dp-prop-row" data-var="--color-muted">
+      <span class="dp-prop-label">Muted</span>
+      <span class="dp-prop-swatch" style="background:#6b6b6b"></span>
+    </div>
+    <div class="dp-prop-row" data-var="--color-rule">
+      <span class="dp-prop-label">Dividers</span>
+      <span class="dp-prop-swatch" style="background:#c0c0c0"></span>
+    </div>
+  </div>
+
+  <div id="dp-picker" style="display:none">
+    <div id="dp-pal-grid"></div>
+    <div id="dp-tint-grid" style="display:none">
+      <button id="dp-back-btn">← Back</button>
+      <div id="dp-tint-swatches"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const page      = document.getElementById('page');
+  const btnEdit   = document.getElementById('btn-edit');
+  const banner    = document.getElementById('edit-banner');
+  const editables = Array.from(page.querySelectorAll('[data-ed]'));
+  let   isEditing = false;
+
+  function toggleEdit() {
+    isEditing = !isEditing;
+    if (isEditing) {
+      page.classList.add('edit-active');
+      btnEdit.classList.add('active');
+      btnEdit.textContent = '✓';
+      btnEdit.title = 'Done editing';
+      banner.classList.add('visible');
+      editables.forEach(el => { el.setAttribute('contenteditable', 'true'); el.setAttribute('spellcheck', 'true'); });
+      setupDraggable();
+    } else {
+      page.classList.remove('edit-active');
+      btnEdit.classList.remove('active');
+      btnEdit.textContent = '✏';
+      btnEdit.title = 'Edit mode';
+      banner.classList.remove('visible');
+      hideToolbar();
+      teardownDraggable();
+      editables.forEach(el => { el.removeAttribute('contenteditable'); el.removeAttribute('spellcheck'); });
+    }
+  }
+
+  document.addEventListener('keydown', function (e) { if (isEditing && e.key === 'Enter') e.preventDefault(); });
+  window.toggleEdit = toggleEdit;
+
+  /* ── Text toolbar ── */
+  const toolbar  = document.getElementById('text-toolbar');
+  const tbSize   = document.getElementById('tb-size');
+  const tbBold   = document.getElementById('tb-bold');
+  const tbMedium = document.getElementById('tb-medium');
+  const tbLight  = document.getElementById('tb-light');
+  const tbColor  = document.getElementById('tb-color');
+  let savedRange = null;
+
+  function showToolbar(range) {
+    const rect = range.getBoundingClientRect();
+    if (rect.width === 0 && rect.height === 0) return;
+    toolbar.classList.add('show');
+    const tw = toolbar.offsetWidth || 260, th = toolbar.offsetHeight || 38;
+    let left = rect.left + rect.width / 2 - tw / 2;
+    let top  = rect.top  - th - 10;
+    if (top < 8) top = rect.bottom + 10;
+    left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+    toolbar.style.left = left + 'px';
+    toolbar.style.top  = top  + 'px';
+    syncUI(range);
+  }
+
+  function hideToolbar() { toolbar.classList.remove('show'); savedRange = null; }
+
+  function syncUI(range) {
+    const node = range.startContainer;
+    const el   = (node.nodeType === 3) ? node.parentElement : node;
+    const cs   = window.getComputedStyle(el);
+    const fw   = parseInt(cs.fontWeight, 10);
+    tbBold.classList.toggle('on',   fw >= 700);
+    tbMedium.classList.toggle('on', fw === 500 || fw === 600);
+    tbLight.classList.toggle('on',  fw <= 300);
+    const ptSize = parseFloat(cs.fontSize) * 0.75;
+    let bestOpt = tbSize.options[0], bestDiff = Infinity;
+    for (const opt of tbSize.options) {
+      const diff = Math.abs(parseFloat(opt.value) - ptSize);
+      if (diff < bestDiff) { bestDiff = diff; bestOpt = opt; }
+    }
+    tbSize.value = bestOpt.value;
+  }
+
+  function getPageSelection() {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) return null;
+    const range = sel.getRangeAt(0);
+    if (!page.contains(range.commonAncestorContainer)) return null;
+    return range;
+  }
+
+  document.addEventListener('mouseup', function (e) {
+    if (!isEditing) return;
+    if (toolbar.contains(e.target)) return;
+    setTimeout(function () {
+      const range = getPageSelection();
+      if (range) { savedRange = range.cloneRange(); showToolbar(range); } else hideToolbar();
+    }, 0);
+  });
+  document.addEventListener('keyup', function () {
+    if (!isEditing) return;
+    const range = getPageSelection();
+    if (range) { savedRange = range.cloneRange(); showToolbar(range); }
+  });
+  document.addEventListener('selectionchange', function () {
+    if (!isEditing) return;
+    const range = getPageSelection();
+    if (range) savedRange = range.cloneRange();
+  });
+
+  function restoreSavedRange() {
+    if (!savedRange) return false;
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+    return true;
+  }
+
+  function applyStyle(prop, value) {
+    if (!restoreSavedRange()) return;
+    const sel = window.getSelection();
+    if (!sel.rangeCount || sel.isCollapsed) return;
+    const range = sel.getRangeAt(0);
+    const span  = document.createElement('span');
+    span.style[prop] = value;
+    try { range.surroundContents(span); }
+    catch (_) { const frag = range.extractContents(); span.appendChild(frag); range.insertNode(span); }
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.removeAllRanges();
+    sel.addRange(newRange);
+    savedRange = newRange.cloneRange();
+    syncUI(newRange);
+  }
+
+  tbSize.addEventListener('change', function () { applyStyle('fontSize', this.value); });
+  tbBold.addEventListener('mousedown',   function (e) { e.preventDefault(); });
+  tbMedium.addEventListener('mousedown', function (e) { e.preventDefault(); });
+  tbLight.addEventListener('mousedown',  function (e) { e.preventDefault(); });
+  tbBold.addEventListener('click', function () {
+    applyStyle('fontWeight', this.classList.contains('on') ? '400' : '700');
+    tbMedium.classList.remove('on'); tbLight.classList.remove('on');
+  });
+  tbMedium.addEventListener('click', function () {
+    applyStyle('fontWeight', this.classList.contains('on') ? '400' : '500');
+    tbBold.classList.remove('on'); tbLight.classList.remove('on');
+  });
+  tbLight.addEventListener('click', function () {
+    applyStyle('fontWeight', this.classList.contains('on') ? '400' : '300');
+    tbBold.classList.remove('on'); tbMedium.classList.remove('on');
+  });
+  tbColor.closest('label').addEventListener('mousedown', function () {
+    const range = getPageSelection();
+    if (range) savedRange = range.cloneRange();
+  });
+  tbColor.addEventListener('input', function () { applyStyle('color', this.value); });
+
+  /* ── Design panel sliders ── */
+  const FONT_DEFAULTS = {
+    body: { val: 10.5, unit: 'pt', valEl: 'dp-body-val', sliderId: 'dp-body-size' },
+    name: { val: 34,   unit: 'pt', valEl: 'dp-name-val', sliderId: 'dp-name-size' },
+    sec:  { val: 12,   unit: 'pt', valEl: 'dp-sec-val',  sliderId: 'dp-sec-size'  },
+    job:  { val: 11.5, unit: 'pt', valEl: 'dp-job-val',  sliderId: 'dp-job-size'  },
+  };
+
+  var BODY_FONTS = [
+    { name: 'Roboto',      family: 'Roboto, Arial, sans-serif',            gf: null },
+    { name: 'Inter',       family: 'Inter, Arial, sans-serif',             gf: 'Inter:wght@300;400;500' },
+    { name: 'Open Sans',   family: '\'Open Sans\', Arial, sans-serif',     gf: 'Open+Sans:wght@300;400;500' },
+    { name: 'Lato',        family: 'Lato, Arial, sans-serif',              gf: 'Lato:wght@300;400;700' },
+    { name: 'Source Sans', family: '\'Source Sans 3\', Arial, sans-serif', gf: 'Source+Sans+3:wght@300;400;500' },
+  ];
+  var HEADING_FONTS = [
+    { name: 'Playfair',          family: '\'Playfair Display\', Georgia, serif',   gf: null },
+    { name: 'Cormorant',         family: '\'Cormorant Garamond\', Georgia, serif', gf: 'Cormorant+Garamond:wght@400;600;700' },
+    { name: 'Lora',              family: 'Lora, Georgia, serif',                   gf: 'Lora:wght@400;600;700' },
+    { name: 'Libre Baskerville', family: '\'Libre Baskerville\', Georgia, serif',  gf: 'Libre+Baskerville:wght@400;700' },
+    { name: 'Merriweather',      family: 'Merriweather, Georgia, serif',           gf: 'Merriweather:wght@300;400;700' },
+  ];
+  var FONT_CHIP_CONFIG = {
+    body: { fonts: BODY_FONTS,    default: 'Roboto',   containerId: 'fc-body' },
+    name: { fonts: HEADING_FONTS, default: 'Playfair', containerId: 'fc-name' },
+    sec:  { fonts: HEADING_FONTS, default: 'Playfair', containerId: 'fc-sec'  },
+    job:  { fonts: HEADING_FONTS, default: 'Playfair', containerId: 'fc-job'  },
+  };
+
+  var loadedFonts = {};
+  function loadGoogleFont(gf) {
+    if (!gf || loadedFonts[gf]) return;
+    var link = document.createElement('link');
+    link.rel  = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=' + gf + '&display=swap';
+    document.head.appendChild(link);
+    loadedFonts[gf] = true;
+  }
+
+  function applyFontToKey(key, family) {
+    if      (key === 'body') { document.body.style.fontFamily = family; }
+    else if (key === 'name') { document.querySelector('.header-name').style.fontFamily = family; }
+    else if (key === 'sec')  { document.querySelectorAll('.section-title').forEach(function (el) { el.style.fontFamily = family; }); }
+    else if (key === 'job')  { document.querySelectorAll('.job-title, .job-title-current').forEach(function (el) { el.style.fontFamily = family; }); }
+  }
+
+  function buildFontChips() {
+    Object.keys(FONT_CHIP_CONFIG).forEach(function (key) {
+      var cfg = FONT_CHIP_CONFIG[key], container = document.getElementById(cfg.containerId);
+      cfg.fonts.forEach(function (font) {
+        var chip = document.createElement('button');
+        chip.className = 'dp-font-chip' + (font.name === cfg.default ? ' active' : '');
+        chip.textContent = font.name;
+        chip.style.fontFamily = font.family;
+        chip.addEventListener('click', function () {
+          loadGoogleFont(font.gf);
+          applyFontToKey(key, font.family);
+          container.querySelectorAll('.dp-font-chip').forEach(function (c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+        });
+        container.appendChild(chip);
+      });
+    });
+  }
+  buildFontChips();
+
+  function applyFontSlider(key, v) {
+    const val = parseFloat(v);
+    document.getElementById(FONT_DEFAULTS[key].valEl).textContent = val + 'pt';
+    if      (key === 'body') { document.body.style.fontSize = val + 'pt'; }
+    else if (key === 'name') { document.querySelector('.header-name').style.fontSize = val + 'pt'; }
+    else if (key === 'sec')  { document.querySelectorAll('.section-title').forEach(el => el.style.fontSize = val + 'pt'); }
+    else if (key === 'job')  { document.querySelectorAll('.job-title, .job-title-current').forEach(el => el.style.fontSize = val + 'pt'); }
+  }
+
+  document.getElementById('dp-body-size').addEventListener('input', function () { applyFontSlider('body', this.value); });
+  document.getElementById('dp-name-size').addEventListener('input', function () { applyFontSlider('name', this.value); });
+  document.getElementById('dp-sec-size') .addEventListener('input', function () { applyFontSlider('sec',  this.value); });
+  document.getElementById('dp-job-size') .addEventListener('input', function () { applyFontSlider('job',  this.value); });
+
+  /* ── Colour picker ── */
+  const root = document.documentElement;
+  const COLOR_DEFAULTS = {
+    '--color-heading': '#1a1a1a', '--color-text': '#2c2c2c',
+    '--color-accent':  '#444444', '--color-muted': '#6b6b6b', '--color-rule': '#c0c0c0',
+  };
+  const PALETTE = ['#D8DBE2', '#A9BCD0', '#58A4B0', '#373F51', '#1B1B1E'];
+
+  function tintColor(hex, t) {
+    var r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
+    function mix(c) { return Math.round(c + (255 - c) * t).toString(16).padStart(2, '0'); }
+    return '#' + mix(r) + mix(g) + mix(b);
+  }
+
+  var activePropRow = null;
+  var picker = document.getElementById('dp-picker'), palGrid = document.getElementById('dp-pal-grid');
+  var tintGrid = document.getElementById('dp-tint-grid'), tintSwatches = document.getElementById('dp-tint-swatches');
+
+  function applyColor(cssVar, color) {
+    root.style.setProperty(cssVar, color);
+    var row = document.querySelector('.dp-prop-row[data-var="' + cssVar + '"]');
+    if (row) row.querySelector('.dp-prop-swatch').style.background = color;
+  }
+
+  function buildPalette() {
+    palGrid.innerHTML = '';
+    PALETTE.forEach(function (color) {
+      var sw = document.createElement('div');
+      sw.className = 'dp-pal-swatch'; sw.style.background = color; sw.title = color;
+      sw.addEventListener('click', function () { buildTints(color); });
+      palGrid.appendChild(sw);
+    });
+    palGrid.style.display = 'flex'; tintGrid.style.display = 'none';
+  }
+
+  function buildTints(baseColor) {
+    tintSwatches.innerHTML = '';
+    [0, 0.25, 0.5, 0.72, 0.88].forEach(function (t) {
+      var color = tintColor(baseColor, t);
+      var sw = document.createElement('div');
+      sw.className = 'dp-tint-swatch'; sw.style.background = color; sw.title = color;
+      sw.addEventListener('click', function () { if (activePropRow) { applyColor(activePropRow.dataset.var, color); closePicker(); } });
+      tintSwatches.appendChild(sw);
+    });
+    palGrid.style.display = 'none'; tintGrid.style.display = 'block';
+  }
+
+  function openPicker(row) {
+    if (activePropRow === row && picker.style.display !== 'none') { closePicker(); return; }
+    if (activePropRow) activePropRow.classList.remove('active');
+    activePropRow = row; row.classList.add('active');
+    row.parentNode.insertBefore(picker, row.nextSibling);
+    buildPalette(); picker.style.display = 'block';
+  }
+
+  function closePicker() {
+    picker.style.display = 'none';
+    if (activePropRow) { activePropRow.classList.remove('active'); activePropRow = null; }
+  }
+
+  document.querySelectorAll('.dp-prop-row').forEach(function (row) { row.addEventListener('click', function () { openPicker(row); }); });
+  document.getElementById('dp-back-btn').addEventListener('click', buildPalette);
+
+  document.getElementById('dp-reset-btn').addEventListener('click', function () {
+    closePicker();
+    Object.entries(COLOR_DEFAULTS).forEach(function (entry) { applyColor(entry[0], entry[1]); });
+    Object.keys(FONT_DEFAULTS).forEach(function (key) {
+      var def = FONT_DEFAULTS[key];
+      document.getElementById(def.sliderId).value = def.val;
+      applyFontSlider(key, def.val);
+    });
+    Object.keys(FONT_CHIP_CONFIG).forEach(function (key) {
+      var cfg = FONT_CHIP_CONFIG[key], defaultFont = cfg.fonts.find(function (f) { return f.name === cfg.default; });
+      if (!defaultFont) return;
+      applyFontToKey(key, defaultFont.family);
+      document.getElementById(cfg.containerId).querySelectorAll('.dp-font-chip').forEach(function (c) {
+        c.classList.toggle('active', c.textContent === cfg.default);
+      });
+    });
+  });
+
+  /* ── Design panel open/close ── */
+  var panel = document.getElementById('design-panel');
+  var btnDesign = document.getElementById('btn-design');
+
+  function setPanelOpenState(open) {
+    btnDesign.classList.toggle('active', open);
+    btnDesign.title = open ? 'Close design panel' : 'Design settings';
+  }
+
+  btnDesign.addEventListener('click', function () {
+    if (panel.classList.contains('floated')) {
+      var hidden = panel.style.visibility === 'hidden';
+      panel.style.visibility = hidden ? 'visible' : 'hidden';
+      panel.style.opacity    = hidden ? '1' : '0';
+      setPanelOpenState(hidden);
+    } else {
+      var open = panel.classList.toggle('open');
+      setPanelOpenState(open);
+    }
+  });
+
+  /* ── Panel drag ── */
+  var panelDragActive = false, panelDragOffX = 0, panelDragOffY = 0;
+
+  document.getElementById('dp-drag-handle').addEventListener('mousedown', function (e) {
+    if (e.target.id === 'dp-reset-btn') return;
+    panelDragActive = true;
+    var rect = panel.getBoundingClientRect();
+    panelDragOffX = e.clientX - rect.left;
+    panelDragOffY = e.clientY - rect.top;
+    if (!panel.classList.contains('floated')) {
+      panel.style.right = 'auto'; panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px'; panel.style.transform = 'none';
+      panel.classList.add('floated'); panel.classList.add('open');
+      setPanelOpenState(true);
+    }
+    panel.style.transition = 'none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', function (e) {
+    if (!panelDragActive) return;
+    panel.style.left = (e.clientX - panelDragOffX) + 'px';
+    panel.style.top  = (e.clientY - panelDragOffY) + 'px';
+  });
+  document.addEventListener('mouseup', function () { panelDragActive = false; });
+
+  /* ── Font chip toggles ── */
+  document.querySelectorAll('.dp-font-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var chips = document.getElementById(btn.dataset.target), isOpen = chips.classList.contains('visible');
+      chips.classList.toggle('visible', !isOpen); btn.classList.toggle('open', !isOpen);
+    });
+  });
+
+  /* ── Drag-to-reorder bullets ── */
+  let draggedLi = null, draggedUl = null;
+
+  function clearDropIndicators() {
+    page.querySelectorAll('.drop-above, .drop-below').forEach(function (el) { el.classList.remove('drop-above', 'drop-below'); });
+  }
+
+  function onHandleDragStart(e) {
+    draggedLi = e.currentTarget.closest('li'); draggedUl = draggedLi.parentElement;
+    draggedLi.classList.add('li-dragging');
+    e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', '');
+  }
+  function onLiDragOver(e) {
+    if (!draggedLi) return;
+    const targetLi = e.currentTarget;
+    if (targetLi.parentElement !== draggedUl || targetLi === draggedLi) return;
+    e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+    clearDropIndicators();
+    const rect = targetLi.getBoundingClientRect();
+    targetLi.classList.add(e.clientY < rect.top + rect.height / 2 ? 'drop-above' : 'drop-below');
+  }
+  function onLiDragLeave(e) {
+    const targetLi = e.currentTarget;
+    if (!targetLi.contains(e.relatedTarget)) targetLi.classList.remove('drop-above', 'drop-below');
+  }
+  function onLiDrop(e) {
+    if (!draggedLi) return;
+    const targetLi = e.currentTarget;
+    if (targetLi.parentElement !== draggedUl || targetLi === draggedLi) return;
+    e.preventDefault();
+    const rect = targetLi.getBoundingClientRect();
+    draggedUl.insertBefore(draggedLi, e.clientY < rect.top + rect.height / 2 ? targetLi : targetLi.nextSibling);
+    clearDropIndicators();
+  }
+  function onDragEnd() {
+    if (draggedLi) draggedLi.classList.remove('li-dragging');
+    clearDropIndicators(); draggedLi = null; draggedUl = null;
+  }
+
+  function setupDraggable() {
+    page.querySelectorAll('.job ul li').forEach(function (li) {
+      var handle = document.createElement('span');
+      handle.className = 'drag-handle'; handle.textContent = '⠿';
+      handle.setAttribute('draggable', 'true'); handle.setAttribute('contenteditable', 'false');
+      handle.addEventListener('dragstart', onHandleDragStart);
+      handle.addEventListener('dragend', onDragEnd);
+      li.insertBefore(handle, li.firstChild);
+      li.addEventListener('dragover', onLiDragOver);
+      li.addEventListener('dragleave', onLiDragLeave);
+      li.addEventListener('drop', onLiDrop);
+    });
+  }
+
+  /* ── Add new experience ── */
+  function addExperience() {
+    var btn = document.getElementById('add-experience-btn');
+    var job = document.createElement('div');
+    job.className = 'job';
+    job.innerHTML =
+      '<button class="job-delete-btn" onclick="deleteExperience(this)">✕ Remove</button>' +
+      '<div class="job-header">' +
+        '<div class="job-title" data-ed contenteditable="true" spellcheck="true">Job Title</div>' +
+        '<div class="job-dates" data-ed contenteditable="true" spellcheck="true">Month Year – Month Year</div>' +
+      '</div>' +
+      '<div class="job-company" data-ed contenteditable="true" spellcheck="true">Company Name, <span data-ed contenteditable="true" spellcheck="true">Location</span></div>' +
+      '<ul>' +
+        '<li data-ed contenteditable="true" spellcheck="true">Add your first achievement here.</li>' +
+        '<li data-ed contenteditable="true" spellcheck="true">Add your second achievement here.</li>' +
+        '<li data-ed contenteditable="true" spellcheck="true">Add your third achievement here.</li>' +
+      '</ul>';
+
+    btn.parentNode.insertBefore(job, btn);
+
+    /* Wire up drag handles for the new job's bullets */
+    job.querySelectorAll('ul li').forEach(function (li) {
+      var handle = document.createElement('span');
+      handle.className = 'drag-handle';
+      handle.textContent = '⠿';
+      handle.setAttribute('draggable', 'true');
+      handle.setAttribute('contenteditable', 'false');
+      handle.addEventListener('dragstart', onHandleDragStart);
+      handle.addEventListener('dragend',   onDragEnd);
+      li.insertBefore(handle, li.firstChild);
+      li.addEventListener('dragover',  onLiDragOver);
+      li.addEventListener('dragleave', onLiDragLeave);
+      li.addEventListener('drop',      onLiDrop);
+    });
+
+    /* Focus first editable in new job */
+    var first = job.querySelector('[data-ed]');
+    if (first) { first.focus(); selectAll(first); }
+  }
+
+  function selectAll(el) {
+    var range = document.createRange();
+    range.selectNodeContents(el);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  window.addExperience = addExperience;
+
+  function deleteExperience(btn) {
+    var job = btn.closest('.job');
+    if (!job) return;
+    job.style.transition = 'opacity 0.2s';
+    job.style.opacity = '0';
+    setTimeout(function () { job.remove(); }, 200);
+  }
+  window.deleteExperience = deleteExperience;
+
+  function teardownDraggable() {
+    clearDropIndicators();
+    page.querySelectorAll('.job ul li').forEach(function (li) {
+      var handle = li.querySelector('.drag-handle');
+      if (handle) { handle.removeEventListener('dragstart', onHandleDragStart); handle.removeEventListener('dragend', onDragEnd); handle.remove(); }
+      li.removeEventListener('dragover', onLiDragOver);
+      li.removeEventListener('dragleave', onLiDragLeave);
+      li.removeEventListener('drop', onLiDrop);
+    });
+    draggedLi = null; draggedUl = null;
+  }
+
+})();
+</script>
+</body>
+</html>
