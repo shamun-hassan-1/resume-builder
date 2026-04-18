@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kazi Shamun Hassan – Demand Generation Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-text: #2c2c2c;
+      --color-heading: #1a1a1a;
+      --color-subheading: #3d3d3d;
+      --color-muted: #6b6b6b;
+      --color-rule: #c0c0c0;
+      --color-accent: #444444;
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Roboto', Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: var(--color-text);
+      background: #f0f0f0;
+    }
+
+    #print-bar {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      gap: 8px;
+    }
+
+    #print-bar button {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      background: #2c2c2c;
+      border: none;
+      border-radius: 4px;
+      padding: 9px 20px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      transition: background 0.2s;
+    }
+
+    #print-bar button:hover { background: #111; }
+
+    #btn-edit { background: #555; }
+    #btn-edit:hover { background: #333; }
+    #btn-edit.active {
+      background: #2a6b3c;
+      box-shadow: 0 2px 8px rgba(42,107,60,0.35);
+    }
+    #btn-edit.active:hover { background: #1e5230; }
+
+    .page.edit-mode [data-editable] {
+      outline: none;
+      border-radius: 2px;
+      transition: background 0.15s;
+    }
+    .page.edit-mode [data-editable]:hover {
+      background: #f5f5f5;
+      cursor: text;
+    }
+    .page.edit-mode [data-editable]:focus {
+      background: #eef4ff;
+      outline: 1.5px solid #a0b8d8;
+    }
+    .edit-mode-banner {
+      display: none;
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      color: #2a6b3c;
+      background: #eafaf0;
+      border: 1px solid #a8d5b5;
+      border-radius: 4px;
+      padding: 5px 14px;
+      letter-spacing: 0.04em;
+      z-index: 100;
+    }
+    .edit-mode-banner.visible { display: block; }
+
+    .page {
+      background: var(--color-bg);
+      max-width: 800px;
+      margin: 32px auto;
+      padding: 52px 60px 60px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+
+    .header-name {
+      font-family: var(--font-heading);
+      font-size: 34pt;
+      font-weight: 700;
+      color: var(--color-heading);
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+
+    .header-title {
+      font-family: var(--font-body);
+      font-size: 11.5pt;
+      font-weight: 300;
+      color: var(--color-muted);
+      margin-top: 4px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .header-contact {
+      margin-top: 10px;
+      font-size: 9.5pt;
+      color: var(--color-muted);
+      line-height: 1.7;
+    }
+
+    .header-contact a {
+      color: var(--color-muted);
+      text-decoration: none;
+    }
+
+    .header-contact span { margin-right: 18px; }
+
+    .header-divider {
+      border: none;
+      border-top: 1.5px solid var(--color-rule);
+      margin: 18px 0 22px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 12pt;
+      font-weight: 600;
+      color: var(--color-heading);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--color-rule);
+    }
+
+    section { margin-bottom: 28px; }
+
+    .summary p {
+      font-size: 10.5pt;
+      color: var(--color-text);
+      line-height: 1.65;
+    }
+
+    .skills-grid { display: block; }
+
+    .skill-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 5px;
+      font-size: 10pt;
+      line-height: 1.5;
+    }
+
+    .skill-label {
+      font-weight: 500;
+      color: var(--color-subheading);
+      min-width: 110px;
+      flex-shrink: 0;
+    }
+
+    .skill-value { color: var(--color-text); }
+
+    .job { margin-bottom: 20px; }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .job-title {
+      font-family: var(--font-heading);
+      font-size: 11.5pt;
+      font-weight: 600;
+      color: var(--color-heading);
+    }
+
+    .job-title-current {
+      font-family: var(--font-heading);
+      font-size: 11.5pt;
+      font-weight: 700;
+      color: var(--color-heading);
+    }
+
+    .job-dates {
+      font-size: 9.5pt;
+      color: var(--color-muted);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .job-company {
+      font-size: 10pt;
+      font-weight: 500;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+    }
+
+    .job-company span {
+      font-weight: 300;
+      color: var(--color-muted);
+    }
+
+    .job ul {
+      padding-left: 16px;
+      list-style: disc;
+    }
+
+    .job ul li {
+      font-size: 10pt;
+      color: var(--color-text);
+      margin-bottom: 4px;
+      line-height: 1.55;
+    }
+
+    .edu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+
+    .edu-degree {
+      font-family: var(--font-heading);
+      font-size: 11pt;
+      font-weight: 600;
+      color: var(--color-heading);
+    }
+
+    .edu-dates {
+      font-size: 9.5pt;
+      color: var(--color-muted);
+    }
+
+    .edu-school {
+      font-size: 10pt;
+      font-weight: 500;
+      color: var(--color-accent);
+    }
+
+    .cert-list {
+      list-style: disc;
+      padding-left: 16px;
+    }
+
+    .cert-list li {
+      font-size: 10pt;
+      color: var(--color-text);
+      margin-bottom: 3px;
+    }
+
+    @media print {
+      body { background: white; font-size: 10pt; }
+      .page { box-shadow: none; margin: 0; padding: 20mm 18mm; max-width: 100%; }
+      #print-bar { display: none; }
+      section { margin-bottom: 18px; }
+      .job { margin-bottom: 14px; }
+      .header-name { font-size: 26pt; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="print-bar">
+  <button id="btn-edit" onclick="toggleEditMode()">✏ Edit Mode</button>
+  <button onclick="window.print()">⬇ Print / Save as PDF</button>
+</div>
+<div class="edit-mode-banner" id="edit-banner">✏ Edit mode — click any text to edit</div>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="header-name">Kazi Shamun Hassan</div>
+  <div class="header-title">Demand Generation Manager</div>
+  <div class="header-contact">
+    <span>📍 Folkestone, Kent, CT19 5AR, UK</span>
+    <span>📞 +44 07933 877459</span>
+    <span>✉ <a href="mailto:kazi.shamun.hassan@gmail.com">kazi.shamun.hassan@gmail.com</a></span>
+    <br /><span>Right to Work in UK: W8T 57K 62R</span>
+  </div>
+  <hr class="header-divider" />
+
+  <!-- Professional Summary -->
+  <section class="summary">
+    <div class="section-title">Professional Summary</div>
+    <p>Demand Generation Manager with 10+ years' experience designing and executing integrated B2B campaigns across digital, events, content, and partner channels. Proven track record building account-based marketing programmes, managing pipeline from ICP targeting to SQL conversion, and aligning demand generation with sales outcomes. Managed $7M paid media budgets, improved CPL by 60%, and generated $80M in marketing-influenced pipeline. Hands-on expertise with HubSpot, marketing automation, full-funnel attribution, and AI-driven demand tactics — with a strong foundation in scaling acquisition for enterprise SaaS markets.</p>
+  </section>
+
+  <!-- Core Skills & Tools -->
+  <section class="skills-grid">
+    <div class="section-title">Core Skills &amp; Tools</div>
+    <div class="skill-row">
+      <span class="skill-label">Demand Gen</span>
+      <span class="skill-value">Account-Based Marketing (ABM), ICP Targeting, Multi-Channel Campaigns, Pipeline Management, Funnel Optimisation, Lead Scoring, CRO</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label">Channels</span>
+      <span class="skill-value">Paid (PPC/Social), SEO, Content Marketing, Events, Partner &amp; Affiliate Marketing, Lifecycle Marketing</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label">Operations</span>
+      <span class="skill-value">Marketing Automation, CRM Management, Sales &amp; Marketing Alignment, Full-Funnel Analytics, Attribution Modelling</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label">Platforms</span>
+      <span class="skill-value">HubSpot, Salesforce, Customer.io, Demandbase, Convert.com, Airtable, Clay, ClickUp, WordPress, Zapier, Partnerbase</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label">Analytics &amp; Data</span>
+      <span class="skill-value">GA4, Looker, SQL, Segment, Hotjar</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-label">AI Tools</span>
+      <span class="skill-value">Claude Code, Higgsfield, Nano Banana, Sparksend, Lovable</span>
+    </div>
+  </section>
+
+  <!-- Work Experience -->
+  <section>
+    <div class="section-title">Work Experience</div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title-current">Growth Marketing Manager</div>
+        <div class="job-dates">Jan 2024 – Present</div>
+      </div>
+      <div class="job-company">Wing Assistant, <span>Remote, USA</span></div>
+      <ul>
+        <li>Generated $80M in marketing-influenced pipeline through integrated demand generation across paid acquisition, lifecycle automation, content, and affiliate partner channels.</li>
+        <li>Owned end-to-end demand generation funnel from ICP targeting and lead scoring through MQL to SQL, improving conversion rates by 40% via audience segmentation and landing page CRO.</li>
+        <li>Built and executed account-based marketing programmes aligned to vertical service segments, directly contributing to 125% ARR growth ($20M to $45M).</li>
+        <li>Partnered with sales to manage pipeline health and funnel progression, increasing demo bookings by 50% through campaign and conversion alignment.</li>
+        <li>Piloted AI-driven content and demand tactics, transitioning from human-generated to AI-powered processes and delivering a 275% increase in content output.</li>
+        <li>Launched a 1,000+ affiliate partner ecosystem, migrating to Partnerbase and driving 1,250% growth in affiliate-generated leads across digital and partner channels.</li>
+        <li>Led go-to-market demand generation for UK expansion, growing regional revenue from $1M to $5.5M annually.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Head of Marketing</div>
+        <div class="job-dates">Oct 2021 – Nov 2023</div>
+      </div>
+      <div class="job-company">Shuttle, <span>Bangladesh</span></div>
+      <ul>
+        <li>Implemented a full CRM and marketing automation stack across marketing, sales, and customer success — improving sales conversion by 30% and customer retention by 15%.</li>
+        <li>Scaled B2B user base by 400% (500 to 2,000 monthly users in 6 months) through an integrated acquisition strategy spanning paid (65%), partnerships (20%), and organic (15%) channels.</li>
+        <li>Built and led a 10-person marketing team delivering 300+ assets and 20 campaigns per month across performance, content, and events workstreams.</li>
+        <li>Drove full brand repositioning and go-to-market strategy, increasing brand awareness while reducing CAC by 80%.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Marketing Manager</div>
+        <div class="job-dates">Prior to Oct 2021</div>
+      </div>
+      <div class="job-company">Shuttle, <span>Bangladesh</span></div>
+      <ul>
+        <li>Built the company's demand generation engine from scratch — testing paid channels, content funnels, and lifecycle campaigns to generate 60,000 leads in 18 months.</li>
+        <li>Implemented full-funnel event tracking and attribution infrastructure, achieving 90% lead attribution accuracy across all marketing channels.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Senior Account Manager</div>
+        <div class="job-dates">Apr 2019 – Sep 2021</div>
+      </div>
+      <div class="job-company">COdesign, <span>Bangladesh</span></div>
+      <ul>
+        <li>Implemented HubSpot CRM, improving sales forecast accuracy, boosting follow-up cadence by 70%, and increasing deal conversions by 30%.</li>
+        <li>Supported CRM operations in Salesforce, maintaining deal pipeline accuracy and improving forecast reliability for the sales team.</li>
+        <li>Executed 80+ SaaS campaigns achieving 90% client satisfaction across digital, content, and paid channels.</li>
+        <li>Negotiated and secured 10+ international contracts totalling $1.1M.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Account Manager</div>
+        <div class="job-dates">Prior to Apr 2019</div>
+      </div>
+      <div class="job-company">COdesign, <span>Bangladesh</span></div>
+      <ul>
+        <li>Crafted 48+ pitch decks with a 60% success rate.</li>
+        <li>Managed 20 client accounts and delivered 60 campaigns within 8 months.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Content Manager</div>
+        <div class="job-dates">Feb 2016 – Mar 2019</div>
+      </div>
+      <div class="job-company">Trumptree, <span>Bangladesh</span></div>
+      <ul>
+        <li>Developed and executed content marketing strategy including editorial calendars covering 500+ posts, leveraging audience research and trend analysis.</li>
+        <li>Spearheaded 10+ B2B SaaS influencer campaigns, achieving an average 35% increase in website traffic.</li>
+        <li>Created 50+ lead magnets (white papers, e-books, guides) to support demand generation and pipeline growth.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section>
+    <div class="section-title">Education</div>
+    <div class="edu-header">
+      <div class="edu-degree">Bachelor of Science in Economics</div>
+      <div class="edu-dates">Aug 2011 – May 2015</div>
+    </div>
+    <div class="edu-school">Minnesota State University</div>
+  </section>
+
+  <!-- Certifications -->
+  <section>
+    <div class="section-title">Certifications</div>
+    <ul class="cert-list">
+      <li>Advanced Google Analytics 4 (GA4)</li>
+      <li>HubSpot Sales Hub Software Certified – HubSpot</li>
+      <li>Make Basics Certificate – Make.com</li>
+      <li>Mailchimp Foundations Certification – Intuit Mailchimp</li>
+    </ul>
+  </section>
+
+</div>
+
+<script>
+  const EDITABLE_SELECTORS = [
+    '.header-name',
+    '.header-title',
+    '.header-contact span',
+    '.summary p',
+    '.skill-label',
+    '.skill-value',
+    '.job-title',
+    '.job-title-current',
+    '.job-dates',
+    '.job-company',
+    '.job-company span',
+    '.job ul li',
+    '.edu-degree',
+    '.edu-school',
+    '.edu-dates',
+    '.cert-list li'
+  ].join(',');
+
+  let editMode = false;
+
+  function toggleEditMode() {
+    editMode = !editMode;
+    const page = document.querySelector('.page');
+    const btn = document.getElementById('btn-edit');
+    const banner = document.getElementById('edit-banner');
+    const elements = page.querySelectorAll(EDITABLE_SELECTORS);
+
+    if (editMode) {
+      page.classList.add('edit-mode');
+      btn.classList.add('active');
+      btn.textContent = '✓ Done Editing';
+      banner.classList.add('visible');
+      elements.forEach(el => {
+        el.setAttribute('data-editable', '');
+        el.setAttribute('contenteditable', 'true');
+        el.setAttribute('spellcheck', 'true');
+      });
+    } else {
+      page.classList.remove('edit-mode');
+      btn.classList.remove('active');
+      btn.textContent = '✏ Edit Mode';
+      banner.classList.remove('visible');
+      elements.forEach(el => {
+        el.removeAttribute('data-editable');
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('spellcheck');
+      });
+    }
+  }
+
+  // Prevent Enter from inserting <div> blocks — use <br> instead
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && editMode) {
+      e.preventDefault();
+    }
+  });
+</script>
+
+</body>
+</html>
