@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kazi Shamun Hassan – Resume Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-bg:      #ffffff;
+      --color-text:    #2c2c2c;
+      --color-heading: #1a1a1a;
+      --color-muted:   #6b6b6b;
+      --color-rule:    #c0c0c0;
+      --color-accent:  #444444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: var(--color-text);
+      background: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 48px auto;
+      background: var(--color-bg);
+      padding: 52px 60px 60px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+
+    .header-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 34pt;
+      font-weight: 700;
+      color: var(--color-heading);
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+
+    .header-sub {
+      font-family: 'Roboto', sans-serif;
+      font-size: 11.5pt;
+      font-weight: 300;
+      color: var(--color-muted);
+      margin-top: 4px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    hr {
+      border: none;
+      border-top: 1.5px solid var(--color-rule);
+      margin: 20px 0 28px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 12pt;
+      font-weight: 600;
+      color: var(--color-heading);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--color-rule);
+    }
+
+    .resume-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .resume-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .resume-card:hover {
+      background: #fafafa;
+      border-color: #c8c8c8;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    .card-left { display: flex; flex-direction: column; gap: 3px; }
+
+    .card-company {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 11pt;
+      font-weight: 600;
+      color: var(--color-heading);
+    }
+
+    .card-role {
+      font-size: 9.5pt;
+      font-weight: 400;
+      color: var(--color-muted);
+    }
+
+    .card-tag {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888;
+      background: #f2f2f2;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      padding: 3px 10px;
+      white-space: nowrap;
+      align-self: center;
+    }
+
+    .card-tag.default {
+      color: #2a6b3c;
+      background: #eafaf0;
+      border-color: #b2dfc0;
+    }
+
+    .footer {
+      margin-top: 36px;
+      font-size: 9pt;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .page { margin: 0; padding: 32px 24px 40px; box-shadow: none; }
+      .header-name { font-size: 24pt; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header-name">Kazi Shamun Hassan</div>
+  <div class="header-sub">Resume Builder</div>
+  <hr />
+
+  <div class="section-title">Resumes</div>
+
+  <div class="resume-list">
+
+    <a class="resume-card" href="resume_default.html">
+      <div class="card-left">
+        <div class="card-company">Default Resume</div>
+        <div class="card-role">Growth Marketing Manager</div>
+      </div>
+      <span class="card-tag default">Master Template</span>
+    </a>
+
+    <a class="resume-card" href="resume_AltoSoftware_HeadOfDemandGeneration.html">
+      <div class="card-left">
+        <div class="card-company">Alto Software Group</div>
+        <div class="card-role">Head of Demand Generation</div>
+      </div>
+      <span class="card-tag">Tailored</span>
+    </a>
+
+    <a class="resume-card" href="resume_AptitudeSoftware_DemandGenerationManager.html">
+      <div class="card-left">
+        <div class="card-company">Aptitude Software</div>
+        <div class="card-role">Demand Generation Manager</div>
+      </div>
+      <span class="card-tag">Tailored</span>
+    </a>
+
+  </div>
+
+  <div class="footer">kazi.shamun.hassan@gmail.com</div>
+
+</div>
+</body>
+</html>
