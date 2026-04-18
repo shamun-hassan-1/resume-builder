@@ -1,185 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kazi Shamun Hassan – Resume Builder</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --color-bg:      #ffffff;
-      --color-text:    #2c2c2c;
-      --color-heading: #1a1a1a;
-      --color-muted:   #6b6b6b;
-      --color-rule:    #c0c0c0;
-      --color-accent:  #444444;
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Resume Studio – Kazi Shamun Hassan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "inverse-primary": "#b4c5ff",
+          "on-tertiary": "#ffffff",
+          "on-primary-container": "#f1f2ff",
+          "primary-container": "#0061ff",
+          "on-surface": "#1a1c1e",
+          "surface-container-high": "#e8e8ea",
+          "surface-bright": "#f9f9fc",
+          "surface-dim": "#dadadc",
+          "surface-container-highest": "#e2e2e5",
+          "on-secondary-container": "#274187",
+          "primary-fixed": "#dbe1ff",
+          "secondary": "#435ba2",
+          "surface": "#f9f9fc",
+          "on-secondary": "#ffffff",
+          "surface-tint": "#0052dc",
+          "secondary-fixed-dim": "#b4c5ff",
+          "inverse-surface": "#2f3133",
+          "primary-fixed-dim": "#b4c5ff",
+          "outline": "#737687",
+          "inverse-on-surface": "#f0f0f3",
+          "surface-container-lowest": "#ffffff",
+          "error": "#ba1a1a",
+          "on-surface-variant": "#424656",
+          "surface-container-low": "#f3f3f6",
+          "secondary-container": "#99b1fe",
+          "on-primary-fixed": "#00174b",
+          "primary": "#004bca",
+          "outline-variant": "#c2c6d9",
+          "surface-variant": "#e2e2e5",
+          "on-background": "#1a1c1e",
+          "background": "#f9f9fc",
+          "surface-container": "#eeeef0"
+        },
+        borderRadius: {
+          DEFAULT: "0.25rem",
+          lg: "0.5rem",
+          xl: "0.75rem",
+          full: "9999px"
+        },
+        fontFamily: {
+          headline: ["Manrope"],
+          body: ["Inter"],
+          label: ["Inter"]
+        }
+      }
     }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; background-color: #f9f9fc; color: #1a1c1e; }
+  h1,h2,h3,h4,h5,h6,.font-headline { font-family: 'Manrope', sans-serif; }
+  .ghost-border { box-shadow: inset 0 0 0 1px rgba(194,198,217,0.15); }
+  .ambient-shadow { box-shadow: 0 32px 64px -12px rgba(26,28,30,0.04); }
+  .card-shadow { box-shadow: 0 8px 24px -8px rgba(26,28,30,0.06); }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Roboto', Arial, sans-serif;
-      font-size: 10.5pt;
-      line-height: 1.55;
-      color: var(--color-text);
-      background: #f0f0f0;
-      min-height: 100vh;
-    }
-
-    .page {
-      max-width: 800px;
-      margin: 48px auto;
-      background: var(--color-bg);
-      padding: 52px 60px 60px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-    }
-
-    .header-name {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 34pt;
-      font-weight: 700;
-      color: var(--color-heading);
-      letter-spacing: -0.01em;
-      line-height: 1.1;
-    }
-
-    .header-sub {
-      font-family: 'Roboto', sans-serif;
-      font-size: 11.5pt;
-      font-weight: 300;
-      color: var(--color-muted);
-      margin-top: 4px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    hr {
-      border: none;
-      border-top: 1.5px solid var(--color-rule);
-      margin: 20px 0 28px;
-    }
-
-    .section-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 12pt;
-      font-weight: 600;
-      color: var(--color-heading);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      padding-bottom: 5px;
-      border-bottom: 1px solid var(--color-rule);
-    }
-
-    .resume-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .resume-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 18px;
-      border: 1px solid #e8e8e8;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
-    }
-    .resume-card:hover {
-      background: #fafafa;
-      border-color: #c8c8c8;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-    }
-
-    .card-left { display: flex; flex-direction: column; gap: 3px; }
-
-    .card-company {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 11pt;
-      font-weight: 600;
-      color: var(--color-heading);
-    }
-
-    .card-role {
-      font-size: 9.5pt;
-      font-weight: 400;
-      color: var(--color-muted);
-    }
-
-    .card-tag {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #888;
-      background: #f2f2f2;
-      border: 1px solid #e0e0e0;
-      border-radius: 20px;
-      padding: 3px 10px;
-      white-space: nowrap;
-      align-self: center;
-    }
-
-    .card-tag.default {
-      color: #2a6b3c;
-      background: #eafaf0;
-      border-color: #b2dfc0;
-    }
-
-    .footer {
-      margin-top: 36px;
-      font-size: 9pt;
-      color: var(--color-muted);
-      text-align: center;
-    }
-
-    @media (max-width: 600px) {
-      .page { margin: 0; padding: 32px 24px 40px; box-shadow: none; }
-      .header-name { font-size: 24pt; }
-    }
-  </style>
+  /* Mini resume mockup */
+  .resume-mock { background: #fff; border-radius: 4px; padding: 14px 12px; display: flex; flex-direction: column; gap: 5px; height: 100%; }
+  .mock-name  { height: 8px; width: 60%; background: #1a1a1a; border-radius: 2px; }
+  .mock-title { height: 4px; width: 40%; background: #c0c0c0; border-radius: 2px; margin-bottom: 4px; }
+  .mock-rule  { height: 1px; background: #e0e0e0; margin: 4px 0; }
+  .mock-line  { height: 3px; border-radius: 2px; background: #e8e8e8; }
+  .mock-line.dark  { background: #ccc; }
+  .mock-line.short { width: 55%; }
+  .mock-line.med   { width: 75%; }
+  .mock-line.full  { width: 100%; }
+  .mock-section-hd { height: 5px; width: 45%; background: #444; border-radius: 2px; margin: 5px 0 3px; }
+</style>
 </head>
-<body>
-<div class="page">
+<body class="flex min-h-screen bg-surface antialiased overflow-x-hidden">
 
-  <div class="header-name">Kazi Shamun Hassan</div>
-  <div class="header-sub">Resume Builder</div>
-  <hr />
-
-  <div class="section-title">Resumes</div>
-
-  <div class="resume-list">
-
-    <a class="resume-card" href="resume_default.html">
-      <div class="card-left">
-        <div class="card-company">Default Resume</div>
-        <div class="card-role">Growth Marketing Manager</div>
-      </div>
-      <span class="card-tag default">Master Template</span>
-    </a>
-
-    <a class="resume-card" href="resume_AltoSoftware_HeadOfDemandGeneration.html">
-      <div class="card-left">
-        <div class="card-company">Alto Software Group</div>
-        <div class="card-role">Head of Demand Generation</div>
-      </div>
-      <span class="card-tag">Tailored</span>
-    </a>
-
-    <a class="resume-card" href="resume_AptitudeSoftware_DemandGenerationManager.html">
-      <div class="card-left">
-        <div class="card-company">Aptitude Software</div>
-        <div class="card-role">Demand Generation Manager</div>
-      </div>
-      <span class="card-tag">Tailored</span>
-    </a>
-
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-slate-50 flex flex-col p-6 border-r border-slate-200/60 z-50">
+  <div class="flex items-center gap-3 mb-10">
+    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white font-headline font-bold text-xl shadow-md">K</div>
+    <div>
+      <h1 class="text-lg font-black text-slate-900 font-headline tracking-tight leading-none">Resume Studio</h1>
+      <p class="text-[10px] uppercase tracking-wider text-slate-500 font-label mt-1">Kazi S. Hassan</p>
+    </div>
   </div>
 
-  <div class="footer">kazi.shamun.hassan@gmail.com</div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 rounded-lg shadow-sm font-semibold transition-transform" href="index.html">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">dashboard</span>
+      <span class="text-sm font-body">Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-all rounded-lg" href="resume_default.html">
+      <span class="material-symbols-outlined">description</span>
+      <span class="text-sm font-medium font-body">Default Resume</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-all rounded-lg" href="#">
+      <span class="material-symbols-outlined">work_history</span>
+      <span class="text-sm font-medium font-body">Applications</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-all rounded-lg" href="#">
+      <span class="material-symbols-outlined">settings</span>
+      <span class="text-sm font-medium font-body">Settings</span>
+    </a>
+  </nav>
 
-</div>
+  <div class="mt-auto space-y-3 pt-6 border-t border-slate-200/60">
+    <a href="resume_default.html" class="w-full py-3 px-4 bg-gradient-to-br from-primary to-primary-container text-white rounded-DEFAULT font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-sm">add</span>
+      New Resume
+    </a>
+    <div class="px-2 pt-1 text-xs text-slate-400 font-label">
+      <span class="block truncate">kazi.shamun.hassan@gmail.com</span>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="flex-1 ml-64 flex flex-col min-w-0">
+
+  <!-- Top bar -->
+  <header class="flex justify-between items-center w-full px-8 h-16 sticky top-0 z-40 bg-slate-50/80 backdrop-blur-xl shadow-sm shadow-slate-200/50">
+    <span class="text-xl font-bold tracking-tight text-slate-900 font-headline">Dashboard</span>
+    <div class="flex items-center gap-4 text-slate-500">
+      <button class="hover:text-blue-600 transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white font-bold text-sm font-headline">K</div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="p-10 lg:p-14 max-w-[1200px] w-full mx-auto space-y-16">
+
+    <!-- Featured: Default / Master Resume -->
+    <section class="relative">
+      <h2 class="font-headline text-2xl font-semibold text-on-surface mb-6 tracking-tight">Master Template</h2>
+      <div class="relative bg-surface/60 backdrop-blur-[32px] rounded-xl p-8 ambient-shadow ghost-border overflow-hidden flex flex-col md:flex-row gap-10 items-center justify-between border border-slate-200/40">
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex-1 space-y-5 z-10 max-w-md">
+          <div class="space-y-2">
+            <p class="text-[11px] font-label font-bold text-on-surface-variant uppercase tracking-[0.05em]">Source of truth · All tailored resumes start here</p>
+            <h3 class="font-headline text-3xl font-bold text-on-surface leading-tight tracking-tight">Growth Marketing Manager</h3>
+          </div>
+          <p class="font-body text-on-surface-variant text-sm leading-relaxed">
+            Demand Generation &amp; Growth Marketing Manager with 10+ years' B2B SaaS experience. $80M pipeline, 125% ARR growth, $7M paid media budgets.
+          </p>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <span class="text-[10px] font-label font-semibold uppercase tracking-wider px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100">HubSpot</span>
+            <span class="text-[10px] font-label font-semibold uppercase tracking-wider px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100">GA4</span>
+            <span class="text-[10px] font-label font-semibold uppercase tracking-wider px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100">Demand Gen</span>
+            <span class="text-[10px] font-label font-semibold uppercase tracking-wider px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100">Lifecycle</span>
+          </div>
+          <div class="flex gap-3 pt-2">
+            <a href="resume_default.html" class="px-6 py-2.5 bg-gradient-to-br from-primary to-primary-container text-white rounded-DEFAULT font-body font-medium text-sm shadow-md hover:opacity-90 transition-all">
+              Open Resume
+            </a>
+            <a href="resume_default.html" target="_blank" class="px-6 py-2.5 bg-surface-container-lowest text-on-surface rounded-DEFAULT font-body font-medium text-sm border border-slate-200 hover:bg-surface-container-low transition-colors">
+              Preview
+            </a>
+          </div>
+        </div>
+
+        <!-- Resume mockup -->
+        <div class="relative w-full md:w-[38%] aspect-[3/4] rounded-lg overflow-hidden card-shadow group z-10 transform rotate-2 hover:rotate-0 transition-transform duration-500 ease-out origin-bottom-right border border-slate-200/60">
+          <div class="resume-mock w-full h-full">
+            <div class="mock-name"></div>
+            <div class="mock-title"></div>
+            <div class="mock-rule"></div>
+            <div class="mock-section-hd"></div>
+            <div class="mock-line full"></div>
+            <div class="mock-line med"></div>
+            <div class="mock-line short"></div>
+            <div class="mock-rule"></div>
+            <div class="mock-section-hd"></div>
+            <div class="mock-line full"></div>
+            <div class="mock-line full"></div>
+            <div class="mock-line med"></div>
+            <div class="mock-line short"></div>
+            <div class="mock-rule"></div>
+            <div class="mock-section-hd"></div>
+            <div class="mock-line full dark"></div>
+            <div class="mock-line full"></div>
+            <div class="mock-line med"></div>
+            <div class="mock-line full"></div>
+            <div class="mock-line short"></div>
+            <div class="mock-rule"></div>
+            <div class="mock-section-hd"></div>
+            <div class="mock-line full dark"></div>
+            <div class="mock-line med"></div>
+            <div class="mock-line full"></div>
+            <div class="mock-line short"></div>
+          </div>
+          <div class="absolute bottom-4 left-4 z-20 flex items-center gap-2 text-slate-700 font-body text-xs bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-DEFAULT border border-slate-200/60">
+            <span class="material-symbols-outlined text-[16px]">auto_fix_high</span>
+            Edit Mode Ready
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tailored Resumes Grid -->
+    <section>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-headline text-xl font-medium text-on-surface">Tailored Resumes</h2>
+        <span class="text-on-surface-variant font-body text-sm">2 applications</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- Alto Software -->
+        <a href="resume_AltoSoftware_HeadOfDemandGeneration.html" class="group cursor-pointer no-underline">
+          <div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low mb-4 card-shadow relative border border-slate-200/40 group-hover:border-slate-300 transition-colors">
+            <div class="resume-mock w-full h-full scale-[0.85] origin-top-left" style="width:117%;height:117%">
+              <div class="mock-name" style="width:50%"></div>
+              <div class="mock-title" style="width:70%"></div>
+              <div class="mock-rule"></div>
+              <div class="mock-section-hd"></div>
+              <div class="mock-line full"></div>
+              <div class="mock-line med"></div>
+              <div class="mock-line full"></div>
+              <div class="mock-rule"></div>
+              <div class="mock-section-hd"></div>
+              <div class="mock-line full dark"></div>
+              <div class="mock-line full"></div>
+              <div class="mock-line med"></div>
+              <div class="mock-line short"></div>
+              <div class="mock-rule"></div>
+              <div class="mock-section-hd"></div>
+              <div class="mock-line full dark"></div>
+              <div class="mock-line full"></div>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute top-3 right-3">
+              <span class="text-[10px] font-label font-bold uppercase tracking-wider px-2 py-1 bg-white/90 text-blue-700 rounded-full border border-blue-100">Tailored</span>
+            </div>
+          </div>
+          <h4 class="font-headline text-base font-semibold text-on-surface leading-snug group-hover:text-primary transition-colors">Alto Software Group</h4>
+          <p class="font-label text-xs text-on-surface-variant mt-1">Head of Demand Generation</p>
+        </a>
+
+        <!-- Aptitude Software -->
+        <a href="resume_AptitudeSoftware_DemandGenerationManager.html" class="group cursor-pointer no-underline">
+          <div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low mb-4 card-shadow relative border border-slate-200/40 group-hover:border-slate-300 transition-colors">
+            <div class="resume-mock w-full h-full scale-[0.85] origin-top-left" style="width:117%;height:117%">
+              <div class="mock-name" style="width:55%"></div>
+              <div class="mock-title" style="width:65%"></div>
+              <div class="mock-rule"></div>
+              <div class="mock-section-hd"></div>
+              <div class="mock-line full"></div>
+              <div class="mock-line med"></div>
+              <div class="mock-rule"></div>
+              <div class="mock-section-hd"></div>
+              <div class="mock-line full dark"></div>
+              <div class="mock-line full"></div>
+              <div class="mock-line short"></div>
+              <div class="mock-rule"></div>
+              <div class="mock-section-hd"></div>
+              <div class="mock-line full dark"></div>
+              <div class="mock-line med"></div>
+              <div class="mock-line full"></div>
+              <div class="mock-line short"></div>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute top-3 right-3">
+              <span class="text-[10px] font-label font-bold uppercase tracking-wider px-2 py-1 bg-white/90 text-blue-700 rounded-full border border-blue-100">Tailored</span>
+            </div>
+          </div>
+          <h4 class="font-headline text-base font-semibold text-on-surface leading-snug group-hover:text-primary transition-colors">Aptitude Software</h4>
+          <p class="font-label text-xs text-on-surface-variant mt-1">Demand Generation Manager</p>
+        </a>
+
+        <!-- New resume card -->
+        <a href="resume_default.html" class="group cursor-pointer no-underline">
+          <div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-lowest flex items-center justify-center mb-4 border border-dashed border-slate-300 hover:bg-surface-container-low hover:border-primary/40 transition-all duration-300">
+            <div class="text-center text-outline group-hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-4xl mb-2 block">add_circle</span>
+              <p class="font-body text-sm font-medium">New Resume</p>
+            </div>
+          </div>
+          <h4 class="font-headline text-base font-semibold text-on-surface opacity-0 group-hover:opacity-100 transition-opacity">Start from Default</h4>
+          <p class="font-label text-xs text-on-surface-variant mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Use master template</p>
+        </a>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
 </body>
 </html>
