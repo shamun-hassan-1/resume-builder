@@ -4,6 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Resume Studio – Kazi Shamun Hassan</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -202,89 +203,13 @@
     <section>
       <div class="flex items-center justify-between mb-6">
         <h2 class="font-headline text-xl font-medium text-on-surface">Tailored Resumes</h2>
-        <span class="text-on-surface-variant font-body text-sm">2 applications</span>
+        <span id="app-count" class="text-on-surface-variant font-body text-sm">…</span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div id="tailored-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-        <!-- Alto Software -->
-        <div class="group">
-          <div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low mb-4 card-shadow relative border border-slate-200/40 group-hover:border-slate-300 transition-colors">
-            <div class="resume-mock w-full h-full scale-[0.85] origin-top-left" style="width:117%;height:117%">
-              <div class="mock-name" style="width:50%"></div>
-              <div class="mock-title" style="width:70%"></div>
-              <div class="mock-rule"></div>
-              <div class="mock-section-hd"></div>
-              <div class="mock-line full"></div>
-              <div class="mock-line med"></div>
-              <div class="mock-line full"></div>
-              <div class="mock-rule"></div>
-              <div class="mock-section-hd"></div>
-              <div class="mock-line full dark"></div>
-              <div class="mock-line full"></div>
-              <div class="mock-line med"></div>
-              <div class="mock-line short"></div>
-              <div class="mock-rule"></div>
-              <div class="mock-section-hd"></div>
-              <div class="mock-line full dark"></div>
-              <div class="mock-line full"></div>
-            </div>
-            <div class="absolute top-3 right-3 z-10">
-              <span class="text-[10px] font-label font-bold uppercase tracking-wider px-2 py-1 bg-white/90 text-blue-700 rounded-full border border-blue-100">Tailored</span>
-            </div>
-            <div class="card-overlay">
-              <a href="resume_AltoSoftware_HeadOfDemandGeneration.html" target="_blank" class="overlay-btn primary">
-                <span class="material-symbols-outlined text-[14px]">visibility</span> Preview CV
-              </a>
-              <button onclick="downloadCV('resume_AltoSoftware_HeadOfDemandGeneration.html')" class="overlay-btn secondary">
-                <span class="material-symbols-outlined text-[14px]">download</span> Download CV
-              </button>
-            </div>
-          </div>
-          <h4 class="font-headline text-base font-semibold text-on-surface leading-snug mb-1">Alto Software Group</h4>
-          <p class="font-label text-xs text-on-surface-variant">Head of Demand Generation</p>
-        </div>
-
-        <!-- Aptitude Software -->
-        <div class="group">
-          <div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low mb-4 card-shadow relative border border-slate-200/40 group-hover:border-slate-300 transition-colors">
-            <div class="resume-mock w-full h-full scale-[0.85] origin-top-left" style="width:117%;height:117%">
-              <div class="mock-name" style="width:55%"></div>
-              <div class="mock-title" style="width:65%"></div>
-              <div class="mock-rule"></div>
-              <div class="mock-section-hd"></div>
-              <div class="mock-line full"></div>
-              <div class="mock-line med"></div>
-              <div class="mock-rule"></div>
-              <div class="mock-section-hd"></div>
-              <div class="mock-line full dark"></div>
-              <div class="mock-line full"></div>
-              <div class="mock-line short"></div>
-              <div class="mock-rule"></div>
-              <div class="mock-section-hd"></div>
-              <div class="mock-line full dark"></div>
-              <div class="mock-line med"></div>
-              <div class="mock-line full"></div>
-              <div class="mock-line short"></div>
-            </div>
-            <div class="absolute top-3 right-3 z-10">
-              <span class="text-[10px] font-label font-bold uppercase tracking-wider px-2 py-1 bg-white/90 text-blue-700 rounded-full border border-blue-100">Tailored</span>
-            </div>
-            <div class="card-overlay">
-              <a href="resume_AptitudeSoftware_DemandGenerationManager.html" target="_blank" class="overlay-btn primary">
-                <span class="material-symbols-outlined text-[14px]">visibility</span> Preview CV
-              </a>
-              <button onclick="downloadCV('resume_AptitudeSoftware_DemandGenerationManager.html')" class="overlay-btn secondary">
-                <span class="material-symbols-outlined text-[14px]">download</span> Download CV
-              </button>
-            </div>
-          </div>
-          <h4 class="font-headline text-base font-semibold text-on-surface leading-snug mb-1">Aptitude Software</h4>
-          <p class="font-label text-xs text-on-surface-variant">Demand Generation Manager</p>
-        </div>
-
-        <!-- New resume card -->
-        <a href="resume_blank_template.html" class="group cursor-pointer no-underline">
+        <!-- New resume card (always last — JS inserts DB cards before this) -->
+        <a id="new-resume-card" href="resume_blank_template.html" class="group cursor-pointer no-underline">
           <div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-lowest flex items-center justify-center mb-4 border border-dashed border-slate-300 hover:bg-surface-container-low hover:border-primary/40 transition-all duration-300">
             <div class="text-center text-outline group-hover:text-primary transition-colors">
               <span class="material-symbols-outlined text-4xl mb-2 block">add_circle</span>
@@ -302,6 +227,89 @@
 </main>
 
 <script>
+  var sb = window.supabase.createClient(
+    'https://wttfymwzjpjlhrrbmcdy.supabase.co',
+    'sb_publishable_qNnBrCageH_UYHGpbKvQVg_ActT28nA'
+  );
+
+  function escapeHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function makeMockLines() {
+    return [
+      '<div class="mock-name" style="width:50%"></div>',
+      '<div class="mock-title" style="width:70%"></div>',
+      '<div class="mock-rule"></div>',
+      '<div class="mock-section-hd"></div>',
+      '<div class="mock-line full"></div>',
+      '<div class="mock-line med"></div>',
+      '<div class="mock-line full"></div>',
+      '<div class="mock-rule"></div>',
+      '<div class="mock-section-hd"></div>',
+      '<div class="mock-line full dark"></div>',
+      '<div class="mock-line full"></div>',
+      '<div class="mock-line med"></div>',
+      '<div class="mock-line short"></div>',
+      '<div class="mock-rule"></div>',
+      '<div class="mock-section-hd"></div>',
+      '<div class="mock-line full dark"></div>',
+      '<div class="mock-line full"></div>',
+    ].join('');
+  }
+
+  async function loadDashboard() {
+    var results = await Promise.all([
+      sb.from('cvs').select('id, label, file_name, job_roles(id, title, companies(id, name))').order('created_at', { ascending: false }),
+      sb.from('applications').select('id', { count: 'exact', head: true })
+    ]);
+    var cvsRes  = results[0];
+    var appsRes = results[1];
+
+    /* Update count */
+    var n = appsRes.count || 0;
+    var countEl = document.getElementById('app-count');
+    if (countEl) countEl.textContent = n + ' application' + (n === 1 ? '' : 's');
+
+    /* Render CV cards */
+    var grid    = document.getElementById('tailored-grid');
+    var addCard = document.getElementById('new-resume-card');
+    if (!grid || !addCard) return;
+
+    /* Clear any previously rendered dynamic cards */
+    grid.querySelectorAll('.cv-card').forEach(function(el) { el.remove(); });
+
+    (cvsRes.data || []).forEach(function(cv) {
+      var companyName = cv.job_roles && cv.job_roles.companies ? cv.job_roles.companies.name : '';
+      var roleTitle   = cv.job_roles ? cv.job_roles.title : cv.label;
+      var fileName    = cv.file_name;
+
+      var card = document.createElement('div');
+      card.className = 'cv-card group';
+      card.innerHTML =
+        '<div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low mb-4 card-shadow relative border border-slate-200/40 group-hover:border-slate-300 transition-colors">' +
+          '<div class="resume-mock w-full h-full scale-[0.85] origin-top-left" style="width:117%;height:117%">' +
+            makeMockLines() +
+          '</div>' +
+          '<div class="absolute top-3 right-3 z-10">' +
+            '<span class="text-[10px] font-label font-bold uppercase tracking-wider px-2 py-1 bg-white/90 text-blue-700 rounded-full border border-blue-100">Tailored</span>' +
+          '</div>' +
+          '<div class="card-overlay">' +
+            '<a href="' + escapeHtml(fileName) + '" target="_blank" class="overlay-btn primary">' +
+              '<span class="material-symbols-outlined text-[14px]">visibility</span> Preview CV' +
+            '</a>' +
+            '<button onclick="downloadCV(\'' + escapeHtml(fileName) + '\')" class="overlay-btn secondary">' +
+              '<span class="material-symbols-outlined text-[14px]">download</span> Download CV' +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+        '<h4 class="font-headline text-base font-semibold text-on-surface leading-snug mb-1">' + escapeHtml(companyName) + '</h4>' +
+        '<p class="font-label text-xs text-on-surface-variant">' + escapeHtml(roleTitle) + '</p>';
+
+      grid.insertBefore(card, addCard);
+    });
+  }
+
   function scaleResumePreview() {
     var wrapper = document.getElementById('default-preview-wrapper');
     var iframe  = document.getElementById('default-preview-iframe');
@@ -324,6 +332,8 @@
       });
     }
   }
+
+  loadDashboard();
 </script>
 </body>
 </html>

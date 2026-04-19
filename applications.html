@@ -7,6 +7,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
@@ -495,73 +496,7 @@
           </div>
           <span class="col-count text-[10px] font-bold text-primary bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">2</span>
         </div>
-        <div class="cards-area flex flex-col gap-3" style="min-height:40px">
-
-          <!-- Alto Software -->
-          <div class="app-card bg-surface-container-lowest rounded-lg p-4 card-shadow border border-slate-200/50" draggable="true" data-id="alto">
-            <div class="flex items-start justify-between mb-3">
-              <div class="card-avatar-wrap relative shrink-0">
-                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-slate-800 to-slate-600 flex items-center justify-center shadow-sm">
-                  <span class="text-white font-headline font-bold text-sm">A</span>
-                </div>
-                <div class="card-check absolute inset-0 rounded-lg bg-primary flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-[15px]" style="font-variation-settings:'FILL' 1">check</span>
-                </div>
-              </div>
-              <span class="stage-pill pill-applied text-[9px] font-label font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border">Applied</span>
-            </div>
-            <h4 class="font-headline font-semibold text-on-surface text-sm leading-snug mb-1">Head of Demand Generation</h4>
-            <p class="card-company text-[11px] text-on-surface-variant font-body mb-3">Alto Software Group &middot; London, UK</p>
-            <div class="flex flex-wrap gap-1.5 mb-3">
-              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">Demand Gen</span>
-              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">B2B SaaS</span>
-              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">ABM</span>
-            </div>
-            <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-              <div class="flex items-center gap-1 text-[10px] text-on-surface-variant">
-                <span class="material-symbols-outlined text-[13px]">calendar_today</span>
-                <span class="card-date">10 Apr 25</span>
-              </div>
-              <a href="resume_AltoSoftware_HeadOfDemandGeneration.html" target="_blank" class="flex items-center gap-0.5 text-[10px] text-primary font-semibold hover:underline">
-                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
-                View CV
-              </a>
-            </div>
-          </div>
-
-          <!-- Aptitude Software -->
-          <div class="app-card bg-surface-container-lowest rounded-lg p-4 card-shadow border border-slate-200/50" draggable="true" data-id="aptitude">
-            <div class="flex items-start justify-between mb-3">
-              <div class="card-avatar-wrap relative shrink-0">
-                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-700 to-blue-500 flex items-center justify-center shadow-sm">
-                  <span class="text-white font-headline font-bold text-sm">A</span>
-                </div>
-                <div class="card-check absolute inset-0 rounded-lg bg-primary flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-[15px]" style="font-variation-settings:'FILL' 1">check</span>
-                </div>
-              </div>
-              <span class="stage-pill pill-applied text-[9px] font-label font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border">Applied</span>
-            </div>
-            <h4 class="font-headline font-semibold text-on-surface text-sm leading-snug mb-1">Demand Generation Manager</h4>
-            <p class="card-company text-[11px] text-on-surface-variant font-body mb-3">Aptitude Software &middot; London, UK</p>
-            <div class="flex flex-wrap gap-1.5 mb-3">
-              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">HubSpot</span>
-              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">Pipeline</span>
-              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">Lifecycle</span>
-            </div>
-            <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-              <div class="flex items-center gap-1 text-[10px] text-on-surface-variant">
-                <span class="material-symbols-outlined text-[13px]">calendar_today</span>
-                <span class="card-date">12 Apr 25</span>
-              </div>
-              <a href="resume_AptitudeSoftware_DemandGenerationManager.html" target="_blank" class="flex items-center gap-0.5 text-[10px] text-primary font-semibold hover:underline">
-                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
-                View CV
-              </a>
-            </div>
-          </div>
-
-        </div>
+        <div class="cards-area flex flex-col gap-3" style="min-height:40px"></div>
         <div class="empty-state hidden flex-col items-center justify-center py-12 gap-2.5 text-center pointer-events-none">
           <span class="material-symbols-outlined text-[30px] text-outline-variant">send</span>
           <p class="text-[11px] font-body text-on-surface-variant/60 max-w-[120px] leading-relaxed">Applications sent</p>
@@ -874,23 +809,23 @@
 
     <div class="space-y-1.5">
       <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Company</label>
-      <input type="text" placeholder="e.g. HubSpot" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+      <input id="drawer-company" type="text" placeholder="e.g. HubSpot" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
     </div>
 
     <div class="space-y-1.5">
       <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Job Title</label>
-      <input type="text" placeholder="e.g. Demand Generation Manager" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+      <input id="drawer-title" type="text" placeholder="e.g. Demand Generation Manager" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
     </div>
 
     <div class="space-y-1.5">
       <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Location</label>
-      <input type="text" placeholder="e.g. London, UK · Remote" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+      <input id="drawer-location" type="text" placeholder="e.g. London, UK · Remote" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
     </div>
 
     <div class="grid grid-cols-2 gap-4">
       <div class="space-y-1.5">
         <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Stage</label>
-        <select class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all">
+        <select id="drawer-stage" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all">
           <option value="wishlist">Wishlist</option>
           <option value="applied" selected>Applied</option>
           <option value="interviewing">Interviewing</option>
@@ -901,18 +836,18 @@
       </div>
       <div class="space-y-1.5">
         <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Date Applied</label>
-        <input type="date" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+        <input id="drawer-date" type="date" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
       </div>
     </div>
 
     <div class="space-y-1.5">
       <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Job Description URL</label>
-      <input type="url" placeholder="https://…" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+      <input id="drawer-job-url" type="url" placeholder="https://…" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
     </div>
 
     <div class="space-y-1.5">
       <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Tailored Resume</label>
-      <select class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all">
+      <select id="drawer-cv" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all">
         <option value="">— None yet —</option>
         <option value="resume_AltoSoftware_HeadOfDemandGeneration.html">Alto Software – Head of Demand Gen</option>
         <option value="resume_AptitudeSoftware_DemandGenerationManager.html">Aptitude Software – Demand Gen Manager</option>
@@ -922,18 +857,24 @@
 
     <div class="space-y-1.5">
       <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Notes</label>
-      <textarea rows="3" placeholder="Recruiter name, referral, key contacts, salary range…" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all resize-none"></textarea>
+      <textarea id="drawer-notes" rows="3" placeholder="Recruiter name, referral, key contacts, salary range…" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all resize-none"></textarea>
     </div>
 
   </div>
 
   <div class="px-7 py-5 border-t border-slate-100 shrink-0 flex gap-3">
     <button id="cancel-drawer-btn" class="flex-1 py-2.5 rounded-DEFAULT border border-slate-200 text-on-surface-variant font-body font-medium text-sm hover:bg-slate-50 transition-colors">Cancel</button>
-    <button class="flex-1 py-2.5 bg-gradient-to-br from-primary to-primary-container text-white rounded-DEFAULT font-body font-medium text-sm shadow-md hover:opacity-90 transition-all">Save Entry</button>
+    <button id="drawer-save-btn" class="flex-1 py-2.5 bg-gradient-to-br from-primary to-primary-container text-white rounded-DEFAULT font-body font-medium text-sm shadow-md hover:opacity-90 transition-all">Save Entry</button>
   </div>
 </div>
 
 <script>
+/* ── Supabase client ── */
+var sb = window.supabase.createClient(
+  'https://wttfymwzjpjlhrrbmcdy.supabase.co',
+  'sb_publishable_qNnBrCageH_UYHGpbKvQVg_ActT28nA'
+);
+
 /* ══════════════════════════════════════════════
    STAGE CONFIG
 ══════════════════════════════════════════════ */
@@ -1035,7 +976,9 @@ document.querySelectorAll('.kanban-col').forEach(function(col) {
       ? area.insertBefore(draggedCard, placeholder)
       : area.appendChild(draggedCard);
     placeholder.remove();
-    updatePill(draggedCard, col.dataset.stage);
+    var newStage = col.dataset.stage;
+    updatePill(draggedCard, newStage);
+    sb.from('applications').update({ stage: newStage }).eq('id', draggedCard.dataset.id);
     updateAll();
   });
 });
@@ -1101,6 +1044,7 @@ function moveSelectedToStage(targetStage) {
   var col = document.querySelector('[data-stage="' + targetStage + '"]');
   var area = col.querySelector('.cards-area');
   var cards = Array.from(selectedCards);
+  var ids = cards.map(function(c) { return c.dataset.id; });
 
   /* Fade out */
   cards.forEach(function(c) {
@@ -1110,6 +1054,7 @@ function moveSelectedToStage(targetStage) {
   });
 
   setTimeout(function() {
+    sb.from('applications').update({ stage: targetStage }).in('id', ids);
     cards.forEach(function(c) {
       if (cfg) updatePill(c, targetStage);
       area.appendChild(c);
@@ -1135,12 +1080,14 @@ function moveSelectedToStage(targetStage) {
 /* Delete selected cards with fade-out */
 function deleteSelected() {
   var cards = Array.from(selectedCards);
+  var ids = cards.map(function(c) { return c.dataset.id; });
   cards.forEach(function(c) {
     c.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
     c.style.opacity = '0';
     c.style.transform = 'scale(0.88)';
   });
   setTimeout(function() {
+    sb.from('applications').delete().in('id', ids);
     cards.forEach(function(c) { c.remove(); });
     selectedCards.clear();
     syncSelectionState();
@@ -1319,10 +1266,15 @@ function applyFilter() {
 }
 
 /* ══════════════════════════════════════════════
-   CARD DATA & MODAL
+   HELPERS & CARD RENDERING
 ══════════════════════════════════════════════ */
-var cardData = {};
 var STAGES_ORDER = ['wishlist','applied','interviewing','assessment','offer-received','offer-declined'];
+var AVATAR_GRADIENTS = [
+  'from-slate-800 to-slate-600', 'from-blue-700 to-blue-500',
+  'from-violet-700 to-violet-500', 'from-emerald-700 to-emerald-500',
+  'from-rose-700 to-rose-500', 'from-amber-700 to-amber-500',
+  'from-cyan-700 to-cyan-500', 'from-indigo-700 to-indigo-500',
+];
 var DEFAULT_TASKS = {
   'wishlist':       ['Research the company','Check role requirements','Identify key contacts on LinkedIn'],
   'applied':        ['Send application confirmation email','Connect with hiring manager on LinkedIn','Set reminder to follow up in 7 days'],
@@ -1338,16 +1290,77 @@ var COMM_TYPES = {
   'interview': { label: 'Interview',   icon: 'groups',      bg: 'rgba(67,91,162,0.08)',  color: '#435ba2' },
   'linkedin':  { label: 'LinkedIn',    icon: 'person',      bg: 'rgba(0,119,181,0.08)',  color: '#0077b5' },
   'offer':     { label: 'Offer',       icon: 'description', bg: 'rgba(217,119,6,0.08)',  color: '#d97706' },
-  'other':     { label: 'Other',       icon: 'chat',        bg: 'rgba(115,118,135,0.08)','color': '#737687' },
+  'other':     { label: 'Other',       icon: 'chat',        bg: 'rgba(115,118,135,0.08)',color: '#737687' },
 };
 
-function getCardData(id) {
-  if (!cardData[id]) cardData[id] = { notes: [], tasks: null, jobUrl: '', companyUrl: '', comms: [] };
-  return cardData[id];
+function escapeHtml(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function escapeHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function formatCardDate(s) {
+  if (!s) return '—';
+  return new Date(s + 'T00:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' });
+}
+
+function getAvatarGradient(name) {
+  var h = 0;
+  for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffff;
+  return AVATAR_GRADIENTS[h % AVATAR_GRADIENTS.length];
+}
+
+function renderCard(app) {
+  var jr  = app.job_roles,  co = jr.companies,  cv = app.cvs;
+  var cfg = STAGE_CONFIG[app.stage] || {};
+  var grad = getAvatarGradient(co.name);
+  var tags = (jr.tags || []).slice(0, 3).map(function(t) {
+    return '<span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">' + escapeHtml(t) + '</span>';
+  }).join('');
+  var cvLink = cv
+    ? '<a href="' + escapeHtml(cv.file_name) + '" target="_blank" class="flex items-center gap-0.5 text-[10px] text-primary font-semibold hover:underline"><span class="material-symbols-outlined text-[13px]">open_in_new</span>View CV</a>'
+    : '';
+  var card = document.createElement('div');
+  card.className = 'app-card bg-surface-container-lowest rounded-lg p-4 card-shadow border border-slate-200/50';
+  card.draggable = true;
+  card.dataset.id        = app.id;
+  card.dataset.jobRoleId = jr.id;
+  card.dataset.companyId = co.id;
+  card.innerHTML =
+    '<div class="flex items-start justify-between mb-3">' +
+      '<div class="card-avatar-wrap relative shrink-0">' +
+        '<div class="w-9 h-9 rounded-lg bg-gradient-to-br ' + grad + ' flex items-center justify-center shadow-sm">' +
+          '<span class="text-white font-headline font-bold text-sm">' + escapeHtml(co.name.charAt(0)) + '</span>' +
+        '</div>' +
+        '<div class="card-check absolute inset-0 rounded-lg bg-primary flex items-center justify-center">' +
+          '<span class="material-symbols-outlined text-white text-[15px]" style="font-variation-settings:\'FILL\' 1">check</span>' +
+        '</div>' +
+      '</div>' +
+      '<span class="stage-pill ' + (cfg.pillCls || '') + ' text-[9px] font-label font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border">' + escapeHtml(cfg.label || app.stage) + '</span>' +
+    '</div>' +
+    '<h4 class="font-headline font-semibold text-on-surface text-sm leading-snug mb-1">' + escapeHtml(jr.title) + '</h4>' +
+    '<p class="card-company text-[11px] text-on-surface-variant font-body mb-3">' + escapeHtml(co.name) + (jr.location ? ' &middot; ' + escapeHtml(jr.location) : '') + '</p>' +
+    (tags ? '<div class="flex flex-wrap gap-1.5 mb-3">' + tags + '</div>' : '') +
+    '<div class="pt-3 border-t border-slate-100 flex items-center justify-between">' +
+      '<div class="flex items-center gap-1 text-[10px] text-on-surface-variant">' +
+        '<span class="material-symbols-outlined text-[13px]">calendar_today</span>' +
+        '<span class="card-date">' + formatCardDate(app.date_applied) + '</span>' +
+      '</div>' + cvLink +
+    '</div>';
+  initCard(card);
+  return card;
+}
+
+async function loadApplications() {
+  var res = await sb
+    .from('applications')
+    .select('id, stage, date_applied, job_roles(id, title, location, job_url, tags, companies(id, name, website)), cvs(id, file_name, label)')
+    .order('created_at', { ascending: false });
+  if (res.error) { console.error('Load error:', res.error); return; }
+  document.querySelectorAll('.kanban-col .cards-area').forEach(function(a) { a.innerHTML = ''; });
+  (res.data || []).forEach(function(app) {
+    var col = document.querySelector('[data-stage="' + app.stage + '"]');
+    if (col) col.querySelector('.cards-area').appendChild(renderCard(app));
+  });
+  updateAll();
 }
 
 function renderComms(comms) {
@@ -1361,7 +1374,7 @@ function renderComms(comms) {
     var ct = COMM_TYPES[comm.type] || COMM_TYPES['other'];
     var div = document.createElement('div');
     div.className = 'comm-entry';
-    var dateStr = comm.date ? new Date(comm.date + 'T00:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' }) : '';
+    var dateStr = comm.comm_date ? new Date(comm.comm_date + 'T00:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' }) : '';
     div.innerHTML =
       '<div class="comm-icon" style="background:' + ct.bg + '">' +
         '<span class="material-symbols-outlined" style="color:' + ct.color + '">' + ct.icon + '</span>' +
@@ -1371,39 +1384,57 @@ function renderComms(comms) {
           '<span class="comm-type">' + ct.label + '</span>' +
           (dateStr ? '<span class="comm-date">' + dateStr + '</span>' : '') +
         '</div>' +
-        (comm.contact ? '<p class="comm-contact">' + escapeHtml(comm.contact) + '</p>' : '') +
-        (comm.text ? '<p class="comm-text">' + escapeHtml(comm.text) + '</p>' : '') +
+        (comm.contact_name ? '<p class="comm-contact">' + escapeHtml(comm.contact_name) + '</p>' : '') +
+        (comm.notes ? '<p class="comm-text">' + escapeHtml(comm.notes) + '</p>' : '') +
       '</div>' +
       '<button class="comm-del-btn" title="Delete" style="color:#9aa0b0;background:none;border:none;cursor:pointer;padding:0;line-height:1">' +
         '<span class="material-symbols-outlined" style="font-size:16px">delete</span>' +
       '</button>';
-    div.querySelector('.comm-del-btn').addEventListener('click', function() {
-      if (!activeModalId) return;
-      var d = getCardData(activeModalId);
-      d.comms = d.comms.filter(function(c) { return c.id !== comm.id; });
-      renderComms(d.comms);
+    div.querySelector('.comm-del-btn').addEventListener('click', async function() {
+      await sb.from('application_communications').delete().eq('id', comm.id);
+      if (activeModalId) {
+        var res = await sb.from('application_communications').select('*').eq('application_id', activeModalId).order('comm_date', { ascending: false });
+        renderComms(res.data || []);
+      }
     });
     list.appendChild(div);
   });
 }
 
-var modalOverlay  = document.getElementById('modal-overlay');
-var modalPanel    = document.getElementById('modal-panel');
-var activeModalId = null;
+var modalOverlay    = document.getElementById('modal-overlay');
+var modalPanel      = document.getElementById('modal-panel');
+var activeModalId   = null;
+var activeJobRoleId = null;
+var activeCompanyId = null;
 
-function openCardModal(card) {
-  var id      = card.dataset.id;
-  activeModalId = id;
-  var col     = card.closest('.kanban-col');
-  var stage   = col ? col.dataset.stage : 'applied';
-  var title   = card.querySelector('h4').textContent;
-  var company = card.querySelector('.card-company').textContent;
-  var date    = card.querySelector('.card-date').textContent;
-  var tags    = Array.from(card.querySelectorAll('.tag-chip')).map(function(t) { return t.textContent; });
+function setUrlField(inputId, openId, url) {
+  var input = document.getElementById(inputId);
+  var openEl = document.getElementById(openId);
+  input.value = url || '';
+  var hasUrl = !!url;
+  openEl.href = url || '#';
+  openEl.style.opacity = hasUrl ? '1' : '0';
+  openEl.style.pointerEvents = hasUrl ? 'auto' : 'none';
+}
+
+async function openCardModal(card) {
+  var appId     = card.dataset.id;
+  var jobRoleId = card.dataset.jobRoleId;
+  var companyId = card.dataset.companyId;
+  activeModalId   = appId;
+  activeJobRoleId = jobRoleId;
+  activeCompanyId = companyId;
+
+  var col      = card.closest('.kanban-col');
+  var stage    = col ? col.dataset.stage : 'applied';
+  var title    = card.querySelector('h4').textContent;
+  var company  = card.querySelector('.card-company').textContent;
+  var date     = card.querySelector('.card-date').textContent;
+  var tags     = Array.from(card.querySelectorAll('.tag-chip')).map(function(t) { return t.textContent; });
   var cvAnchor = card.querySelector('a[href]');
 
-  /* Avatar — copy gradient classes, upsize */
-  var srcAvatar = card.querySelector('.card-avatar-wrap > div:first-child');
+  /* Avatar */
+  var srcAvatar  = card.querySelector('.card-avatar-wrap > div:first-child');
   var modalAvatar = document.getElementById('modal-avatar');
   if (srcAvatar) {
     var cls = srcAvatar.className
@@ -1434,7 +1465,7 @@ function openCardModal(card) {
   if (!tags.length) tagsEl.innerHTML = '<span class="text-[11px] font-body text-on-surface-variant/50">No tags</span>';
 
   /* CV link */
-  var cvWrap = document.getElementById('modal-cv-wrap');
+  var cvWrap   = document.getElementById('modal-cv-wrap');
   var cvLinkEl = document.getElementById('modal-cv-link');
   if (cvAnchor && cvAnchor.getAttribute('href') && cvAnchor.getAttribute('href') !== '#') {
     cvWrap.classList.remove('hidden');
@@ -1446,36 +1477,12 @@ function openCardModal(card) {
   /* Timeline */
   buildTimeline(stage);
 
-  /* Per-card data: seed tasks once per stage */
-  var data = getCardData(id);
-  if (data.tasks === null) {
-    data.tasks = (DEFAULT_TASKS[stage] || []).map(function(t, i) {
-      return { id: i + 1, text: t, done: false };
-    });
-  }
-  renderNotes(data.notes);
-  renderTasks(data.tasks);
-
-  /* URL fields */
-  function setUrlField(inputId, openId, url) {
-    var input = document.getElementById(inputId);
-    var openEl = document.getElementById(openId);
-    input.value = url || '';
-    var hasUrl = !!url;
-    openEl.href = url || '#';
-    openEl.style.opacity = hasUrl ? '1' : '0';
-    openEl.style.pointerEvents = hasUrl ? 'auto' : 'none';
-  }
-  setUrlField('modal-job-url', 'modal-job-url-open', data.jobUrl);
-  setUrlField('modal-co-url',  'modal-co-url-open',  data.companyUrl);
-
-  /* Communications */
-  document.getElementById('modal-comm-form').classList.add('hidden');
-  document.getElementById('modal-comm-form').style.display = '';
-  renderComms(data.comms);
-
-  /* Clear note input */
+  /* Reset inputs */
   document.getElementById('modal-note-input').value = '';
+  document.getElementById('modal-comm-form').classList.add('hidden');
+  document.getElementById('modal-notes-list').innerHTML = '';
+  document.getElementById('modal-tasks-list').innerHTML = '';
+  document.getElementById('modal-comms-list').innerHTML = '';
 
   /* Animate in */
   modalOverlay.style.opacity = '0';
@@ -1490,6 +1497,34 @@ function openCardModal(card) {
     });
   });
   document.body.style.overflow = 'hidden';
+
+  /* Fetch DB data in parallel */
+  var results = await Promise.all([
+    sb.from('application_notes').select('*').eq('application_id', appId).order('created_at', { ascending: false }),
+    sb.from('application_tasks').select('*').eq('application_id', appId).order('sort_order').order('created_at'),
+    sb.from('application_communications').select('*').eq('application_id', appId).order('comm_date', { ascending: false }),
+    sb.from('job_roles').select('job_url').eq('id', jobRoleId).single(),
+    sb.from('companies').select('website').eq('id', companyId).single()
+  ]);
+  var notesRes = results[0], tasksRes = results[1], commsRes = results[2];
+  var jrRes = results[3], coRes = results[4];
+
+  /* Seed default tasks if none exist */
+  if (!tasksRes.error && (!tasksRes.data || !tasksRes.data.length)) {
+    var defaults = (DEFAULT_TASKS[stage] || []).map(function(t, i) {
+      return { application_id: appId, text: t, done: false, sort_order: i };
+    });
+    if (defaults.length) {
+      var seedRes = await sb.from('application_tasks').insert(defaults).select('*').order('sort_order');
+      if (!seedRes.error) tasksRes = seedRes;
+    }
+  }
+
+  renderNotes(notesRes.data || []);
+  renderTasks(tasksRes.data || []);
+  renderComms(commsRes.data || []);
+  setUrlField('modal-job-url', 'modal-job-url-open', jrRes.data && jrRes.data.job_url);
+  setUrlField('modal-co-url',  'modal-co-url-open',  coRes.data && coRes.data.website);
 }
 
 function closeCardModal() {
@@ -1527,14 +1562,19 @@ function renderNotes(notes) {
   notes.forEach(function(note) {
     var div = document.createElement('div');
     div.className = 'note-card';
-    div.innerHTML = '<div class="note-body"><p>' + escapeHtml(note.text) + '</p><time>' + note.time + '</time></div>' +
+    var timeStr = note.created_at
+      ? new Date(note.created_at).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' }) +
+        ' · ' + new Date(note.created_at).toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' })
+      : '';
+    div.innerHTML = '<div class="note-body"><p>' + escapeHtml(note.body) + '</p><time>' + timeStr + '</time></div>' +
       '<button class="note-del-btn" title="Delete note" style="color:#9aa0b0;background:none;border:none;cursor:pointer;padding:0;line-height:1">' +
       '<span class="material-symbols-outlined" style="font-size:16px">delete</span></button>';
-    div.querySelector('.note-del-btn').addEventListener('click', function() {
-      if (!activeModalId) return;
-      var d = getCardData(activeModalId);
-      d.notes = d.notes.filter(function(n) { return n.id !== note.id; });
-      renderNotes(d.notes);
+    div.querySelector('.note-del-btn').addEventListener('click', async function() {
+      await sb.from('application_notes').delete().eq('id', note.id);
+      if (activeModalId) {
+        var res = await sb.from('application_notes').select('*').eq('application_id', activeModalId).order('created_at', { ascending: false });
+        renderNotes(res.data || []);
+      }
     });
     list.appendChild(div);
   });
@@ -1551,15 +1591,17 @@ function renderTasks(tasks) {
       '<label for="' + uid + '">' + escapeHtml(task.text) + '</label>' +
       '<button class="task-del-btn" title="Remove task" style="color:#9aa0b0;background:none;border:none;cursor:pointer;padding:0;line-height:1">' +
       '<span class="material-symbols-outlined" style="font-size:15px">close</span></button>';
-    div.querySelector('input[type=checkbox]').addEventListener('change', function() {
+    div.querySelector('input[type=checkbox]').addEventListener('change', async function() {
       task.done = this.checked;
       div.classList.toggle('done', task.done);
+      await sb.from('application_tasks').update({ done: task.done }).eq('id', task.id);
     });
-    div.querySelector('.task-del-btn').addEventListener('click', function() {
-      if (!activeModalId) return;
-      var d = getCardData(activeModalId);
-      d.tasks = d.tasks.filter(function(t) { return t.id !== task.id; });
-      renderTasks(d.tasks);
+    div.querySelector('.task-del-btn').addEventListener('click', async function() {
+      await sb.from('application_tasks').delete().eq('id', task.id);
+      if (activeModalId) {
+        var res = await sb.from('application_tasks').select('*').eq('application_id', activeModalId).order('sort_order').order('created_at');
+        renderTasks(res.data || []);
+      }
     });
     list.appendChild(div);
   });
@@ -1574,9 +1616,9 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape' && modalOverlay.style.pointerEvents === 'auto') closeCardModal();
 });
 
-/* URL fields — save on blur, update open-link visibility live */
-function wireUrlField(inputId, openId, dataKey) {
-  var input = document.getElementById(inputId);
+/* URL fields — update link icon live, save to DB on blur */
+function wireUrlField(inputId, openId) {
+  var input  = document.getElementById(inputId);
   var openEl = document.getElementById(openId);
   input.addEventListener('input', function() {
     var val = this.value.trim();
@@ -1585,12 +1627,16 @@ function wireUrlField(inputId, openId, dataKey) {
     openEl.style.pointerEvents = val ? 'auto' : 'none';
   });
   input.addEventListener('blur', function() {
-    if (!activeModalId) return;
-    getCardData(activeModalId)[dataKey] = this.value.trim();
+    var val = this.value.trim();
+    if (inputId === 'modal-job-url' && activeJobRoleId) {
+      sb.from('job_roles').update({ job_url: val || null }).eq('id', activeJobRoleId);
+    } else if (inputId === 'modal-co-url' && activeCompanyId) {
+      sb.from('companies').update({ website: val || null }).eq('id', activeCompanyId);
+    }
   });
 }
-wireUrlField('modal-job-url', 'modal-job-url-open', 'jobUrl');
-wireUrlField('modal-co-url',  'modal-co-url-open',  'companyUrl');
+wireUrlField('modal-job-url', 'modal-job-url-open');
+wireUrlField('modal-co-url',  'modal-co-url-open');
 
 /* Communications form */
 document.getElementById('modal-comm-add-btn').addEventListener('click', function() {
@@ -1610,37 +1656,36 @@ document.getElementById('modal-comm-add-btn').addEventListener('click', function
 document.getElementById('modal-comm-cancel-btn').addEventListener('click', function() {
   document.getElementById('modal-comm-form').classList.add('hidden');
 });
-document.getElementById('modal-comm-save-btn').addEventListener('click', function() {
+document.getElementById('modal-comm-save-btn').addEventListener('click', async function() {
   if (!activeModalId) return;
   var type    = document.getElementById('modal-comm-type').value;
   var date    = document.getElementById('modal-comm-date').value;
   var contact = document.getElementById('modal-comm-contact').value.trim();
   var text    = document.getElementById('modal-comm-text').value.trim();
   if (!date && !text) return;
-  var d = getCardData(activeModalId);
-  d.comms.unshift({ id: Date.now(), type: type, date: date, contact: contact, text: text });
-  renderComms(d.comms);
-  /* Reset form */
+  await sb.from('application_communications').insert({
+    application_id: activeModalId,
+    type:         type,
+    comm_date:    date || null,
+    contact_name: contact || null,
+    notes:        text || null
+  });
+  var res = await sb.from('application_communications').select('*').eq('application_id', activeModalId).order('comm_date', { ascending: false });
+  renderComms(res.data || []);
   document.getElementById('modal-comm-contact').value = '';
   document.getElementById('modal-comm-text').value = '';
   document.getElementById('modal-comm-form').classList.add('hidden');
 });
 
 /* Add note */
-document.getElementById('modal-note-add-btn').addEventListener('click', function() {
+document.getElementById('modal-note-add-btn').addEventListener('click', async function() {
   var input = document.getElementById('modal-note-input');
   var text = input.value.trim();
   if (!text || !activeModalId) return;
-  var d = getCardData(activeModalId);
-  var now = new Date();
-  d.notes.unshift({
-    id: Date.now(),
-    text: text,
-    time: now.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' }) +
-          ' · ' + now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' })
-  });
+  await sb.from('application_notes').insert({ application_id: activeModalId, body: text });
   input.value = '';
-  renderNotes(d.notes);
+  var res = await sb.from('application_notes').select('*').eq('application_id', activeModalId).order('created_at', { ascending: false });
+  renderNotes(res.data || []);
 });
 document.getElementById('modal-note-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
@@ -1661,14 +1706,14 @@ document.getElementById('modal-task-add-btn').addEventListener('click', function
     wrap.style.display = '';
   }
 });
-document.getElementById('modal-task-save-btn').addEventListener('click', function() {
+document.getElementById('modal-task-save-btn').addEventListener('click', async function() {
   var input = document.getElementById('modal-task-input');
   var text = input.value.trim();
   if (!text || !activeModalId) return;
-  var d = getCardData(activeModalId);
-  d.tasks.push({ id: Date.now(), text: text, done: false });
-  renderTasks(d.tasks);
+  await sb.from('application_tasks').insert({ application_id: activeModalId, text: text, done: false, sort_order: 999 });
   input.value = '';
+  var res = await sb.from('application_tasks').select('*').eq('application_id', activeModalId).order('sort_order').order('created_at');
+  renderTasks(res.data || []);
   var wrap = document.getElementById('modal-task-input-wrap');
   wrap.classList.add('hidden');
   wrap.style.display = '';
@@ -1703,6 +1748,79 @@ document.getElementById('open-drawer-btn').addEventListener('click', openDrawer)
 document.getElementById('close-drawer-btn').addEventListener('click', closeDrawer);
 document.getElementById('cancel-drawer-btn').addEventListener('click', closeDrawer);
 overlay.addEventListener('click', closeDrawer);
+
+/* ══════════════════════════════════════════════
+   DRAWER SAVE
+══════════════════════════════════════════════ */
+async function findOrCreateCompany(name) {
+  var res = await sb.from('companies').select('id').ilike('name', name).limit(1);
+  if (res.data && res.data.length) return res.data[0].id;
+  var ins = await sb.from('companies').insert({ name: name }).select('id').single();
+  return ins.data ? ins.data.id : null;
+}
+
+document.getElementById('drawer-save-btn').addEventListener('click', async function() {
+  var companyName = document.getElementById('drawer-company').value.trim();
+  var title       = document.getElementById('drawer-title').value.trim();
+  var location    = document.getElementById('drawer-location').value.trim();
+  var stage       = document.getElementById('drawer-stage').value;
+  var date        = document.getElementById('drawer-date').value;
+  var jobUrl      = document.getElementById('drawer-job-url').value.trim();
+  var cvFile      = document.getElementById('drawer-cv').value;
+  var notes       = document.getElementById('drawer-notes').value.trim();
+
+  if (!companyName || !title) { alert('Company and job title are required.'); return; }
+
+  var companyId = await findOrCreateCompany(companyName);
+  if (!companyId) return;
+
+  var roleRes = await sb.from('job_roles').insert({
+    company_id: companyId, title: title,
+    location: location || null, job_url: jobUrl || null
+  }).select('id').single();
+  if (roleRes.error) { console.error('Role insert error:', roleRes.error); return; }
+  var roleId = roleRes.data.id;
+
+  var cvId = null;
+  if (cvFile) {
+    var cvLookup = await sb.from('cvs').select('id').eq('file_name', cvFile).limit(1);
+    if (cvLookup.data && cvLookup.data.length) {
+      cvId = cvLookup.data[0].id;
+    } else {
+      var cvIns = await sb.from('cvs').insert({ label: cvFile, file_name: cvFile, job_role_id: roleId }).select('id').single();
+      cvId = cvIns.data ? cvIns.data.id : null;
+    }
+  }
+
+  var appRes = await sb.from('applications').insert({
+    job_role_id: roleId, cv_id: cvId, stage: stage, date_applied: date || null
+  }).select('id, stage, date_applied, job_roles(id, title, location, job_url, tags, companies(id, name, website)), cvs(id, file_name, label)').single();
+
+  if (appRes.error) { console.error('App insert error:', appRes.error); return; }
+
+  if (notes) {
+    await sb.from('application_notes').insert({ application_id: appRes.data.id, body: notes });
+  }
+
+  var card = renderCard(appRes.data);
+  var targetCol = document.querySelector('[data-stage="' + stage + '"]');
+  if (targetCol) targetCol.querySelector('.cards-area').prepend(card);
+  updateAll();
+  closeDrawer();
+
+  /* Clear form */
+  ['drawer-company','drawer-title','drawer-location','drawer-job-url','drawer-notes'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('drawer-stage').value = 'applied';
+  document.getElementById('drawer-date').value = '';
+  document.getElementById('drawer-cv').value = '';
+});
+
+/* ══════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════ */
+loadApplications();
 </script>
 </body>
 </html>
