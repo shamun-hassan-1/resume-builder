@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Applications – Resume Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "inverse-primary": "#b4c5ff",
+          "on-tertiary": "#ffffff",
+          "on-primary-container": "#f1f2ff",
+          "primary-container": "#0061ff",
+          "on-surface": "#1a1c1e",
+          "surface-container-high": "#e8e8ea",
+          "surface-bright": "#f9f9fc",
+          "surface-dim": "#dadadc",
+          "surface-container-highest": "#e2e2e5",
+          "on-secondary-container": "#274187",
+          "primary-fixed": "#dbe1ff",
+          "secondary": "#435ba2",
+          "surface": "#f9f9fc",
+          "on-secondary": "#ffffff",
+          "surface-tint": "#0052dc",
+          "secondary-fixed-dim": "#b4c5ff",
+          "inverse-surface": "#2f3133",
+          "primary-fixed-dim": "#b4c5ff",
+          "outline": "#737687",
+          "inverse-on-surface": "#f0f0f3",
+          "surface-container-lowest": "#ffffff",
+          "error": "#ba1a1a",
+          "on-surface-variant": "#424656",
+          "surface-container-low": "#f3f3f6",
+          "secondary-container": "#99b1fe",
+          "on-primary-fixed": "#00174b",
+          "primary": "#004bca",
+          "outline-variant": "#c2c6d9",
+          "surface-variant": "#e2e2e5",
+          "on-background": "#1a1c1e",
+          "background": "#f9f9fc",
+          "surface-container": "#eeeef0"
+        },
+        borderRadius: {
+          DEFAULT: "0.25rem",
+          lg: "0.5rem",
+          xl: "0.75rem",
+          full: "9999px"
+        },
+        fontFamily: {
+          headline: ["Manrope"],
+          body: ["Inter"],
+          label: ["Inter"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; background-color: #f9f9fc; color: #1a1c1e; }
+  h1,h2,h3,h4,h5,h6,.font-headline { font-family: 'Manrope', sans-serif; }
+  .ghost-border { box-shadow: inset 0 0 0 1px rgba(194,198,217,0.15); }
+  .ambient-shadow { box-shadow: 0 32px 64px -12px rgba(26,28,30,0.04); }
+  .card-shadow { box-shadow: 0 8px 24px -8px rgba(26,28,30,0.06); }
+
+  /* ── Cards ── */
+  .app-card {
+    cursor: pointer;
+    user-select: none;
+    transition: box-shadow 0.18s ease, border-color 0.18s ease,
+                transform 0.18s ease, opacity 0.22s ease;
+  }
+  .app-card:hover {
+    box-shadow: 0 16px 40px -8px rgba(26,28,30,0.12);
+    transform: translateY(-2px);
+  }
+  .app-card.is-dragging {
+    cursor: grabbing;
+    opacity: 0.3;
+    transform: scale(0.97) rotate(0.4deg);
+    box-shadow: 0 24px 48px -8px rgba(26,28,30,0.18) !important;
+    pointer-events: none;
+  }
+
+  /* ── Multi-select: selected card ── */
+  .app-card.selected {
+    border-color: rgba(0,75,202,0.5) !important;
+    box-shadow: 0 0 0 2px rgba(0,75,202,0.13),
+                0 8px 24px -8px rgba(26,28,30,0.06) !important;
+  }
+  .app-card.selected .card-check { opacity: 1 !important; }
+
+  /* Dim non-selected cards while any selection is active */
+  #kanban-board.has-selection .app-card:not(.selected) {
+    opacity: 0.38;
+  }
+  #kanban-board.has-selection .app-card:not(.selected):hover {
+    opacity: 0.55;
+    transform: none;
+    box-shadow: 0 8px 24px -8px rgba(26,28,30,0.06) !important;
+  }
+
+  /* ── Card check overlay ── */
+  .card-check {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  /* ── Drag placeholder ── */
+  #drag-placeholder {
+    border: 2px dashed rgba(0,75,202,0.28);
+    background: rgba(0,75,202,0.04);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    min-height: 40px;
+  }
+
+  /* ── Column drag-over ── */
+  .kanban-col.drag-over {
+    background: rgba(0,75,202,0.05) !important;
+    outline: 1.5px dashed rgba(0,75,202,0.24);
+    outline-offset: -1px;
+  }
+
+  /* ── Stage pills ── */
+  .stage-pill { transition: background 0.2s, color 0.2s, border-color 0.2s; }
+  .pill-wishlist    { background:#f1f3f9; color:#424656;  border-color:#c2c6d9; }
+  .pill-applied     { background:#eff4ff; color:#004bca;  border-color:#bfcfff; }
+  .pill-interviewing{ background:#eff1fa; color:#435ba2;  border-color:#b4c5ff; }
+  .pill-assessment  { background:#fffbeb; color:#b45309;  border-color:#fde68a; }
+  .pill-offer       { background:#f0fdf4; color:#15803d;  border-color:#bbf7d0; }
+  .pill-declined    { background:#fef2f2; color:#dc2626;  border-color:#fecaca; }
+
+  /* ── Filter button ── */
+  #filter-btn { transition: background 0.15s, border-color 0.15s, color 0.15s; }
+  #filter-btn.is-active {
+    background: #eff4ff;
+    border-color: #bfcfff;
+    color: #004bca;
+  }
+  #filter-btn .filter-dot {
+    display: none;
+    width: 6px; height: 6px;
+    border-radius: 999px;
+    background: #004bca;
+    flex-shrink: 0;
+  }
+  #filter-btn.is-active .filter-dot { display: block; }
+
+  /* ── Filter popover ── */
+  #filter-popover {
+    transform-origin: top right;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+  #filter-popover.hidden-pop {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+    pointer-events: none;
+  }
+
+
+  /* ── Selection action bar ── */
+  #sel-bar {
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease;
+  }
+  #sel-bar.bar-hidden { transform: translateY(120%); opacity: 0; pointer-events: none; }
+
+  /* ── Drawer ── */
+  #add-drawer     { transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); }
+  #drawer-overlay { transition: opacity 0.28s ease; }
+
+  /* Move-to select inside dark bar */
+  #sel-move-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 28px 4px 10px;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff99' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+  }
+  #sel-move-select option { background: #1a1c1e; color: #fff; }
+  #sel-move-select:focus { outline: none; border-color: rgba(255,255,255,0.4); }
+
+  /* ── Modal overlay & panel ── */
+  #modal-overlay {
+    transition: opacity 0.22s ease;
+  }
+  #modal-panel {
+    transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), opacity 0.22s ease;
+  }
+  .modal-right-scroll::-webkit-scrollbar { width: 4px; }
+  .modal-right-scroll::-webkit-scrollbar-track { background: transparent; }
+  .modal-right-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+  #modal-sidebar::-webkit-scrollbar { width: 3px; }
+  #modal-sidebar::-webkit-scrollbar-track { background: transparent; }
+  #modal-sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 4px; }
+
+  /* Timeline */
+  .tl-step { position: relative; padding-left: 28px; }
+  .tl-step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 14px;
+    bottom: 0;
+    width: 2px;
+    background: #e2e2e5;
+  }
+  .tl-step.done:not(:last-child)::before { background: #004bca; }
+  .tl-dot {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid #c2c6d9;
+    background: #fff;
+  }
+  .tl-step.done .tl-dot { background: #004bca; border-color: #004bca; }
+  .tl-step.current .tl-dot {
+    background: #fff; border-color: #004bca; border-width: 3px;
+    box-shadow: 0 0 0 3px rgba(0,75,202,0.15);
+  }
+  .tl-step.future .tl-dot { background: #f9f9fc; border-color: #e2e2e5; }
+  .tl-label { font-size: 12px; font-family: 'Inter', sans-serif; color: #1a1c1e; padding-bottom: 18px; }
+  .tl-step.future .tl-label { color: #737687; }
+  .tl-step.current .tl-label { color: #004bca; font-weight: 600; }
+  .tl-step:last-child .tl-label { padding-bottom: 0; }
+
+  /* Note cards */
+  .note-card {
+    background: #f9f9fc;
+    border: 1px solid #e2e2e5;
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .note-body { flex: 1; }
+  .note-body p { font-size: 12px; font-family: 'Inter', sans-serif; color: #1a1c1e; line-height: 1.55; }
+  .note-body time { font-size: 9px; color: #737687; font-family: 'Inter', sans-serif; display: block; margin-top: 4px; }
+  .note-del-btn { opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+  .note-card:hover .note-del-btn { opacity: 1; }
+
+  /* Communication entries */
+  .comm-entry { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: #f9f9fc; border: 1px solid #e2e2e5; border-radius: 8px; }
+  .comm-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .comm-icon .material-symbols-outlined { font-size: 15px; }
+  .comm-body { flex: 1; min-width: 0; }
+  .comm-header { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; }
+  .comm-type { font-size: 11px; font-family: 'Manrope', sans-serif; font-weight: 700; color: #1a1c1e; }
+  .comm-date { font-size: 10px; font-family: 'Inter', sans-serif; color: #737687; }
+  .comm-contact { font-size: 10px; font-family: 'Inter', sans-serif; color: #424656; font-style: italic; margin-bottom: 3px; }
+  .comm-text { font-size: 12px; font-family: 'Inter', sans-serif; color: #1a1c1e; line-height: 1.5; }
+  .comm-del-btn { opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+  .comm-entry:hover .comm-del-btn { opacity: 1; }
+
+  /* Task rows */
+  .task-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; }
+  .task-row input[type=checkbox] { width: 15px; height: 15px; accent-color: #004bca; cursor: pointer; flex-shrink: 0; }
+  .task-row label { flex: 1; font-size: 12px; font-family: 'Inter', sans-serif; color: #1a1c1e; cursor: pointer; }
+  .task-row.done label { text-decoration: line-through; color: #737687; }
+  .task-del-btn { opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+  .task-row:hover .task-del-btn { opacity: 1; }
+</style>
+</head>
+<body class="flex min-h-screen bg-surface antialiased">
+
+<!-- ─── Sidebar ─── -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-slate-50 flex flex-col p-6 border-r border-slate-200/60 z-50">
+  <div class="flex items-center gap-3 mb-10">
+    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white font-headline font-bold text-xl shadow-md">K</div>
+    <div>
+      <h1 class="text-lg font-black text-slate-900 font-headline tracking-tight leading-none">Resume Studio</h1>
+      <p class="text-[10px] uppercase tracking-wider text-slate-500 font-label mt-1">Kazi S. Hassan</p>
+    </div>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-all rounded-lg" href="index.html">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="text-sm font-body">Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-all rounded-lg" href="resume_default.html">
+      <span class="material-symbols-outlined">description</span>
+      <span class="text-sm font-medium font-body">Default CV</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 rounded-lg shadow-sm font-semibold" href="applications.html">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">work_history</span>
+      <span class="text-sm font-body">Applications</span>
+    </a>
+  </nav>
+  <div class="mt-auto pt-6 border-t border-slate-200/60">
+    <a href="resume_blank_template.html" class="w-full py-3 px-4 bg-gradient-to-br from-primary to-primary-container text-white rounded-DEFAULT font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-sm">add</span>
+      Create New
+    </a>
+  </div>
+</aside>
+
+<!-- ─── Main ─── -->
+<main class="flex-1 ml-64 flex flex-col min-w-0">
+
+  <!-- Top bar -->
+  <header class="flex items-center justify-between w-full px-8 h-16 sticky top-0 z-40 bg-slate-50/80 backdrop-blur-xl shadow-sm shadow-slate-200/50 shrink-0">
+    <span class="text-xl font-bold tracking-tight text-slate-900 font-headline">Applications</span>
+    <button id="open-drawer-btn" class="flex items-center gap-2 px-5 py-2 bg-gradient-to-br from-primary to-primary-container text-white rounded-DEFAULT font-body font-medium text-sm shadow-md hover:opacity-90 transition-all">
+      <span class="material-symbols-outlined text-[16px]">add</span>
+      Add Application
+    </button>
+  </header>
+
+  <!-- Stats row -->
+  <div class="px-10 lg:px-14 pt-10 lg:pt-14 max-w-[1400px] w-full mx-auto shrink-0">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+      <div class="bg-surface-container-lowest rounded-xl p-5 card-shadow border border-slate-200/40 flex items-center gap-4">
+        <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-outline text-[20px]">work</span>
+        </div>
+        <div>
+          <p id="stat-total" class="text-2xl font-headline font-bold text-on-surface leading-none">2</p>
+          <p class="text-[11px] font-label text-on-surface-variant mt-1">Total</p>
+        </div>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-xl p-5 card-shadow border border-slate-200/40 flex items-center gap-4">
+        <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-primary text-[20px]">send</span>
+        </div>
+        <div>
+          <p id="stat-applied" class="text-2xl font-headline font-bold text-primary leading-none">2</p>
+          <p class="text-[11px] font-label text-on-surface-variant mt-1">Applied</p>
+        </div>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-xl p-5 card-shadow border border-slate-200/40 flex items-center gap-4">
+        <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-secondary text-[20px]">record_voice_over</span>
+        </div>
+        <div>
+          <p id="stat-interviewing" class="text-2xl font-headline font-bold text-secondary leading-none">0</p>
+          <p class="text-[11px] font-label text-on-surface-variant mt-1">Interviewing</p>
+        </div>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-xl p-5 card-shadow border border-slate-200/40 flex items-center gap-4">
+        <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-[20px]" style="color:#15803d">celebration</span>
+        </div>
+        <div>
+          <p id="stat-offers" class="text-2xl font-headline font-bold leading-none" style="color:#15803d">0</p>
+          <p class="text-[11px] font-label text-on-surface-variant mt-1">Offers</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Filter row ── -->
+  <div class="px-10 lg:px-14 pt-6 pb-0 flex items-center justify-end max-w-[1400px] w-full mx-auto shrink-0">
+    <div class="relative">
+      <!-- Filter button -->
+      <button id="filter-btn" class="flex items-center gap-2 px-3.5 py-2 rounded-lg border border-slate-200 bg-white text-on-surface-variant font-body font-medium text-sm hover:bg-slate-50 hover:border-slate-300 transition-all">
+        <span class="material-symbols-outlined text-[17px]">filter_list</span>
+        <span>Filter</span>
+        <div class="filter-dot"></div>
+      </button>
+
+      <!-- Filter popover -->
+      <div id="filter-popover" class="hidden-pop absolute right-0 top-[calc(100%+8px)] w-[304px] bg-white rounded-xl border border-slate-200/70 z-30 p-5 space-y-5" style="box-shadow:0 16px 40px -8px rgba(26,28,30,0.12)">
+
+        <!-- Status -->
+        <div class="space-y-2">
+          <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Status</label>
+          <div class="relative" id="status-dd-wrap">
+            <button id="status-dd-trigger" type="button" class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-white hover:border-slate-300 transition-all focus:outline-none">
+              <span id="status-dd-label" class="text-[12px] font-body text-on-surface-variant">All statuses</span>
+              <span class="material-symbols-outlined text-[17px] text-outline" id="status-dd-chevron" style="transition:transform 0.15s ease">expand_more</span>
+            </button>
+            <div id="status-dd-menu" class="absolute left-0 right-0 bg-white rounded-lg border border-slate-200 overflow-hidden" style="top:calc(100% + 4px);z-index:20;box-shadow:0 8px 24px -4px rgba(26,28,30,0.1);display:none">
+              <button type="button" class="status-opt w-full flex items-center gap-2.5 px-3 py-2 hover:bg-slate-50 transition-colors" data-value="wishlist">
+                <span class="w-2 h-2 rounded-full shrink-0" style="background:#737687"></span>
+                <span class="flex-1 text-left text-[12px] font-body text-on-surface">Wishlist</span>
+                <span class="material-symbols-outlined text-[15px] opt-check" style="color:#737687;font-variation-settings:'FILL' 1;opacity:0;transition:opacity 0.1s">check_circle</span>
+              </button>
+              <button type="button" class="status-opt w-full flex items-center gap-2.5 px-3 py-2 hover:bg-slate-50 transition-colors" data-value="applied">
+                <span class="w-2 h-2 rounded-full shrink-0" style="background:#004bca"></span>
+                <span class="flex-1 text-left text-[12px] font-body text-on-surface">Applied</span>
+                <span class="material-symbols-outlined text-[15px] opt-check" style="color:#004bca;font-variation-settings:'FILL' 1;opacity:0;transition:opacity 0.1s">check_circle</span>
+              </button>
+              <button type="button" class="status-opt w-full flex items-center gap-2.5 px-3 py-2 hover:bg-slate-50 transition-colors" data-value="interviewing">
+                <span class="w-2 h-2 rounded-full shrink-0" style="background:#435ba2"></span>
+                <span class="flex-1 text-left text-[12px] font-body text-on-surface">Interviewing</span>
+                <span class="material-symbols-outlined text-[15px] opt-check" style="color:#435ba2;font-variation-settings:'FILL' 1;opacity:0;transition:opacity 0.1s">check_circle</span>
+              </button>
+              <button type="button" class="status-opt w-full flex items-center gap-2.5 px-3 py-2 hover:bg-slate-50 transition-colors" data-value="assessment">
+                <span class="w-2 h-2 rounded-full shrink-0" style="background:#d97706"></span>
+                <span class="flex-1 text-left text-[12px] font-body text-on-surface">Assessment</span>
+                <span class="material-symbols-outlined text-[15px] opt-check" style="color:#d97706;font-variation-settings:'FILL' 1;opacity:0;transition:opacity 0.1s">check_circle</span>
+              </button>
+              <button type="button" class="status-opt w-full flex items-center gap-2.5 px-3 py-2 hover:bg-slate-50 transition-colors" data-value="offer-received">
+                <span class="w-2 h-2 rounded-full shrink-0" style="background:#15803d"></span>
+                <span class="flex-1 text-left text-[12px] font-body text-on-surface">Offer Received</span>
+                <span class="material-symbols-outlined text-[15px] opt-check" style="color:#15803d;font-variation-settings:'FILL' 1;opacity:0;transition:opacity 0.1s">check_circle</span>
+              </button>
+              <button type="button" class="status-opt w-full flex items-center gap-2.5 px-3 py-2 hover:bg-slate-50 transition-colors" data-value="offer-declined">
+                <span class="w-2 h-2 rounded-full shrink-0" style="background:#dc2626"></span>
+                <span class="flex-1 text-left text-[12px] font-body text-on-surface">Offer Declined</span>
+                <span class="material-symbols-outlined text-[15px] opt-check" style="color:#dc2626;font-variation-settings:'FILL' 1;opacity:0;transition:opacity 0.1s">check_circle</span>
+              </button>
+            </div>
+          </div>
+          <div id="status-chips" class="flex flex-wrap gap-1"></div>
+        </div>
+
+        <div class="border-t border-slate-100"></div>
+
+        <!-- Job Title -->
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Job Title</label>
+          <div class="relative">
+            <span class="material-symbols-outlined text-[15px] text-outline absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">title</span>
+            <input id="filter-title" type="text" placeholder="e.g. Demand Generation" class="w-full pl-8 pr-3 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-100"></div>
+
+        <!-- Date Applied range -->
+        <div class="space-y-2">
+          <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Date Applied</label>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="space-y-1">
+              <span class="text-[10px] font-label text-on-surface-variant">From</span>
+              <input id="filter-date-from" type="date" class="w-full px-2 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+            </div>
+            <div class="space-y-1">
+              <span class="text-[10px] font-label text-on-surface-variant">To</span>
+              <input id="filter-date-to" type="date" class="w-full px-2 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-100"></div>
+
+        <!-- Clear -->
+        <button id="filter-clear-btn" class="w-full py-1.5 text-[11px] font-label font-semibold text-on-surface-variant hover:text-primary transition-colors">
+          Clear all filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Kanban board ── -->
+  <!-- Column min-width: 231px (210px × 1.10). Board min-width: 6 cols + 5 gaps. -->
+  <div class="px-10 lg:px-14 pt-5 pb-28 overflow-x-auto">
+    <div id="kanban-board" class="flex gap-4 items-start" style="min-width:calc(6 * 243px + 5 * 16px)">
+
+      <!-- Wishlist -->
+      <div class="kanban-col flex-1 min-w-[243px] flex flex-col bg-slate-100/80 rounded-xl p-3 gap-3 transition-all" data-stage="wishlist" style="min-height:520px">
+        <div class="col-header shrink-0 px-1 py-1 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-outline-variant inline-block"></span>
+            <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.1em] text-on-surface-variant">Wishlist</h3>
+          </div>
+          <span class="col-count text-[10px] font-bold text-on-surface-variant bg-white px-2 py-0.5 rounded-full border border-slate-200">0</span>
+        </div>
+        <div class="cards-area flex flex-col gap-3" style="min-height:40px"></div>
+        <div class="empty-state flex flex-col items-center justify-center py-12 gap-2.5 text-center pointer-events-none">
+          <span class="material-symbols-outlined text-[30px] text-outline-variant">bookmark_add</span>
+          <p class="text-[11px] font-body text-on-surface-variant/60 max-w-[120px] leading-relaxed">Jobs you want to apply to</p>
+        </div>
+      </div>
+
+      <!-- Applied -->
+      <div class="kanban-col flex-1 min-w-[243px] flex flex-col bg-slate-100/80 rounded-xl p-3 gap-3 transition-all" data-stage="applied" style="min-height:520px">
+        <div class="col-header shrink-0 px-1 py-1 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+            <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.1em] text-on-surface-variant">Applied</h3>
+          </div>
+          <span class="col-count text-[10px] font-bold text-primary bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">2</span>
+        </div>
+        <div class="cards-area flex flex-col gap-3" style="min-height:40px">
+
+          <!-- Alto Software -->
+          <div class="app-card bg-surface-container-lowest rounded-lg p-4 card-shadow border border-slate-200/50" draggable="true" data-id="alto">
+            <div class="flex items-start justify-between mb-3">
+              <div class="card-avatar-wrap relative shrink-0">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-slate-800 to-slate-600 flex items-center justify-center shadow-sm">
+                  <span class="text-white font-headline font-bold text-sm">A</span>
+                </div>
+                <div class="card-check absolute inset-0 rounded-lg bg-primary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-[15px]" style="font-variation-settings:'FILL' 1">check</span>
+                </div>
+              </div>
+              <span class="stage-pill pill-applied text-[9px] font-label font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border">Applied</span>
+            </div>
+            <h4 class="font-headline font-semibold text-on-surface text-sm leading-snug mb-1">Head of Demand Generation</h4>
+            <p class="card-company text-[11px] text-on-surface-variant font-body mb-3">Alto Software Group &middot; London, UK</p>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">Demand Gen</span>
+              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">B2B SaaS</span>
+              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">ABM</span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div class="flex items-center gap-1 text-[10px] text-on-surface-variant">
+                <span class="material-symbols-outlined text-[13px]">calendar_today</span>
+                <span class="card-date">10 Apr 25</span>
+              </div>
+              <a href="resume_AltoSoftware_HeadOfDemandGeneration.html" target="_blank" class="flex items-center gap-0.5 text-[10px] text-primary font-semibold hover:underline">
+                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+                View CV
+              </a>
+            </div>
+          </div>
+
+          <!-- Aptitude Software -->
+          <div class="app-card bg-surface-container-lowest rounded-lg p-4 card-shadow border border-slate-200/50" draggable="true" data-id="aptitude">
+            <div class="flex items-start justify-between mb-3">
+              <div class="card-avatar-wrap relative shrink-0">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-700 to-blue-500 flex items-center justify-center shadow-sm">
+                  <span class="text-white font-headline font-bold text-sm">A</span>
+                </div>
+                <div class="card-check absolute inset-0 rounded-lg bg-primary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-[15px]" style="font-variation-settings:'FILL' 1">check</span>
+                </div>
+              </div>
+              <span class="stage-pill pill-applied text-[9px] font-label font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border">Applied</span>
+            </div>
+            <h4 class="font-headline font-semibold text-on-surface text-sm leading-snug mb-1">Demand Generation Manager</h4>
+            <p class="card-company text-[11px] text-on-surface-variant font-body mb-3">Aptitude Software &middot; London, UK</p>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">HubSpot</span>
+              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">Pipeline</span>
+              <span class="tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">Lifecycle</span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div class="flex items-center gap-1 text-[10px] text-on-surface-variant">
+                <span class="material-symbols-outlined text-[13px]">calendar_today</span>
+                <span class="card-date">12 Apr 25</span>
+              </div>
+              <a href="resume_AptitudeSoftware_DemandGenerationManager.html" target="_blank" class="flex items-center gap-0.5 text-[10px] text-primary font-semibold hover:underline">
+                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+                View CV
+              </a>
+            </div>
+          </div>
+
+        </div>
+        <div class="empty-state hidden flex-col items-center justify-center py-12 gap-2.5 text-center pointer-events-none">
+          <span class="material-symbols-outlined text-[30px] text-outline-variant">send</span>
+          <p class="text-[11px] font-body text-on-surface-variant/60 max-w-[120px] leading-relaxed">Applications sent</p>
+        </div>
+      </div>
+
+      <!-- Interviewing -->
+      <div class="kanban-col flex-1 min-w-[243px] flex flex-col bg-slate-100/80 rounded-xl p-3 gap-3 transition-all" data-stage="interviewing" style="min-height:520px">
+        <div class="col-header shrink-0 px-1 py-1 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+            <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.1em] text-on-surface-variant">Interviewing</h3>
+          </div>
+          <span class="col-count text-[10px] font-bold text-secondary bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">0</span>
+        </div>
+        <div class="cards-area flex flex-col gap-3" style="min-height:40px"></div>
+        <div class="empty-state flex flex-col items-center justify-center py-12 gap-2.5 text-center pointer-events-none">
+          <span class="material-symbols-outlined text-[30px] text-outline-variant">groups</span>
+          <p class="text-[11px] font-body text-on-surface-variant/60 max-w-[120px] leading-relaxed">Active interview processes</p>
+        </div>
+      </div>
+
+      <!-- Assessment -->
+      <div class="kanban-col flex-1 min-w-[243px] flex flex-col bg-slate-100/80 rounded-xl p-3 gap-3 transition-all" data-stage="assessment" style="min-height:520px">
+        <div class="col-header shrink-0 px-1 py-1 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full inline-block" style="background:#d97706"></span>
+            <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.1em] text-on-surface-variant">Assessment</h3>
+          </div>
+          <span class="col-count text-[10px] font-bold px-2 py-0.5 rounded-full border" style="background:#fffbeb;color:#b45309;border-color:#fde68a">0</span>
+        </div>
+        <div class="cards-area flex flex-col gap-3" style="min-height:40px"></div>
+        <div class="empty-state flex flex-col items-center justify-center py-12 gap-2.5 text-center pointer-events-none">
+          <span class="material-symbols-outlined text-[30px] text-outline-variant">assignment</span>
+          <p class="text-[11px] font-body text-on-surface-variant/60 max-w-[120px] leading-relaxed">Tests &amp; skills assessments</p>
+        </div>
+      </div>
+
+      <!-- Offer Received -->
+      <div class="kanban-col flex-1 min-w-[243px] flex flex-col bg-slate-100/80 rounded-xl p-3 gap-3 transition-all" data-stage="offer-received" style="min-height:520px">
+        <div class="col-header shrink-0 px-1 py-1 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full inline-block" style="background:#15803d"></span>
+            <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.1em] text-on-surface-variant">Offer Received</h3>
+          </div>
+          <span class="col-count text-[10px] font-bold px-2 py-0.5 rounded-full border" style="background:#f0fdf4;color:#15803d;border-color:#bbf7d0">0</span>
+        </div>
+        <div class="cards-area flex flex-col gap-3" style="min-height:40px"></div>
+        <div class="empty-state flex flex-col items-center justify-center py-12 gap-2.5 text-center pointer-events-none">
+          <span class="material-symbols-outlined text-[30px] text-outline-variant">celebration</span>
+          <p class="text-[11px] font-body text-on-surface-variant/60 max-w-[120px] leading-relaxed">Offers to review &amp; negotiate</p>
+        </div>
+      </div>
+
+      <!-- Offer Declined -->
+      <div class="kanban-col flex-1 min-w-[243px] flex flex-col bg-slate-100/80 rounded-xl p-3 gap-3 transition-all" data-stage="offer-declined" style="min-height:520px">
+        <div class="col-header shrink-0 px-1 py-1 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full inline-block" style="background:#dc2626"></span>
+            <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.1em] text-on-surface-variant">Offer Declined</h3>
+          </div>
+          <span class="col-count text-[10px] font-bold px-2 py-0.5 rounded-full border" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">0</span>
+        </div>
+        <div class="cards-area flex flex-col gap-3" style="min-height:40px"></div>
+        <div class="empty-state flex flex-col items-center justify-center py-12 gap-2.5 text-center pointer-events-none">
+          <span class="material-symbols-outlined text-[30px] text-outline-variant">do_not_disturb</span>
+          <p class="text-[11px] font-body text-on-surface-variant/60 max-w-[120px] leading-relaxed">Offers passed on</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ─── Selection action bar ─── -->
+<!-- Floats centred in the area right of the sidebar -->
+<div class="fixed left-64 right-0 bottom-7 flex justify-center z-50 pointer-events-none">
+  <div id="sel-bar" class="bar-hidden pointer-events-auto flex items-center gap-1 px-4 py-3 rounded-2xl" style="background:#1a1c1e;box-shadow:0 20px 60px rgba(0,0,0,0.28),0 0 0 1px rgba(255,255,255,0.06)">
+
+    <!-- Count -->
+    <span class="material-symbols-outlined text-white/60 text-[18px]">check_box</span>
+    <span id="sel-count-label" class="text-sm font-label font-bold text-white pr-2">0 selected</span>
+
+    <!-- Divider -->
+    <div class="w-px h-5 bg-white/12 mx-1"></div>
+
+    <!-- Move to -->
+    <span class="text-[11px] font-label text-white/50 pl-1">Move to</span>
+    <select id="sel-move-select" class="mx-1">
+      <option value="wishlist">Wishlist</option>
+      <option value="applied">Applied</option>
+      <option value="interviewing">Interviewing</option>
+      <option value="assessment">Assessment</option>
+      <option value="offer-received">Offer Received</option>
+      <option value="offer-declined">Offer Declined</option>
+    </select>
+    <button id="sel-move-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-white text-[11px] font-label font-bold hover:opacity-90 transition-opacity">
+      <span class="material-symbols-outlined text-[14px]">drive_file_move</span>
+      Move
+    </button>
+
+    <!-- Divider -->
+    <div class="w-px h-5 bg-white/12 mx-1"></div>
+
+    <!-- Delete -->
+    <button id="sel-delete-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-[11px] font-label font-bold transition-all hover:bg-red-500/20" style="color:#f87171">
+      <span class="material-symbols-outlined text-[14px]">delete</span>
+      Delete
+    </button>
+
+    <!-- Divider -->
+    <div class="w-px h-5 bg-white/12 mx-1"></div>
+
+    <!-- Clear -->
+    <button id="sel-clear-btn" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-label font-medium text-white/50 hover:text-white/80 transition-colors">
+      <span class="material-symbols-outlined text-[14px]">close</span>
+      Clear
+    </button>
+
+  </div>
+</div>
+
+<!-- ─── Card Detail Modal ─── -->
+<div id="modal-overlay" class="fixed inset-0 flex items-center justify-center p-6 pointer-events-none" style="background:rgba(26,28,30,0.42);backdrop-filter:blur(4px);z-index:60;opacity:0">
+  <div id="modal-panel" class="w-full bg-white rounded-xl overflow-hidden flex" style="max-width:860px;max-height:88vh;opacity:0;transform:scale(0.96) translateY(12px);box-shadow:0 32px 80px -8px rgba(26,28,30,0.22),0 0 0 1px rgba(26,28,30,0.06)">
+
+    <!-- Left sidebar -->
+    <div id="modal-sidebar" class="shrink-0 flex flex-col overflow-y-auto" style="width:272px;background:#f3f3f6;border-right:1px solid rgba(226,226,229,0.7)">
+      <div class="p-6 pb-4">
+        <div class="flex justify-end mb-4">
+          <button id="modal-close-btn" class="w-8 h-8 flex items-center justify-center rounded-DEFAULT hover:bg-slate-200/70 transition-colors text-on-surface-variant">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+          </button>
+        </div>
+        <div id="modal-avatar" class="w-14 h-14 rounded-xl flex items-center justify-center shadow-md mb-4">
+          <span id="modal-avatar-letter" class="text-white font-headline font-bold text-2xl"></span>
+        </div>
+        <h2 id="modal-title" class="font-headline font-bold text-on-surface text-[17px] leading-snug mb-1"></h2>
+        <p id="modal-company" class="text-[12px] text-on-surface-variant font-body mb-4"></p>
+        <span id="modal-stage-pill" class="stage-pill text-[9px] font-label font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border inline-block"></span>
+      </div>
+
+      <div class="border-t border-slate-200/60 mx-6"></div>
+
+      <div class="px-6 py-4 space-y-4">
+        <div class="flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-[16px] text-outline shrink-0">calendar_today</span>
+          <div>
+            <p class="text-[9px] font-label text-on-surface-variant uppercase tracking-[0.08em]">Date Applied</p>
+            <p id="modal-date" class="text-[12px] font-body text-on-surface mt-0.5"></p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-[16px] text-outline shrink-0" style="margin-top:15px">link</span>
+          <div class="flex-1 min-w-0">
+            <p class="text-[9px] font-label text-on-surface-variant uppercase tracking-[0.08em] mb-1">Job Listing</p>
+            <div class="flex items-center gap-1.5">
+              <input id="modal-job-url" type="url" placeholder="Paste URL…"
+                class="flex-1 min-w-0 text-[12px] font-body bg-transparent border-b border-transparent hover:border-slate-300 focus:border-primary outline-none transition-colors py-0.5 placeholder:text-outline/40 truncate"
+                style="color:#004bca;padding-left:0"/>
+              <a id="modal-job-url-open" href="#" target="_blank" title="Open listing" class="shrink-0 transition-opacity" style="opacity:0;pointer-events:none">
+                <span class="material-symbols-outlined text-[14px]" style="color:#004bca">open_in_new</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-[16px] text-outline shrink-0" style="margin-top:15px">language</span>
+          <div class="flex-1 min-w-0">
+            <p class="text-[9px] font-label text-on-surface-variant uppercase tracking-[0.08em] mb-1">Company Website</p>
+            <div class="flex items-center gap-1.5">
+              <input id="modal-co-url" type="url" placeholder="Paste URL…"
+                class="flex-1 min-w-0 text-[12px] font-body bg-transparent border-b border-transparent hover:border-slate-300 focus:border-primary outline-none transition-colors py-0.5 placeholder:text-outline/40 truncate"
+                style="color:#004bca;padding-left:0"/>
+              <a id="modal-co-url-open" href="#" target="_blank" title="Open website" class="shrink-0 transition-opacity" style="opacity:0;pointer-events:none">
+                <span class="material-symbols-outlined text-[14px]" style="color:#004bca">open_in_new</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-200/60 mx-6"></div>
+
+      <div class="px-6 py-4">
+        <p class="text-[9px] font-label text-on-surface-variant uppercase tracking-[0.08em] mb-2.5">Skills</p>
+        <div id="modal-tags" class="flex flex-wrap gap-1.5"></div>
+      </div>
+
+      <div id="modal-cv-wrap" class="hidden">
+        <div class="border-t border-slate-200/60 mx-6"></div>
+        <div class="px-6 py-4">
+          <a id="modal-cv-link" href="#" target="_blank" class="flex items-center gap-2 px-3 py-2.5 rounded-lg border font-body font-semibold text-sm transition-colors" style="background:rgba(0,75,202,0.06);border-color:rgba(0,75,202,0.18);color:#004bca">
+            <span class="material-symbols-outlined text-[16px]">description</span>
+            <span class="flex-1">View Tailored CV</span>
+            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right scrollable panel -->
+    <div class="flex-1 overflow-y-auto p-7 space-y-7 modal-right-scroll">
+
+      <!-- Timeline -->
+      <section>
+        <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant mb-4">Application Timeline</h3>
+        <div id="modal-timeline"></div>
+      </section>
+
+      <div class="border-t border-slate-100"></div>
+
+      <!-- Notes -->
+      <section>
+        <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant mb-3">Notes</h3>
+        <div class="flex gap-2 mb-3">
+          <textarea id="modal-note-input" rows="2" placeholder="Add a note…" class="flex-1 px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:border-primary transition-all resize-none" style="--tw-ring-color:rgba(0,75,202,0.2)"></textarea>
+          <button id="modal-note-add-btn" class="self-end px-3 py-2.5 bg-primary text-white rounded-lg text-[12px] font-label font-bold hover:opacity-90 transition-opacity shrink-0">Add</button>
+        </div>
+        <div id="modal-notes-list" class="space-y-2"></div>
+      </section>
+
+      <div class="border-t border-slate-100"></div>
+
+      <!-- Communications -->
+      <section>
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Communications</h3>
+          <button id="modal-comm-add-btn" class="flex items-center gap-1 text-[10px] font-label font-semibold text-primary hover:opacity-70 transition-opacity">
+            <span class="material-symbols-outlined text-[14px]">add</span>Log entry
+          </button>
+        </div>
+        <!-- Entry form -->
+        <div id="modal-comm-form" class="hidden mb-4 p-4 rounded-xl border border-slate-200 bg-slate-50/70 space-y-3">
+          <div class="grid grid-cols-2 gap-2">
+            <div class="space-y-1">
+              <label class="text-[9px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Type</label>
+              <select id="modal-comm-type" class="w-full px-2.5 py-2 rounded-lg border border-slate-200 bg-white text-[12px] font-body text-on-surface focus:outline-none focus:border-primary transition-colors">
+                <option value="email">Email</option>
+                <option value="call">Phone Call</option>
+                <option value="interview">Interview</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="offer">Offer</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Date</label>
+              <input id="modal-comm-date" type="date" class="w-full px-2.5 py-2 rounded-lg border border-slate-200 bg-white text-[12px] font-body text-on-surface focus:outline-none focus:border-primary transition-colors"/>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[9px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Contact <span class="normal-case text-outline/60 font-normal">optional</span></label>
+            <input id="modal-comm-contact" type="text" placeholder="e.g. Sarah — Talent Partner" class="w-full px-2.5 py-2 rounded-lg border border-slate-200 bg-white text-[12px] font-body text-on-surface placeholder:text-outline/40 focus:outline-none focus:border-primary transition-colors"/>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[9px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Notes</label>
+            <textarea id="modal-comm-text" rows="2" placeholder="What was discussed or decided…" class="w-full px-2.5 py-2 rounded-lg border border-slate-200 bg-white text-[12px] font-body text-on-surface placeholder:text-outline/40 focus:outline-none focus:border-primary transition-colors resize-none"></textarea>
+          </div>
+          <div class="flex gap-2 justify-end">
+            <button id="modal-comm-cancel-btn" class="px-3 py-1.5 rounded-lg text-[11px] font-label font-semibold text-on-surface-variant hover:bg-slate-200/60 transition-colors">Cancel</button>
+            <button id="modal-comm-save-btn" class="px-3 py-1.5 rounded-lg bg-primary text-white text-[11px] font-label font-bold hover:opacity-90 transition-opacity">Log</button>
+          </div>
+        </div>
+        <!-- Entries -->
+        <div id="modal-comms-list" class="space-y-2"></div>
+      </section>
+
+      <div class="border-t border-slate-100"></div>
+
+      <!-- Next Steps -->
+      <section class="pb-4">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Next Steps</h3>
+          <button id="modal-task-add-btn" class="flex items-center gap-1 text-[10px] font-label font-semibold text-primary hover:opacity-70 transition-opacity">
+            <span class="material-symbols-outlined text-[14px]">add</span>Add task
+          </button>
+        </div>
+        <div id="modal-tasks-list" class="space-y-1"></div>
+        <div id="modal-task-input-wrap" class="hidden mt-2 flex gap-2">
+          <input id="modal-task-input" type="text" placeholder="New task…" class="flex-1 px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:border-primary transition-all" style="--tw-ring-color:rgba(0,75,202,0.2)"/>
+          <button id="modal-task-save-btn" class="px-3 py-2 bg-primary text-white rounded-lg text-[11px] font-label font-bold hover:opacity-90 transition-opacity shrink-0">Save</button>
+          <button id="modal-task-cancel-btn" class="px-2 py-2 text-on-surface-variant hover:text-on-surface transition-colors">
+            <span class="material-symbols-outlined text-[16px]">close</span>
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ─── Drawer overlay ─── -->
+<div id="drawer-overlay" class="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none"></div>
+
+<!-- ─── Add Application Drawer ─── -->
+<div id="add-drawer" class="fixed top-0 right-0 h-screen w-[380px] bg-white z-50 translate-x-full border-l border-slate-200/60 flex flex-col" style="box-shadow:-24px 0 60px rgba(26,28,30,0.08)">
+
+  <div class="flex items-center justify-between px-7 h-16 border-b border-slate-100 shrink-0">
+    <h2 class="font-headline font-bold text-on-surface text-lg tracking-tight">New Application</h2>
+    <button id="close-drawer-btn" class="w-8 h-8 flex items-center justify-center rounded-DEFAULT hover:bg-slate-100 transition-colors text-on-surface-variant">
+      <span class="material-symbols-outlined text-[20px]">close</span>
+    </button>
+  </div>
+
+  <div class="flex-1 overflow-y-auto px-7 py-6 space-y-5">
+
+    <div class="space-y-1.5">
+      <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Company</label>
+      <input type="text" placeholder="e.g. HubSpot" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+    </div>
+
+    <div class="space-y-1.5">
+      <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Job Title</label>
+      <input type="text" placeholder="e.g. Demand Generation Manager" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+    </div>
+
+    <div class="space-y-1.5">
+      <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Location</label>
+      <input type="text" placeholder="e.g. London, UK · Remote" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Stage</label>
+        <select class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all">
+          <option value="wishlist">Wishlist</option>
+          <option value="applied" selected>Applied</option>
+          <option value="interviewing">Interviewing</option>
+          <option value="assessment">Assessment</option>
+          <option value="offer-received">Offer Received</option>
+          <option value="offer-declined">Offer Declined</option>
+        </select>
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Date Applied</label>
+        <input type="date" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+      </div>
+    </div>
+
+    <div class="space-y-1.5">
+      <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Job Description URL</label>
+      <input type="url" placeholder="https://…" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"/>
+    </div>
+
+    <div class="space-y-1.5">
+      <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Tailored Resume</label>
+      <select class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all">
+        <option value="">— None yet —</option>
+        <option value="resume_AltoSoftware_HeadOfDemandGeneration.html">Alto Software – Head of Demand Gen</option>
+        <option value="resume_AptitudeSoftware_DemandGenerationManager.html">Aptitude Software – Demand Gen Manager</option>
+        <option value="resume_default.html">Default CV</option>
+      </select>
+    </div>
+
+    <div class="space-y-1.5">
+      <label class="text-[10px] font-label font-bold uppercase tracking-[0.08em] text-on-surface-variant">Notes</label>
+      <textarea rows="3" placeholder="Recruiter name, referral, key contacts, salary range…" class="w-full px-3 py-2.5 rounded-DEFAULT border border-slate-200 bg-slate-50 text-sm font-body text-on-surface placeholder:text-outline/50 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all resize-none"></textarea>
+    </div>
+
+  </div>
+
+  <div class="px-7 py-5 border-t border-slate-100 shrink-0 flex gap-3">
+    <button id="cancel-drawer-btn" class="flex-1 py-2.5 rounded-DEFAULT border border-slate-200 text-on-surface-variant font-body font-medium text-sm hover:bg-slate-50 transition-colors">Cancel</button>
+    <button class="flex-1 py-2.5 bg-gradient-to-br from-primary to-primary-container text-white rounded-DEFAULT font-body font-medium text-sm shadow-md hover:opacity-90 transition-all">Save Entry</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   STAGE CONFIG
+══════════════════════════════════════════════ */
+var STAGE_CONFIG = {
+  'wishlist':       { label: 'Wishlist',       pillCls: 'pill-wishlist' },
+  'applied':        { label: 'Applied',        pillCls: 'pill-applied' },
+  'interviewing':   { label: 'Interviewing',   pillCls: 'pill-interviewing' },
+  'assessment':     { label: 'Assessment',     pillCls: 'pill-assessment' },
+  'offer-received': { label: 'Offer Received', pillCls: 'pill-offer' },
+  'offer-declined': { label: 'Offer Declined', pillCls: 'pill-declined' },
+};
+var ALL_PILL_CLASSES = Object.values(STAGE_CONFIG).map(function(s) { return s.pillCls; });
+
+/* ══════════════════════════════════════════════
+   DRAG & DROP
+══════════════════════════════════════════════ */
+var draggedCard = null;
+var wasDragging = false;
+
+var placeholder = document.createElement('div');
+placeholder.id = 'drag-placeholder';
+
+function getDragAfterElement(cardsArea, clientY) {
+  var items = Array.from(cardsArea.querySelectorAll('.app-card:not(.is-dragging)'));
+  var closest = null;
+  var closestOffset = -Infinity;
+  items.forEach(function(el) {
+    var box = el.getBoundingClientRect();
+    var offset = clientY - box.top - box.height / 2;
+    if (offset < 0 && offset > closestOffset) { closestOffset = offset; closest = el; }
+  });
+  return closest;
+}
+
+function updatePill(card, stage) {
+  var cfg = STAGE_CONFIG[stage];
+  if (!cfg) return;
+  var pill = card.querySelector('.stage-pill');
+  if (!pill) return;
+  ALL_PILL_CLASSES.forEach(function(c) { pill.classList.remove(c); });
+  pill.classList.add(cfg.pillCls);
+  pill.textContent = cfg.label;
+}
+
+function initCard(card) {
+  card.addEventListener('dragstart', function(e) {
+    draggedCard = card;
+    wasDragging = true;
+    placeholder.style.height = card.offsetHeight + 'px';
+    e.dataTransfer.effectAllowed = 'move';
+    requestAnimationFrame(function() { card.classList.add('is-dragging'); });
+  });
+
+  card.addEventListener('dragend', function() {
+    card.classList.remove('is-dragging');
+    placeholder.remove();
+    draggedCard = null;
+    updateAll();
+    /* Let click handler see wasDragging=true, then clear it */
+    setTimeout(function() { wasDragging = false; }, 80);
+  });
+
+  /* ── Click: avatar → select; body → modal (unless selection active) ── */
+  card.addEventListener('click', function(e) {
+    if (wasDragging) return;
+    if (e.target.closest('a')) return;
+    if (e.target.closest('.card-avatar-wrap') || selectedCards.size > 0) {
+      toggleCardSelection(card);
+      return;
+    }
+    openCardModal(card);
+  });
+}
+
+document.querySelectorAll('.app-card').forEach(initCard);
+
+document.querySelectorAll('.kanban-col').forEach(function(col) {
+  col.addEventListener('dragenter', function(e) {
+    e.preventDefault();
+    col.classList.add('drag-over');
+  });
+  col.addEventListener('dragleave', function(e) {
+    if (!col.contains(e.relatedTarget)) col.classList.remove('drag-over');
+  });
+  col.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (!draggedCard) return;
+    var area = col.querySelector('.cards-area');
+    var after = getDragAfterElement(area, e.clientY);
+    after == null ? area.appendChild(placeholder) : area.insertBefore(placeholder, after);
+  });
+  col.addEventListener('drop', function(e) {
+    e.preventDefault();
+    col.classList.remove('drag-over');
+    if (!draggedCard) return;
+    var area = col.querySelector('.cards-area');
+    placeholder.parentNode === area
+      ? area.insertBefore(draggedCard, placeholder)
+      : area.appendChild(draggedCard);
+    placeholder.remove();
+    updatePill(draggedCard, col.dataset.stage);
+    updateAll();
+  });
+});
+
+/* ══════════════════════════════════════════════
+   COUNTS & EMPTY STATES
+══════════════════════════════════════════════ */
+function updateAll() {
+  var total = 0;
+  document.querySelectorAll('.kanban-col').forEach(function(col) {
+    var cards = col.querySelector('.cards-area').querySelectorAll('.app-card');
+    var n = cards.length;
+    total += n;
+    col.querySelector('.col-count').textContent = n;
+    var es = col.querySelector('.empty-state');
+    if (es) { es.classList.toggle('hidden', n > 0); es.classList.toggle('flex', n === 0); }
+  });
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-applied').textContent =
+    document.querySelector('[data-stage="applied"] .cards-area').querySelectorAll('.app-card').length;
+  document.getElementById('stat-interviewing').textContent =
+    document.querySelector('[data-stage="interviewing"] .cards-area').querySelectorAll('.app-card').length;
+  document.getElementById('stat-offers').textContent =
+    document.querySelector('[data-stage="offer-received"] .cards-area').querySelectorAll('.app-card').length;
+}
+updateAll();
+
+/* ══════════════════════════════════════════════
+   MULTI-SELECT
+══════════════════════════════════════════════ */
+var selectedCards = new Set();
+var board = document.getElementById('kanban-board');
+var selBar = document.getElementById('sel-bar');
+var selCountLabel = document.getElementById('sel-count-label');
+
+function toggleCardSelection(card) {
+  if (selectedCards.has(card)) {
+    selectedCards.delete(card);
+    card.classList.remove('selected');
+  } else {
+    selectedCards.add(card);
+    card.classList.add('selected');
+  }
+  syncSelectionState();
+}
+
+function clearSelection() {
+  selectedCards.forEach(function(c) { c.classList.remove('selected'); });
+  selectedCards.clear();
+  syncSelectionState();
+}
+
+function syncSelectionState() {
+  var n = selectedCards.size;
+  board.classList.toggle('has-selection', n > 0);
+  selBar.classList.toggle('bar-hidden', n === 0);
+  selCountLabel.textContent = n + (n === 1 ? ' selected' : ' selected');
+}
+
+/* Move selected cards to a stage with fade-out/in animation */
+function moveSelectedToStage(targetStage) {
+  var cfg = STAGE_CONFIG[targetStage];
+  var col = document.querySelector('[data-stage="' + targetStage + '"]');
+  var area = col.querySelector('.cards-area');
+  var cards = Array.from(selectedCards);
+
+  /* Fade out */
+  cards.forEach(function(c) {
+    c.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
+    c.style.opacity = '0';
+    c.style.transform = 'translateY(-6px) scale(0.96)';
+  });
+
+  setTimeout(function() {
+    cards.forEach(function(c) {
+      if (cfg) updatePill(c, targetStage);
+      area.appendChild(c);
+      c.classList.remove('selected');
+      /* Prime fade-in */
+      c.style.opacity = '0';
+      c.style.transform = 'translateY(8px) scale(0.97)';
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          c.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+          c.style.opacity = '';
+          c.style.transform = '';
+          setTimeout(function() { c.style.transition = ''; }, 280);
+        });
+      });
+    });
+    selectedCards.clear();
+    syncSelectionState();
+    updateAll();
+  }, 200);
+}
+
+/* Delete selected cards with fade-out */
+function deleteSelected() {
+  var cards = Array.from(selectedCards);
+  cards.forEach(function(c) {
+    c.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
+    c.style.opacity = '0';
+    c.style.transform = 'scale(0.88)';
+  });
+  setTimeout(function() {
+    cards.forEach(function(c) { c.remove(); });
+    selectedCards.clear();
+    syncSelectionState();
+    updateAll();
+  }, 200);
+}
+
+document.getElementById('sel-move-btn').addEventListener('click', function() {
+  var target = document.getElementById('sel-move-select').value;
+  if (selectedCards.size && target) moveSelectedToStage(target);
+});
+
+document.getElementById('sel-delete-btn').addEventListener('click', function() {
+  if (selectedCards.size) deleteSelected();
+});
+
+document.getElementById('sel-clear-btn').addEventListener('click', clearSelection);
+
+/* ══════════════════════════════════════════════
+   FILTER
+══════════════════════════════════════════════ */
+var filterBtn     = document.getElementById('filter-btn');
+var filterPopover = document.getElementById('filter-popover');
+var filterOpen    = false;
+
+/* Active filter values */
+var filterStatuses = new Set();   /* stage keys */
+var filterTitle    = '';
+var filterDateFrom = '';          /* YYYY-MM-DD string */
+var filterDateTo   = '';
+
+/* Parse "DD Mon YY" card date strings → Date object or null */
+var MONTHS = { Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11 };
+function parseCardDate(str) {
+  if (!str) return null;
+  var parts = str.trim().split(' ');
+  if (parts.length !== 3) return null;
+  var d = parseInt(parts[0], 10);
+  var m = MONTHS[parts[1]];
+  var y = 2000 + parseInt(parts[2], 10);
+  return (isNaN(d) || m === undefined || isNaN(y)) ? null : new Date(y, m, d);
+}
+
+/* Status multi-select dropdown */
+var statusDdMenu    = document.getElementById('status-dd-menu');
+var statusDdTrigger = document.getElementById('status-dd-trigger');
+var statusDdOpen    = false;
+
+function openStatusDd() {
+  statusDdOpen = true;
+  statusDdMenu.style.display = 'block';
+  document.getElementById('status-dd-chevron').style.transform = 'rotate(180deg)';
+}
+function closeStatusDd() {
+  statusDdOpen = false;
+  statusDdMenu.style.display = 'none';
+  document.getElementById('status-dd-chevron').style.transform = '';
+}
+
+function syncStatusDd() {
+  var label = document.getElementById('status-dd-label');
+  var n = filterStatuses.size;
+  if (n === 0) {
+    label.textContent = 'All statuses';
+    label.style.color = '';
+  } else {
+    label.textContent = n + ' of 6 selected';
+    label.style.color = '#004bca';
+  }
+  document.querySelectorAll('.status-opt').forEach(function(btn) {
+    var selected = filterStatuses.has(btn.dataset.value);
+    btn.querySelector('.opt-check').style.opacity = selected ? '1' : '0';
+    btn.style.background = selected ? 'rgba(0,75,202,0.04)' : '';
+  });
+  var chipsEl = document.getElementById('status-chips');
+  chipsEl.innerHTML = '';
+  filterStatuses.forEach(function(stage) {
+    var cfg = STAGE_CONFIG[stage];
+    if (!cfg) return;
+    var chip = document.createElement('span');
+    chip.className = 'stage-pill ' + cfg.pillCls + ' text-[9px] font-label font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border inline-flex items-center gap-1 cursor-pointer';
+    chip.innerHTML = cfg.label + '<span class="material-symbols-outlined" style="font-size:11px">close</span>';
+    chip.addEventListener('click', function() {
+      filterStatuses.delete(stage);
+      syncStatusDd();
+      applyFilter();
+    });
+    chipsEl.appendChild(chip);
+  });
+}
+
+statusDdTrigger.addEventListener('click', function(e) {
+  e.stopPropagation();
+  statusDdOpen ? closeStatusDd() : openStatusDd();
+});
+
+document.querySelectorAll('.status-opt').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var val = btn.dataset.value;
+    filterStatuses.has(val) ? filterStatuses.delete(val) : filterStatuses.add(val);
+    syncStatusDd();
+    applyFilter();
+  });
+});
+
+function openFilter() {
+  filterOpen = true;
+  filterPopover.classList.remove('hidden-pop');
+}
+function closeFilter() {
+  filterOpen = false;
+  filterPopover.classList.add('hidden-pop');
+  closeStatusDd();
+}
+
+filterBtn.addEventListener('click', function(e) {
+  e.stopPropagation();
+  filterOpen ? closeFilter() : openFilter();
+});
+document.addEventListener('click', function(e) {
+  if (statusDdOpen && !statusDdMenu.contains(e.target) && e.target !== statusDdTrigger) closeStatusDd();
+  if (filterOpen && !filterPopover.contains(e.target) && e.target !== filterBtn) closeFilter();
+});
+
+/* Job title */
+document.getElementById('filter-title').addEventListener('input', function() {
+  filterTitle = this.value.trim().toLowerCase();
+  applyFilter();
+});
+
+/* Date range */
+document.getElementById('filter-date-from').addEventListener('change', function() {
+  filterDateFrom = this.value;
+  applyFilter();
+});
+document.getElementById('filter-date-to').addEventListener('change', function() {
+  filterDateTo = this.value;
+  applyFilter();
+});
+
+/* Clear all */
+document.getElementById('filter-clear-btn').addEventListener('click', function() {
+  filterStatuses.clear();
+  filterTitle = '';
+  filterDateFrom = '';
+  filterDateTo = '';
+  syncStatusDd();
+  closeStatusDd();
+  document.getElementById('filter-title').value = '';
+  document.getElementById('filter-date-from').value = '';
+  document.getElementById('filter-date-to').value = '';
+  applyFilter();
+});
+
+function applyFilter() {
+  var isActive = filterStatuses.size > 0 || filterTitle || filterDateFrom || filterDateTo;
+  filterBtn.classList.toggle('is-active', isActive);
+
+  var dateFrom = filterDateFrom ? new Date(filterDateFrom + 'T00:00:00') : null;
+  var dateTo   = filterDateTo   ? new Date(filterDateTo   + 'T23:59:59') : null;
+
+  document.querySelectorAll('.app-card').forEach(function(card) {
+    var colStage  = (card.closest('.kanban-col') || {}).dataset && card.closest('.kanban-col').dataset.stage;
+    var title     = ((card.querySelector('h4') || {}).textContent || '').toLowerCase();
+    var dateEl    = card.querySelector('.card-date');
+    var cardDate  = dateEl ? parseCardDate(dateEl.textContent) : null;
+
+    var okStatus  = filterStatuses.size === 0 || filterStatuses.has(colStage);
+    var okTitle   = !filterTitle   || title.includes(filterTitle);
+    var okFrom    = !dateFrom      || (cardDate && cardDate >= dateFrom);
+    var okTo      = !dateTo        || (cardDate && cardDate <= dateTo);
+
+    card.style.display = (okStatus && okTitle && okFrom && okTo) ? '' : 'none';
+  });
+}
+
+/* ══════════════════════════════════════════════
+   CARD DATA & MODAL
+══════════════════════════════════════════════ */
+var cardData = {};
+var STAGES_ORDER = ['wishlist','applied','interviewing','assessment','offer-received','offer-declined'];
+var DEFAULT_TASKS = {
+  'wishlist':       ['Research the company','Check role requirements','Identify key contacts on LinkedIn'],
+  'applied':        ['Send application confirmation email','Connect with hiring manager on LinkedIn','Set reminder to follow up in 7 days'],
+  'interviewing':   ['Prepare STAR-method answers','Research interviewer backgrounds','Prepare 5 questions to ask'],
+  'assessment':     ['Complete assessment before the deadline','Review technical requirements','Follow up after submission'],
+  'offer-received': ['Review the full offer letter','Research market salary benchmarks','Prepare negotiation talking points'],
+  'offer-declined': ['Send a polite decline email','Ask to stay in touch for future roles'],
+};
+
+var COMM_TYPES = {
+  'email':     { label: 'Email',       icon: 'email',       bg: 'rgba(0,75,202,0.08)',   color: '#004bca' },
+  'call':      { label: 'Phone Call',  icon: 'call',        bg: 'rgba(21,128,61,0.08)',  color: '#15803d' },
+  'interview': { label: 'Interview',   icon: 'groups',      bg: 'rgba(67,91,162,0.08)',  color: '#435ba2' },
+  'linkedin':  { label: 'LinkedIn',    icon: 'person',      bg: 'rgba(0,119,181,0.08)',  color: '#0077b5' },
+  'offer':     { label: 'Offer',       icon: 'description', bg: 'rgba(217,119,6,0.08)',  color: '#d97706' },
+  'other':     { label: 'Other',       icon: 'chat',        bg: 'rgba(115,118,135,0.08)','color': '#737687' },
+};
+
+function getCardData(id) {
+  if (!cardData[id]) cardData[id] = { notes: [], tasks: null, jobUrl: '', companyUrl: '', comms: [] };
+  return cardData[id];
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderComms(comms) {
+  var list = document.getElementById('modal-comms-list');
+  list.innerHTML = '';
+  if (!comms.length) {
+    list.innerHTML = '<p style="font-size:11px;font-family:Inter,sans-serif;color:#737687;padding:4px 0">No communications logged yet.</p>';
+    return;
+  }
+  comms.forEach(function(comm) {
+    var ct = COMM_TYPES[comm.type] || COMM_TYPES['other'];
+    var div = document.createElement('div');
+    div.className = 'comm-entry';
+    var dateStr = comm.date ? new Date(comm.date + 'T00:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' }) : '';
+    div.innerHTML =
+      '<div class="comm-icon" style="background:' + ct.bg + '">' +
+        '<span class="material-symbols-outlined" style="color:' + ct.color + '">' + ct.icon + '</span>' +
+      '</div>' +
+      '<div class="comm-body">' +
+        '<div class="comm-header">' +
+          '<span class="comm-type">' + ct.label + '</span>' +
+          (dateStr ? '<span class="comm-date">' + dateStr + '</span>' : '') +
+        '</div>' +
+        (comm.contact ? '<p class="comm-contact">' + escapeHtml(comm.contact) + '</p>' : '') +
+        (comm.text ? '<p class="comm-text">' + escapeHtml(comm.text) + '</p>' : '') +
+      '</div>' +
+      '<button class="comm-del-btn" title="Delete" style="color:#9aa0b0;background:none;border:none;cursor:pointer;padding:0;line-height:1">' +
+        '<span class="material-symbols-outlined" style="font-size:16px">delete</span>' +
+      '</button>';
+    div.querySelector('.comm-del-btn').addEventListener('click', function() {
+      if (!activeModalId) return;
+      var d = getCardData(activeModalId);
+      d.comms = d.comms.filter(function(c) { return c.id !== comm.id; });
+      renderComms(d.comms);
+    });
+    list.appendChild(div);
+  });
+}
+
+var modalOverlay  = document.getElementById('modal-overlay');
+var modalPanel    = document.getElementById('modal-panel');
+var activeModalId = null;
+
+function openCardModal(card) {
+  var id      = card.dataset.id;
+  activeModalId = id;
+  var col     = card.closest('.kanban-col');
+  var stage   = col ? col.dataset.stage : 'applied';
+  var title   = card.querySelector('h4').textContent;
+  var company = card.querySelector('.card-company').textContent;
+  var date    = card.querySelector('.card-date').textContent;
+  var tags    = Array.from(card.querySelectorAll('.tag-chip')).map(function(t) { return t.textContent; });
+  var cvAnchor = card.querySelector('a[href]');
+
+  /* Avatar — copy gradient classes, upsize */
+  var srcAvatar = card.querySelector('.card-avatar-wrap > div:first-child');
+  var modalAvatar = document.getElementById('modal-avatar');
+  if (srcAvatar) {
+    var cls = srcAvatar.className
+      .replace(/\bw-9\b/, 'w-14').replace(/\bh-9\b/, 'h-14')
+      .replace(/\brounded-lg\b/, 'rounded-xl').replace(/\bshadow-sm\b/, 'shadow-md');
+    modalAvatar.className = cls + ' mb-4';
+  }
+  document.getElementById('modal-avatar-letter').textContent = title.charAt(0).toUpperCase();
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-company').textContent = company;
+  document.getElementById('modal-date').textContent = date;
+
+  /* Stage pill */
+  var pillEl = document.getElementById('modal-stage-pill');
+  ALL_PILL_CLASSES.forEach(function(c) { pillEl.classList.remove(c); });
+  var cfg = STAGE_CONFIG[stage];
+  if (cfg) { pillEl.classList.add(cfg.pillCls); pillEl.textContent = cfg.label; }
+
+  /* Tags */
+  var tagsEl = document.getElementById('modal-tags');
+  tagsEl.innerHTML = '';
+  tags.forEach(function(t) {
+    var span = document.createElement('span');
+    span.className = 'tag-chip text-[9px] font-label font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full';
+    span.textContent = t;
+    tagsEl.appendChild(span);
+  });
+  if (!tags.length) tagsEl.innerHTML = '<span class="text-[11px] font-body text-on-surface-variant/50">No tags</span>';
+
+  /* CV link */
+  var cvWrap = document.getElementById('modal-cv-wrap');
+  var cvLinkEl = document.getElementById('modal-cv-link');
+  if (cvAnchor && cvAnchor.getAttribute('href') && cvAnchor.getAttribute('href') !== '#') {
+    cvWrap.classList.remove('hidden');
+    cvLinkEl.href = cvAnchor.href;
+  } else {
+    cvWrap.classList.add('hidden');
+  }
+
+  /* Timeline */
+  buildTimeline(stage);
+
+  /* Per-card data: seed tasks once per stage */
+  var data = getCardData(id);
+  if (data.tasks === null) {
+    data.tasks = (DEFAULT_TASKS[stage] || []).map(function(t, i) {
+      return { id: i + 1, text: t, done: false };
+    });
+  }
+  renderNotes(data.notes);
+  renderTasks(data.tasks);
+
+  /* URL fields */
+  function setUrlField(inputId, openId, url) {
+    var input = document.getElementById(inputId);
+    var openEl = document.getElementById(openId);
+    input.value = url || '';
+    var hasUrl = !!url;
+    openEl.href = url || '#';
+    openEl.style.opacity = hasUrl ? '1' : '0';
+    openEl.style.pointerEvents = hasUrl ? 'auto' : 'none';
+  }
+  setUrlField('modal-job-url', 'modal-job-url-open', data.jobUrl);
+  setUrlField('modal-co-url',  'modal-co-url-open',  data.companyUrl);
+
+  /* Communications */
+  document.getElementById('modal-comm-form').classList.add('hidden');
+  document.getElementById('modal-comm-form').style.display = '';
+  renderComms(data.comms);
+
+  /* Clear note input */
+  document.getElementById('modal-note-input').value = '';
+
+  /* Animate in */
+  modalOverlay.style.opacity = '0';
+  modalOverlay.style.pointerEvents = 'auto';
+  modalPanel.style.opacity = '0';
+  modalPanel.style.transform = 'scale(0.96) translateY(12px)';
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      modalOverlay.style.opacity = '1';
+      modalPanel.style.opacity = '1';
+      modalPanel.style.transform = 'scale(1) translateY(0)';
+    });
+  });
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCardModal() {
+  modalOverlay.style.opacity = '0';
+  modalPanel.style.opacity = '0';
+  modalPanel.style.transform = 'scale(0.97) translateY(8px)';
+  setTimeout(function() {
+    modalOverlay.style.pointerEvents = 'none';
+    document.body.style.overflow = '';
+    activeModalId = null;
+  }, 250);
+}
+
+function buildTimeline(currentStage) {
+  var tl = document.getElementById('modal-timeline');
+  tl.innerHTML = '';
+  var currentIdx = STAGES_ORDER.indexOf(currentStage);
+  STAGES_ORDER.forEach(function(s, i) {
+    var cfg = STAGE_CONFIG[s];
+    var cls = i < currentIdx ? 'done' : (i === currentIdx ? 'current' : 'future');
+    var div = document.createElement('div');
+    div.className = 'tl-step ' + cls;
+    div.innerHTML = '<div class="tl-dot"></div><p class="tl-label">' + (cfg ? cfg.label : s) + '</p>';
+    tl.appendChild(div);
+  });
+}
+
+function renderNotes(notes) {
+  var list = document.getElementById('modal-notes-list');
+  list.innerHTML = '';
+  if (!notes.length) {
+    list.innerHTML = '<p style="font-size:11px;font-family:Inter,sans-serif;color:#737687;padding:4px 0">No notes yet.</p>';
+    return;
+  }
+  notes.forEach(function(note) {
+    var div = document.createElement('div');
+    div.className = 'note-card';
+    div.innerHTML = '<div class="note-body"><p>' + escapeHtml(note.text) + '</p><time>' + note.time + '</time></div>' +
+      '<button class="note-del-btn" title="Delete note" style="color:#9aa0b0;background:none;border:none;cursor:pointer;padding:0;line-height:1">' +
+      '<span class="material-symbols-outlined" style="font-size:16px">delete</span></button>';
+    div.querySelector('.note-del-btn').addEventListener('click', function() {
+      if (!activeModalId) return;
+      var d = getCardData(activeModalId);
+      d.notes = d.notes.filter(function(n) { return n.id !== note.id; });
+      renderNotes(d.notes);
+    });
+    list.appendChild(div);
+  });
+}
+
+function renderTasks(tasks) {
+  var list = document.getElementById('modal-tasks-list');
+  list.innerHTML = '';
+  tasks.forEach(function(task) {
+    var div = document.createElement('div');
+    div.className = 'task-row' + (task.done ? ' done' : '');
+    var uid = 'task-chk-' + task.id;
+    div.innerHTML = '<input type="checkbox" id="' + uid + '"' + (task.done ? ' checked' : '') + '/>' +
+      '<label for="' + uid + '">' + escapeHtml(task.text) + '</label>' +
+      '<button class="task-del-btn" title="Remove task" style="color:#9aa0b0;background:none;border:none;cursor:pointer;padding:0;line-height:1">' +
+      '<span class="material-symbols-outlined" style="font-size:15px">close</span></button>';
+    div.querySelector('input[type=checkbox]').addEventListener('change', function() {
+      task.done = this.checked;
+      div.classList.toggle('done', task.done);
+    });
+    div.querySelector('.task-del-btn').addEventListener('click', function() {
+      if (!activeModalId) return;
+      var d = getCardData(activeModalId);
+      d.tasks = d.tasks.filter(function(t) { return t.id !== task.id; });
+      renderTasks(d.tasks);
+    });
+    list.appendChild(div);
+  });
+}
+
+/* Close triggers */
+document.getElementById('modal-close-btn').addEventListener('click', closeCardModal);
+modalOverlay.addEventListener('click', function(e) {
+  if (e.target === modalOverlay) closeCardModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && modalOverlay.style.pointerEvents === 'auto') closeCardModal();
+});
+
+/* URL fields — save on blur, update open-link visibility live */
+function wireUrlField(inputId, openId, dataKey) {
+  var input = document.getElementById(inputId);
+  var openEl = document.getElementById(openId);
+  input.addEventListener('input', function() {
+    var val = this.value.trim();
+    openEl.href = val || '#';
+    openEl.style.opacity = val ? '1' : '0';
+    openEl.style.pointerEvents = val ? 'auto' : 'none';
+  });
+  input.addEventListener('blur', function() {
+    if (!activeModalId) return;
+    getCardData(activeModalId)[dataKey] = this.value.trim();
+  });
+}
+wireUrlField('modal-job-url', 'modal-job-url-open', 'jobUrl');
+wireUrlField('modal-co-url',  'modal-co-url-open',  'companyUrl');
+
+/* Communications form */
+document.getElementById('modal-comm-add-btn').addEventListener('click', function() {
+  var form = document.getElementById('modal-comm-form');
+  var isHidden = form.classList.contains('hidden');
+  if (isHidden) {
+    form.classList.remove('hidden');
+    form.style.display = '';
+    /* Default date to today */
+    if (!document.getElementById('modal-comm-date').value) {
+      document.getElementById('modal-comm-date').valueAsDate = new Date();
+    }
+  } else {
+    form.classList.add('hidden');
+  }
+});
+document.getElementById('modal-comm-cancel-btn').addEventListener('click', function() {
+  document.getElementById('modal-comm-form').classList.add('hidden');
+});
+document.getElementById('modal-comm-save-btn').addEventListener('click', function() {
+  if (!activeModalId) return;
+  var type    = document.getElementById('modal-comm-type').value;
+  var date    = document.getElementById('modal-comm-date').value;
+  var contact = document.getElementById('modal-comm-contact').value.trim();
+  var text    = document.getElementById('modal-comm-text').value.trim();
+  if (!date && !text) return;
+  var d = getCardData(activeModalId);
+  d.comms.unshift({ id: Date.now(), type: type, date: date, contact: contact, text: text });
+  renderComms(d.comms);
+  /* Reset form */
+  document.getElementById('modal-comm-contact').value = '';
+  document.getElementById('modal-comm-text').value = '';
+  document.getElementById('modal-comm-form').classList.add('hidden');
+});
+
+/* Add note */
+document.getElementById('modal-note-add-btn').addEventListener('click', function() {
+  var input = document.getElementById('modal-note-input');
+  var text = input.value.trim();
+  if (!text || !activeModalId) return;
+  var d = getCardData(activeModalId);
+  var now = new Date();
+  d.notes.unshift({
+    id: Date.now(),
+    text: text,
+    time: now.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' }) +
+          ' · ' + now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' })
+  });
+  input.value = '';
+  renderNotes(d.notes);
+});
+document.getElementById('modal-note-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    document.getElementById('modal-note-add-btn').click();
+  }
+});
+
+/* Add task */
+document.getElementById('modal-task-add-btn').addEventListener('click', function() {
+  var wrap = document.getElementById('modal-task-input-wrap');
+  if (wrap.classList.contains('hidden')) {
+    wrap.classList.remove('hidden');
+    wrap.style.display = 'flex';
+    document.getElementById('modal-task-input').focus();
+  } else {
+    wrap.classList.add('hidden');
+    wrap.style.display = '';
+  }
+});
+document.getElementById('modal-task-save-btn').addEventListener('click', function() {
+  var input = document.getElementById('modal-task-input');
+  var text = input.value.trim();
+  if (!text || !activeModalId) return;
+  var d = getCardData(activeModalId);
+  d.tasks.push({ id: Date.now(), text: text, done: false });
+  renderTasks(d.tasks);
+  input.value = '';
+  var wrap = document.getElementById('modal-task-input-wrap');
+  wrap.classList.add('hidden');
+  wrap.style.display = '';
+});
+document.getElementById('modal-task-cancel-btn').addEventListener('click', function() {
+  document.getElementById('modal-task-input').value = '';
+  var wrap = document.getElementById('modal-task-input-wrap');
+  wrap.classList.add('hidden');
+  wrap.style.display = '';
+});
+document.getElementById('modal-task-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('modal-task-save-btn').click();
+  if (e.key === 'Escape') document.getElementById('modal-task-cancel-btn').click();
+});
+
+/* ══════════════════════════════════════════════
+   DRAWER
+══════════════════════════════════════════════ */
+var drawer  = document.getElementById('add-drawer');
+var overlay = document.getElementById('drawer-overlay');
+
+function openDrawer() {
+  drawer.classList.remove('translate-x-full');
+  overlay.classList.remove('opacity-0', 'pointer-events-none');
+}
+function closeDrawer() {
+  drawer.classList.add('translate-x-full');
+  overlay.classList.add('opacity-0', 'pointer-events-none');
+}
+
+document.getElementById('open-drawer-btn').addEventListener('click', openDrawer);
+document.getElementById('close-drawer-btn').addEventListener('click', closeDrawer);
+document.getElementById('cancel-drawer-btn').addEventListener('click', closeDrawer);
+overlay.addEventListener('click', closeDrawer);
+</script>
+</body>
+</html>

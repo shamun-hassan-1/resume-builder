@@ -130,7 +130,7 @@
       <span class="material-symbols-outlined">description</span>
       <span class="text-sm font-medium font-body">Default CV</span>
     </a>
-    <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-all rounded-lg" href="#">
+    <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 transition-all rounded-lg" href="applications.html">
       <span class="material-symbols-outlined">work_history</span>
       <span class="text-sm font-medium font-body">Applications</span>
     </a>
@@ -180,7 +180,7 @@
               <span class="material-symbols-outlined text-[16px]">visibility</span>
               Preview CV
             </a>
-            <button onclick="downloadCV('resume_default.html','Kazi_Hassan_Default_CV.html')" class="px-6 py-2.5 bg-surface-container-lowest text-on-surface rounded-DEFAULT font-body font-medium text-sm border border-slate-200 hover:bg-surface-container-low transition-colors flex items-center gap-2 cursor-pointer">
+            <button onclick="downloadCV('resume_default.html')" class="px-6 py-2.5 bg-surface-container-lowest text-on-surface rounded-DEFAULT font-body font-medium text-sm border border-slate-200 hover:bg-surface-container-low transition-colors flex items-center gap-2 cursor-pointer">
               <span class="material-symbols-outlined text-[16px]">download</span>
               Download CV
             </button>
@@ -236,7 +236,7 @@
               <a href="resume_AltoSoftware_HeadOfDemandGeneration.html" target="_blank" class="overlay-btn primary">
                 <span class="material-symbols-outlined text-[14px]">visibility</span> Preview CV
               </a>
-              <button onclick="downloadCV('resume_AltoSoftware_HeadOfDemandGeneration.html','Kazi_Hassan_Alto_CV.html')" class="overlay-btn secondary">
+              <button onclick="downloadCV('resume_AltoSoftware_HeadOfDemandGeneration.html')" class="overlay-btn secondary">
                 <span class="material-symbols-outlined text-[14px]">download</span> Download CV
               </button>
             </div>
@@ -274,7 +274,7 @@
               <a href="resume_AptitudeSoftware_DemandGenerationManager.html" target="_blank" class="overlay-btn primary">
                 <span class="material-symbols-outlined text-[14px]">visibility</span> Preview CV
               </a>
-              <button onclick="downloadCV('resume_AptitudeSoftware_DemandGenerationManager.html','Kazi_Hassan_Aptitude_CV.html')" class="overlay-btn secondary">
+              <button onclick="downloadCV('resume_AptitudeSoftware_DemandGenerationManager.html')" class="overlay-btn secondary">
                 <span class="material-symbols-outlined text-[14px]">download</span> Download CV
               </button>
             </div>
@@ -316,17 +316,13 @@
   window.addEventListener('load',   scaleResumePreview);
   window.addEventListener('resize', scaleResumePreview);
 
-  function downloadCV(url, filename) {
-    fetch(url)
-      .then(function(r) { return r.blob(); })
-      .then(function(blob) {
-        var a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function() { URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 100);
+  function downloadCV(url) {
+    var win = window.open(url, '_blank');
+    if (win) {
+      win.addEventListener('load', function() {
+        setTimeout(function() { win.print(); }, 800);
       });
+    }
   }
 </script>
 </body>
